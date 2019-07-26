@@ -1,0 +1,22 @@
+name: Acyeterion
+main: xiaokai.acyeterion.Acyeterion
+api:
+- 1.0.0
+version: 1.1d
+load: POSTWORLD
+website: http://EpicFX.cn
+author: Winfxk
+loadbefore:
+- EconomyAPI
+commands:
+   shop:
+      description: §9商店主命令
+      permission: Acyeterion.Command.main
+      usage: §b/§6mis §chelp
+      aliases:
+      - 商店
+      - acyeterion
+permissions:
+   Acyeterion.Command.main:
+      description: 商店主命令
+      default: true
