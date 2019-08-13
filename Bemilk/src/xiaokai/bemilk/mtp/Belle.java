@@ -1,4 +1,4 @@
-package xiaokai.acyeterion.mtp;
+package xiaokai.bemilk.mtp;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class Belle {
 			} catch (IOException e) {
 				kick.mis.getLogger().info("§4在检查数据中遇到错误！请尝试删除该文件§9[§d" + FileNae + "§9]\n§f" + e.getMessage());
 			}
-		file = new File(kick.mis.getDataFolder(), Kick.MenuConfigPath);
+		file = new File(kick.mis.getDataFolder(), Kick.ShopConfigPath);
 		for (String Fn : file.list()) {
 			File fns = new File(file, Fn);
 			if (fns.isFile())

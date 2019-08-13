@@ -1,4 +1,4 @@
-package xiaokai.acyeterion.mtp;
+package xiaokai.bemilk.mtp;
 
 import java.io.File;
 import java.util.LinkedHashMap;
@@ -8,7 +8,7 @@ import java.util.UUID;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.utils.Config;
-import xiaokai.acyeterion.Acyeterion;
+import xiaokai.bemilk.Bemilk;
 import xiaokai.tool.Tool;
 import xiaokai.tool.Update;
 
@@ -20,7 +20,7 @@ public class Kick {
 	/**
 	 * 插件主累对象
 	 */
-	public Acyeterion mis;
+	public Bemilk mis;
 	/**
 	 * 插件猪被子文件 <b>config</b></br>
 	 * 表单ID配置文件 <b>formIdConfig</b>
@@ -69,11 +69,11 @@ public class Kick {
 	/**
 	 * 能创建的商店按钮的类型
 	 */
-	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "出售经验", "回收经验", "物品兑换" };
+	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "出售经验", "回收经验", "物品兑换", "物品附魔", "物品修复", "个人商店" };
 	/**
 	 * 添加的商店的配置文件存储位置
 	 */
-	public static final String MenuConfigPath = "Shop/";
+	public static final String ShopConfigPath = "Shop/";
 	/**
 	 * 玩家配置文件存储路径
 	 */
@@ -81,9 +81,9 @@ public class Kick {
 	/**
 	 * 在启动服务器时检查文件夹是否创建，要检查的列表
 	 */
-	public static final String[] LoadDirList = { MenuConfigPath, PlayerConfigPath };
+	public static final String[] LoadDirList = { ShopConfigPath, PlayerConfigPath };
 
-	public Kick(Acyeterion knickers) {
+	public Kick(Bemilk knickers) {
 		kick = this;
 		if (!knickers.getDataFolder().exists())
 			knickers.getDataFolder().mkdirs();

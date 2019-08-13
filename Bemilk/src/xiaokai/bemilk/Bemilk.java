@@ -1,4 +1,4 @@
-package xiaokai.acyeterion;
+package xiaokai.bemilk;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -6,14 +6,15 @@ import java.time.Instant;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
-import xiaokai.acyeterion.mtp.Kick;
+import xiaokai.bemilk.event.PlayerEvent;
+import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
  */
 
-public class Acyeterion extends PluginBase {
+public class Bemilk extends PluginBase {
 	private Instant loadTime = Instant.now();
 	/**
 	 * 插件缓存数据集合
@@ -27,6 +28,7 @@ public class Acyeterion extends PluginBase {
 	public void onEnable() {
 		super.onEnable();
 		PluginManager pm = getServer().getPluginManager();
+		pm.registerEvents(new PlayerEvent(getKick()), this);
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "启动！") + "§6耗时：§9"
 				+ ((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000));
 	}
@@ -69,7 +71,7 @@ public class Acyeterion extends PluginBase {
 	 * 
 	 * @return 插件主类对象
 	 */
-	public static Acyeterion getPY() {
+	public static Bemilk getPY() {
 		return kick.mis;
 	}
 }

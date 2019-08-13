@@ -1,8 +1,8 @@
-name: Acyeterion
-main: xiaokai.acyeterion.Acyeterion
+name: Bemilk
+main: xiaokai.bemilk.Bemilk
 api:
 - 1.0.0
-version: 1.1d
+version: 1.0
 load: POSTWORLD
 website: http://EpicFX.cn
 author: Winfxk
@@ -11,12 +11,12 @@ loadbefore:
 commands:
    shop:
       description: §9商店主命令
-      permission: Acyeterion.Command.main
-      usage: §b/§6mis §chelp
+      permission: Bemilk.Command.main
+      usage: §b/§6shop §chelp
       aliases:
       - 商店
-      - acyeterion
+      - bemilk
 permissions:
-   Acyeterion.Command.main:
+   Bemilk.Command.main:
       description: 商店主命令
       default: true

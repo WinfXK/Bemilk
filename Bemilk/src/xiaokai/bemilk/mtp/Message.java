@@ -1,11 +1,11 @@
-package xiaokai.acyeterion.mtp;
+package xiaokai.bemilk.mtp;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import cn.nukkit.utils.Config;
-import xiaokai.acyeterion.Acyeterion;
+import xiaokai.bemilk.Bemilk;
 import xiaokai.tool.Tool;
 
 /**
@@ -13,7 +13,7 @@ import xiaokai.tool.Tool;
  */
 @SuppressWarnings("unchecked")
 public class Message {
-	private Acyeterion mis;
+	private Bemilk mis;
 	private String[] Key = { "{n}", "{RandColor}", "{ServerName}", "{PluginName}", "{MoneyName}", "{Time}", "{Date}" };
 	private String[] Data = {};
 	private Config Message;
@@ -25,7 +25,7 @@ public class Message {
 
 	private void load() {
 		Data = new String[] { "\n", Tool.getRandColor(), mis.getServer().getMotd(), mis.getName(),
-				Acyeterion.getMoneyName(), Tool.getTime(), Tool.getDate() };
+				Bemilk.getMoneyName(), Tool.getTime(), Tool.getDate() };
 	}
 
 	public String getSun(String t, String Son, String Sun) {
