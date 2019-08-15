@@ -1,0 +1,364 @@
+package xiaokai.bemilk.mtp;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import cn.nukkit.utils.Config;
+import xiaokai.tool.ItemIDSunName;
+import xiaokai.tool.Tool;
+
+/**
+ * @author Winfxk
+ */
+@SuppressWarnings("unchecked")
+public class ItemID {
+	public static ItemID itemID;
+	private static Config config;
+	private static Map<String, Map<String, String>> iDList;
+	private static int Items;
+
+	public ItemID() {
+		itemID = this;
+		Items = ItemID.load();
+	}
+
+	public static int load() {
+		Kick kick = Kick.kick;
+		iDList = new HashMap<String, Map<String, String>>();
+		ArrayList<HashMap<String, Object>> All = ItemIDSunName.getAll();
+		for (HashMap<String, Object> map2 : All) {
+			Map<String, String> Item = new HashMap<String, String>();
+			String iDString = map2.get("ID") + ":" + map2.get("Damage");
+			Item.put("ID", iDString);
+			Item.put("Path", (String) map2.get("Path"));
+			Item.put("Name", (String) map2.get("Name"));
+			iDList.put(iDString, Item);
+		}
+		config = new Config(new File(kick.mis.getDataFolder(), kick.ItemIDConfigName), Config.YAML);
+		Map<String, Object> map = config.getAll();
+		Set<String> keys = map.keySet();
+		for (String ID : keys) {
+			Object obj = map.get(ID);
+			int[] IDs = Tool.IDtoFullID(ID);
+			ID = IDs[0] + ":" + IDs[1];
+			if (obj instanceof Map) {
+				Map<String, Object> map1 = (Map<String, Object>) obj;
+				Map<String, String> Item = new HashMap<String, String>();
+				Item.put("ID", ID);
+				String Path = (String) map1.get("Path");
+				if (Path == null || Path.isEmpty())
+					kick.mis.getLogger().error("构建自定义ID时出现错误：" + ID + "所属的Path为空！请检查");
+				Item.put("Path", Path);
+				String Name = (String) map1.get("Name");
+				if (Name == null || Name.isEmpty())
+					kick.mis.getLogger().error("构建自定义ID时出现错误：" + ID + "所属的Name为空！请检查");
+				Item.put("Name", Name);
+				iDList.put(ID, Item);
+			} else
+				kick.mis.getLogger().error("构建自定义ID时出现错误：" + ID + "所属的数据错误！请检查");
+		}
+		ItemID.Items = iDList.size();
+		return iDList.size();
+	}
+
+	/**
+	 * 根据一个未知值，获取物品的名称贴图路径
+	 * 
+	 * @param obj 未知的参数
+	 * @return
+	 */
+	public static String UnknownToName(Object obj) {
+		String iDString = UnknownToID(obj);
+		return getNameByID(iDString, null);
+	}
+
+	/**
+	 * 根据一个未知值，获取物品的名称贴图路径
+	 * 
+	 * @param obj     未知的参数
+	 * @param Default 若获取的值为空，默认返回的值
+	 * @return
+	 */
+	public static String UnknownToName(Object obj, String Default) {
+		String iDString = UnknownToID(obj);
+		return getNameByID(iDString, Default);
+	}
+
+	/**
+	 * 根据一个未知值，获取物品的贴图路径
+	 * 
+	 * @param obj 未知的参数
+	 * @return
+	 */
+	public static String UnknownToPath(Object obj) {
+		return UnknownToPath(obj, null);
+	}
+
+	/**
+	 * 根据一个未知值，获取物品的贴图路径
+	 * 
+	 * @param obj     未知的参数
+	 * @param Default 若获取的值为空，默认返回的值
+	 * @return
+	 */
+	public static String UnknownToPath(Object obj, String Default) {
+		String iDString = UnknownToID(obj);
+		return getPathByID(iDString, Default);
+	}
+
+	/**
+	 * 根据一个未知值获取ID
+	 * 
+	 * @param obj 已知的未知值
+	 * @return
+	 */
+	public static String UnknownToID(Object obj) {
+		return UnknownToID(obj, null);
+	}
+
+	/**
+	 * 根据一个未知值获取ID
+	 * 
+	 * @param obj     已知的未知值
+	 * @param Default 若获取值为空，默认返回的值
+	 * @return
+	 */
+	public static String UnknownToID(Object obj, String Default) {
+		String string = String.valueOf(obj);
+		String iDString = string.contains(":") ? string : string + ":0";
+		String Name = getNameByID(iDString);
+		if (Name != null)
+			return iDString;
+		String ID = getIDByName(string);
+		if (ID != null)
+			return ID;
+		Set<String> Keys = iDList.keySet();
+		for (String ike : Keys) {
+			Map<String, String> map = iDList.get(ike);
+			if (map.get("Name").equals(string) || ike.equals(string) || map.get("Path").equals(string))
+				return ike;
+		}
+		return Default;
+	}
+
+	/**
+	 * 根据物品名称获取物品ID
+	 * 
+	 * @param Name 要获取ID的物品名称
+	 * @return
+	 */
+	public static String getIDByName(String Name) {
+		return getIDByName(Name, null);
+	}
+
+	/**
+	 * 根据物品名称获取物品ID
+	 * 
+	 * @param Name    要获取ID的物品名称
+	 * @param Default 若获取值为空，默认返回的物品ID
+	 * @return
+	 */
+	public static String getIDByName(String Name, String Default) {
+		Set<String> Keys = iDList.keySet();
+		for (String ID : Keys) {
+			Map<String, String> map = iDList.get(ID);
+			if (map == null)
+				continue;
+			if (map.get("Name").equals(Name))
+				return ID;
+		}
+		return Default;
+	}
+
+	/**
+	 * 根据物品名称获取物品贴图路径
+	 * 
+	 * @param Name 物品的名称
+	 * @return
+	 */
+	public static String getPathByName(String Name) {
+		return getPathByName(Name, null);
+	}
+
+	/**
+	 * 根据物品名称获取物品贴图路径
+	 * 
+	 * @param Name    物品的名称
+	 * @param Default 当获取的值为空时默认返回的值
+	 * @return
+	 */
+	public static String getPathByName(String Name, String Default) {
+		String ID = getIDByName(Name);
+		if (ID != null)
+			return getPathByID(ID);
+		return Default;
+	}
+
+	/**
+	 * 根据ID获取物品的贴图路径
+	 * 
+	 * @param ID     要获取名称的物品ID
+	 * @param Damage 要获取名称的物品特殊值
+	 * @return
+	 */
+	public static String getPathByID(int ID, int Damage) {
+		return getPathByID(ID + ":" + Damage, null);
+	}
+
+	/**
+	 * 根据ID获取物品的贴图路径
+	 * 
+	 * @param ID      要获取名称的物品ID
+	 * @param Damage  要获取名称的物品特殊值
+	 * @param Default 若为空默认返回的贴图路径
+	 * @return
+	 */
+	public static String getPathByID(int ID, int Damage, String Default) {
+		return getPathByID(ID + ":" + Damage, Default);
+	}
+
+	/**
+	 * 根据ID获取物品的贴图路径
+	 * 
+	 * @param ID 要获取名称的物品ID
+	 * @return
+	 */
+	public static String getPathByID(int ID) {
+		return getPathByID(ID, null);
+	}
+
+	/**
+	 * 根据ID获取物品的贴图路径
+	 * 
+	 * @param ID      要获取名称的物品ID
+	 * @param Default 若为空默认返回的名字
+	 * @return
+	 */
+	public static String getPathByID(int ID, String Default) {
+		return getPathByID(ID + ":0", Default);
+	}
+
+	/**
+	 * 根据ID获取物品的贴图路径
+	 * 
+	 * @param ID 要获取名称的物品ID
+	 * @return
+	 */
+	public static String getPathByID(String ID) {
+		return getPathByID(ID, null);
+	}
+
+	/**
+	 * 根据ID获取物品的贴图路径
+	 * 
+	 * @param ID      物品的贴图路径
+	 * @param Default 若获取的物品贴图路径不存在默认返回的内容
+	 * @return
+	 */
+	public static String getPathByID(String ID, String Default) {
+		ID = ID.contains(":") ? ID : ID + ":0";
+		Map<String, String> map = iDList.get(ID);
+		if (map == null)
+			return Default;
+		return map.get("Path");
+	}
+
+	/**
+	 * 根据ID获取物品的名称
+	 * 
+	 * @param ID     要获取名称的物品ID
+	 * @param Damage 要获取名称的物品特殊值
+	 * @return
+	 */
+	public static String getNameByID(int ID, int Damage) {
+		return getNameByID(ID + ":" + Damage, null);
+	}
+
+	/**
+	 * 根据ID获取物品的名称
+	 * 
+	 * @param ID      要获取名称的物品ID
+	 * @param Damage  要获取名称的物品特殊值
+	 * @param Default 若为空默认返回的名字
+	 * @return
+	 */
+	public static String getNameByID(int ID, int Damage, String Default) {
+		return getNameByID(ID + ":" + Damage, Default);
+	}
+
+	/**
+	 * 根据ID获取物品的名称
+	 * 
+	 * @param ID 要获取名称的物品ID
+	 * @return
+	 */
+	public static String getNameByID(int ID) {
+		return getNameByID(ID, null);
+	}
+
+	/**
+	 * 根据ID获取物品的名称
+	 * 
+	 * @param ID      要获取名称的物品ID
+	 * @param Default 若为空默认返回的名字
+	 * @return
+	 */
+	public static String getNameByID(int ID, String Default) {
+		return getNameByID(ID + ":0", Default);
+	}
+
+	/**
+	 * 根据ID获取物品的名称
+	 * 
+	 * @param ID 要获取名称的物品ID
+	 * @return
+	 */
+	public static String getNameByID(String ID) {
+		return getNameByID(ID, null);
+	}
+
+	/**
+	 * 根据ID获取物品的名称
+	 * 
+	 * @param ID      要获取名称的物品ID
+	 * @param Default 若为空默认返回的名字
+	 * @return
+	 */
+	public static String getNameByID(String ID, String Default) {
+		ID = ID.contains(":") ? ID : ID + ":0";
+		Map<String, String> map = iDList.get(ID);
+		if (map == null)
+			return Default;
+		return map.get("Name");
+	}
+
+	/**
+	 * 获取自定义物品的物品配置文件
+	 * 
+	 * @return
+	 */
+	public static Config getConfig() {
+		return config;
+	}
+
+	/**
+	 * 获取已知的所有自定义物品数据
+	 * 
+	 * @return
+	 */
+	public static Map<String, Map<String, String>> getiDList() {
+		return iDList;
+	}
+
+	/**
+	 * 获取已经加载的物品数量
+	 * 
+	 * @return
+	 */
+	public static int getItems() {
+		return Items;
+	}
+}

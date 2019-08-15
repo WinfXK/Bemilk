@@ -2058,7 +2058,7 @@ public enum ItemIDSunName {
 	 */
 	public static String getIDByName(String ID) {
 		Map<String, Object> map = ID_MAP.getOrDefault(ID, null);
-		if (map == null || map.getOrDefault("Name", null) == null)
+		if (map == null || map.get("Name") == null)
 			return null;
 		return String.valueOf(map.get("Name"));
 	}

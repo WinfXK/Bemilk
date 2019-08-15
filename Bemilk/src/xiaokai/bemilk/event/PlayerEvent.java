@@ -6,12 +6,14 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
+import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.item.Item;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Belle;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.tool.ItemIDSunName;
@@ -80,6 +82,18 @@ public class PlayerEvent implements Listener {
 		Player player = e.getPlayer();
 		if (kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.remove(player.getName());
+	}
+
+	/**
+	 * 玩家进♂来事件
+	 * 
+	 * @param e
+	 */
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		Player player = e.getPlayer();
+		if (!DisPlayer.isConfig(player))
+			DisPlayer.initializePlayerConfig(player);
 	}
 
 	/**

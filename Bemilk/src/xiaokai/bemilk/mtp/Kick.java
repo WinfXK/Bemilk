@@ -2,15 +2,11 @@ package xiaokai.bemilk.mtp;
 
 import java.io.File;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
 
 import cn.nukkit.Player;
-import cn.nukkit.Server;
+import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
 import xiaokai.bemilk.Bemilk;
-import xiaokai.tool.Tool;
-import xiaokai.tool.Update;
 
 /**
  * @author Winfxk
@@ -55,6 +51,10 @@ public class Kick {
 	 */
 	public String FormIDConfigName = "FormID.yml";
 	/**
+	 * 用户存储自定义ID名称的地方
+	 */
+	public String ItemIDConfigName = "ItemID.yml";
+	/**
 	 * 玩家数据库
 	 */
 	public LinkedHashMap<String, MyPlayer> PlayerDataMap = new LinkedHashMap<String, MyPlayer>();
@@ -93,45 +93,36 @@ public class Kick {
 		config = new Config(new File(knickers.getDataFolder(), ConfigName), Config.YAML);
 		formID = new FormID(this);
 		formID.setConfig(formIdConfig.getAll());
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				while (true) {
-					try {
-						sleep(Tool.ObjectToInt(kick.config.get("检测更新间隔"), 500) * 1000);
-						if (config.getBoolean("检测更新"))
-							(new Update(knickers)).start();
-					} catch (InterruptedException e) {
-						mis.getLogger().warning("自动检查更新遇到错误！" + e.getMessage());
-					}
-				}
-			}
-		}.start();
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				while (true) {
-					try {
-						Object object = config.get("定时检查快捷工具间隔");
-						String s = object == null ? "" : String.valueOf(object);
-						int time = Tool.ObjectToInt(s, 60);
-						if (time > 0) {
-							Map<UUID, Player> Players = Server.getInstance().getOnlinePlayers();
-							for (UUID u : Players.keySet()) {
-								Player player = Players.get(u);
-								if (player.isOnline())
-									Belle.exMaterials(player);
-							}
-						}
-						sleep((time < 1 ? 60 : time) * 1000);
-					} catch (InterruptedException e) {
-						mis.getLogger().warning("自动检查更玩家快捷工具遇到错误！" + e.getMessage());
-					}
-				}
-			}
-		}.start();
 		Message = new Message(this);
+		mis.getLogger().info("§6已加载§9" + ItemID.load() + "§6个物品数据~");
+	}
+
+	/**
+	 * 判断一个沙雕是不是管理员
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static boolean isAdmin(CommandSender player) {
+		if (!player.isPlayer())
+			return true;
+		return isAdmin((Player) player);
+	}
+
+	/**
+	 * 判断一个沙雕是不是管理员
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static boolean isAdmin(Player player) {
+		if (player == null)
+			return false;
+		if (!player.isPlayer())
+			return true;
+		if (kick.config.getBoolean("管理员白名单"))
+			return kick.config.getList("管理员").contains(player.getName());
+		else
+			return player.isOp();
 	}
 }

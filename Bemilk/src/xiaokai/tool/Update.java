@@ -29,7 +29,7 @@ public class Update {
 			GsonBuilder builder = new GsonBuilder();
 			Gson gson = builder.create();
 			JsonParser parser = new JsonParser();
-			String strByJson = Tool.doPost(Url, "s=isup&n=" + mis.getName() + "&v=" + V);
+			String strByJson = Tool.getHttp(Url, "s=isup&n=" + mis.getName() + "&v=" + V);
 			if (strByJson != null && !strByJson.isEmpty()) {
 				if (strByJson.contains("<text>") && strByJson.contains("</text>")
 						&& Tool.cutString(strByJson, "<text>", "</text>") != null
