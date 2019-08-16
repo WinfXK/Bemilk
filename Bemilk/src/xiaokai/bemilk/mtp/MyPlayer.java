@@ -28,6 +28,10 @@ public class MyPlayer {
 	 * 玩家配置文件对象
 	 */
 	public Config config;
+	/**
+	 * 当前显示页面的文件对象
+	 */
+	public File file;
 
 	public MyPlayer(Player player) {
 		this.player = player;

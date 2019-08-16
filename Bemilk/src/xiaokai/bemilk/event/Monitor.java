@@ -34,5 +34,7 @@ public class Monitor implements Listener {
 			return;
 		if (f.getID(0) == ID)
 			new Dispose(player).Main((FormResponseSimple) data);
+		else if (f.getID(1) == ID)
+			new Dispose(player).MoreSettings((FormResponseSimple) data);
 	}
 }

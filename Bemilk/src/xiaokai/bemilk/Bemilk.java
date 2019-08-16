@@ -2,7 +2,8 @@ package xiaokai.bemilk;
 
 import java.time.Duration;
 import java.time.Instant;
-
+import cn.nukkit.command.Command;
+import cn.nukkit.command.CommandSender;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
@@ -76,5 +77,12 @@ public class Bemilk extends PluginBase {
 	 */
 	public static Bemilk getPY() {
 		return kick.mis;
+	}
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		if (!sender.isPlayer())
+			return true;
+		return true;
 	}
 }

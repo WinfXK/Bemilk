@@ -45,7 +45,7 @@ public class Kick {
 	/**
 	 * 要初始化的表单ID键值
 	 */
-	public String[] FormIDName = { "主页" };
+	public String[] FormIDName = { /* 0 */ "主页", /* 1 */"更多设置", /* 2 */"商店分页", /* 3 */"添加分页" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -69,7 +69,7 @@ public class Kick {
 	/**
 	 * 能创建的商店按钮的类型
 	 */
-	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "出售经验", "回收经验", "物品兑换", "物品附魔", "物品修复", "个人商店" };
+	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔" };
 	/**
 	 * 添加的商店的配置文件存储位置
 	 */

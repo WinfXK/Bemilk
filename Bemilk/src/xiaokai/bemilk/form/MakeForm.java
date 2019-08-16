@@ -40,6 +40,14 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean OpenShop(Player player, File file) {
+		Kick kick = Kick.kick;
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		Config config = new Config(file, Config.YAML);
+		String[] DsK = { "{Player}", "{Money}" };
+		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		SimpleForm form = new SimpleForm(kick.formID.getID(2), kick.Message.getText(config.get("Title"), DsK, DsO),
+				kick.Message.getText(config.get("Content"), DsK, DsO));
+		
 		return true;
 	}
 
@@ -53,7 +61,25 @@ public class MakeForm {
 		if (!Kick.isAdmin(player))
 			return MakeForm.Tip(player,
 					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
-
+		Kick kick = Kick.kick;
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		Config config = new Config(myPlayer.file, Config.YAML);
+		String[] DsK = { "{Player}", "{Money}" };
+		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		SimpleForm form = new SimpleForm(kick.formID.getID(1), kick.Message.getText(config.get("Title"), DsK, DsO),
+				kick.Message.getText(config.get("Content"), DsK, DsO));
+		List<String> AdminList = new ArrayList<String>();
+		AdminList.add("add");
+		form.addButton(Tool.getRandColor() + "添加商店");
+		AdminList.add("del");
+		form.addButton(Tool.getRandColor() + "删除商店");
+		AdminList.add("ss");
+		form.addButton(Tool.getRandColor() + "设置商店");
+		AdminList.add("set");
+		form.addButton(Tool.getRandColor() + "系统设置");
+		myPlayer.AdminKeys = AdminList;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
 		return true;
 	}
 
@@ -115,6 +141,7 @@ public class MakeForm {
 			}
 			myPlayer.AdminKeys = AdminList;
 		}
+		myPlayer.file = file;
 		myPlayer.Keys = Keys;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);

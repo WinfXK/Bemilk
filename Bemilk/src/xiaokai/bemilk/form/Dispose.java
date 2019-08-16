@@ -55,4 +55,36 @@ public class Dispose {
 		return MakeForm.OpenShop(player, new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath),
 				(String) ((Map<String, Object>) config.get(Key)).get("Config")));
 	}
+
+	/**
+	 * 处理玩家点击更多设置返回的数据
+	 * 
+	 * @param data
+	 * @return
+	 */
+	public boolean MoreSettings(FormResponseSimple data) {
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		if (myPlayer.AdminKeys == null || myPlayer.AdminKeys.size() == 0)
+			return false;
+		if (Kick.isAdmin(player))
+			switch (myPlayer.AdminKeys.get(data.getClickedButtonId() - myPlayer.Keys.size())) {
+			case "ms":
+				return MakeForm.MoreSettings(player);
+			case "set":
+				return MakeForm.Setting(player);
+			case "add":
+				return Paging.addShop.MakeForm(player);
+			case "ss":
+				return Paging.setShop.MakeForm(player);
+			case "del":
+				return Paging.delShop.MakeForm(player);
+			default:
+				player.sendMessage(kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Error}" },
+						new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));
+				return false;
+			}
+		player.sendMessage(kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Error}" },
+				new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));
+		return false;
+	}
 }

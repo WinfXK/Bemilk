@@ -20,9 +20,11 @@ import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,6 +39,9 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import cn.nukkit.Player;
+import cn.nukkit.item.Item;
 
 /**
  * @author Winfxk
@@ -669,5 +674,75 @@ public class Tool {
 		public boolean verify(String arg0, SSLSession arg1) {
 			return true;
 		}
+	}
+
+	/**
+	 * 将一个数据物品化
+	 * 
+	 * @param map
+	 * @param file
+	 * @return
+	 */
+	public static Item loadItem(Map<String, Object> map) {
+		Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"),
+				(String) map.get("Name"));
+		item.setCompoundTag((byte[]) map.get("Nbt"));
+		return item;
+	}
+
+	/**
+	 * 将一个物品数据化
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static Map<String, Object> saveItem(Item item) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("Nbt", item.getCompoundTag());
+		map.put("ID", item.getId());
+		map.put("Damage", item.getDamage());
+		map.put("Name", item.getName());
+		map.put("Count", item.getCount());
+		return map;
+	}
+
+	/**
+	 * 将保存起来的玩家背包读取到一个对象 </br>
+	 * <b>player.getInventory().setContents(取得的对象);</b>
+	 * 
+	 * @return
+	 */
+	public static Map<Integer, Item> loadInventory(List<Map<String, Object>> list) {
+		Map<Integer, Item> Contents = new HashMap<Integer, Item>();
+		for (int i = 0; i < list.size(); i++) {
+			Map<String, Object> map = list.get(i);
+			Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"),
+					(String) map.get("Name"));
+			item.setCompoundTag((byte[]) map.get("Nbt"));
+			Contents.put(i, item);
+		}
+		return Contents;
+	}
+
+	/**
+	 * 将一个玩家的背包保存到文件
+	 * 
+	 * @param player 要保存背包的玩家对象
+	 * @return
+	 */
+	public static List<Map<String, Object>> saveInventory(Player player) {
+		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		Map<Integer, Item> Contents = player.getInventory().getContents();
+		for (Integer i : Contents.keySet()) {
+			Item item = Contents.get(i);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("Nbt", item.getCompoundTag());
+			map.put("ID", item.getId());
+			map.put("Damage", item.getDamage());
+			map.put("Name", item.getName());
+			map.put("Count", item.getCount());
+			list.add(map);
+		}
+		return list;
 	}
 }
