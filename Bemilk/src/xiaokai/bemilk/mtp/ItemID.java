@@ -94,7 +94,9 @@ public class ItemID {
 	 * @return
 	 */
 	public static String UnknownToPath(Object obj) {
-		return UnknownToPath(obj, null);
+		if (obj == null)
+			return null;
+		return UnknownToPath(obj, obj.toString());
 	}
 
 	/**
@@ -116,7 +118,9 @@ public class ItemID {
 	 * @return
 	 */
 	public static String UnknownToID(Object obj) {
-		return UnknownToID(obj, null);
+		if (obj == null)
+			return null;
+		return UnknownToID(obj, obj.toString());
 	}
 
 	/**

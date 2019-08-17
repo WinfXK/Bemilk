@@ -93,7 +93,15 @@ public class PlayerEvent implements Listener {
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
 		if (!DisPlayer.isConfig(player))
-			DisPlayer.initializePlayerConfig(player);
+			new Thread() {
+				@Override
+				public void run() {
+					kick.mis.getLogger().info("§6未检测到玩家§9" + player.getName() + "§6的数据！正在创建...");
+					boolean isok = DisPlayer.initializePlayerConfig(player);
+					while (!isok)
+						isok = DisPlayer.initializePlayerConfig(player);
+				}
+			}.start();
 	}
 
 	/**

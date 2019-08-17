@@ -9,6 +9,7 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
 import xiaokai.bemilk.form.Dispose;
+import xiaokai.bemilk.form.Paging;
 import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
 
@@ -36,5 +37,15 @@ public class Monitor implements Listener {
 			new Dispose(player).Main((FormResponseSimple) data);
 		else if (f.getID(1) == ID)
 			new Dispose(player).MoreSettings((FormResponseSimple) data);
+		else if (f.getID(2) == ID)
+			new Dispose(player).OpenShop((FormResponseSimple) data);
+		else if (f.getID(3) == ID)
+			Paging.addShop.Dispose(player, (FormResponseCustom) data);
+		else if (f.getID(4) == ID)
+			Paging.setShop.start(player, (FormResponseSimple) data);
+		else if (f.getID(5) == ID)
+			Paging.delShop.start(player, (FormResponseSimple) data);
+		else if (f.getID(6) == ID)
+			Paging.delShop.dis(player, (FormResponseSimple) data);
 	}
 }

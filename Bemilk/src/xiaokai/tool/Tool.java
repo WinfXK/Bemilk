@@ -46,7 +46,7 @@ import cn.nukkit.item.Item;
 /**
  * @author Winfxk
  */
-public class Tool {
+public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
 
@@ -569,7 +569,7 @@ public class Tool {
 			throws UnsupportedEncodingException, IOException, KeyManagementException, NoSuchAlgorithmException {
 		StringBuffer buffer = null;
 		SSLContext sslContext = SSLContext.getInstance("SSL");
-		TrustManager[] tm = { new MyX509Trust() };
+		TrustManager[] tm = { new Tool() };
 		sslContext.init(null, tm, new java.security.SecureRandom());
 		SSLSocketFactory ssf = sslContext.getSocketFactory();
 		URL url = new URL(requestUrl);
@@ -628,12 +628,12 @@ public class Tool {
 	 */
 	public static void downLoadFromUrlHttps(String urlStr, String fileName, String savePath) throws Exception {
 		SSLContext sslContext = SSLContext.getInstance("SSL");
-		TrustManager[] tm = { new MyX509Trust() };
+		TrustManager[] tm = { new Tool() };
 		sslContext.init(null, tm, new java.security.SecureRandom());
 		SSLSocketFactory ssf = sslContext.getSocketFactory();
 		URL url = new URL(urlStr);
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
-		conn.setHostnameVerifier(new MyX509Trust());
+		conn.setHostnameVerifier(new Tool());
 		conn.setDoOutput(true);
 		conn.setDoInput(true);
 		conn.setUseCaches(false);
@@ -652,28 +652,22 @@ public class Tool {
 			inputStream.close();
 	}
 
-	/**
-	 * @author Winfxk
-	 */
-	public static class MyX509Trust implements X509TrustManager, HostnameVerifier {
+	@Override
+	public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	}
 
-		@Override
-		public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-		}
+	@Override
+	public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+	}
 
-		@Override
-		public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
-		}
+	@Override
+	public X509Certificate[] getAcceptedIssuers() {
+		return null;
+	}
 
-		@Override
-		public X509Certificate[] getAcceptedIssuers() {
-			return null;
-		}
-
-		@Override
-		public boolean verify(String arg0, SSLSession arg1) {
-			return true;
-		}
+	@Override
+	public boolean verify(String arg0, SSLSession arg1) {
+		return true;
 	}
 
 	/**

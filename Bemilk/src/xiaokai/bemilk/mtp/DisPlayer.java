@@ -24,7 +24,6 @@ public class DisPlayer {
 		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Moeny).intValue()));
 		config.set("收入", M = config.getDouble("收入") + Moeny);
 		config.set("总交易额", config.getDouble("总交易额") + Moeny);
-		config.save();
 		return M;
 	}
 
@@ -41,7 +40,6 @@ public class DisPlayer {
 		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Moeny).intValue()));
 		config.set("支出", M = config.getDouble("支出") + Moeny);
 		config.set("总交易额", config.getDouble("总交易额") + Moeny);
-		config.save();
 		return M;
 	}
 
@@ -81,7 +79,8 @@ public class DisPlayer {
 		config.set("为售罄商店", new ArrayList<String>());
 		config.set("云端仓库", new ArrayList<String>());
 		config.set("云端消息", new ArrayList<String>());
-		return config.save();
+		setConfig(player, config);
+		return true;
 	}
 
 	/**
@@ -111,8 +110,11 @@ public class DisPlayer {
 	 * @return
 	 */
 	public static boolean isConfig(String player) {
-		File file = new File(new File(Kick.kick.mis.getDataFolder(), Kick.PlayerConfigPath), player);
-		return file.isFile();
+		File file = getFile(player);
+		if (file.exists())
+			return file.isFile();
+		else
+			return false;
 	}
 
 	/**
@@ -144,10 +146,79 @@ public class DisPlayer {
 	public static Config getConfig(String player) {
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player);
 		if (myPlayer.config == null) {
-			myPlayer.config = new Config(
-					new File(new File(Kick.kick.mis.getDataFolder(), Kick.PlayerConfigPath), player), Config.YAML);
+			myPlayer.config = new Config(getFile(player), Config.YAML);
 			Kick.kick.PlayerDataMap.put(player, myPlayer);
 		}
 		return myPlayer.config;
+	}
+
+	/**
+	 * 设置一个玩家的配置文件
+	 * 
+	 * @param player
+	 * @param config
+	 * @return
+	 */
+	public static Config setConfig(CommandSender player, Config config) {
+		if (!player.isPlayer())
+			return null;
+		return setConfig(player.getName(), config);
+	}
+
+	/**
+	 * 设置一个玩家的配置文件
+	 * 
+	 * @param player
+	 * @param config
+	 * @return
+	 */
+	public static Config setConfig(Player player, Config config) {
+		return setConfig(player.getName(), config);
+	}
+
+	/**
+	 * 设置一个玩家的配置文件
+	 * 
+	 * @param player
+	 * @param config
+	 * @return
+	 */
+	public static Config setConfig(String player, Config config) {
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player);
+		myPlayer.config = config;
+		Kick.kick.PlayerDataMap.put(player, myPlayer);
+		return config;
+	}
+
+	/**
+	 * 获取玩家的配置文件的文件对象
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static File getFile(CommandSender player) {
+		if (!player.isPlayer())
+			return null;
+		return getFile(player.getName());
+	}
+
+	/**
+	 * 获取玩家的配置文件的文件对象
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static File getFile(Player player) {
+		return getFile(player.getName());
+	}
+
+	/**
+	 * 获取玩家的配置文件的文件对象
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static File getFile(String player) {
+		return new File(new File(Kick.kick.mis.getDataFolder(), Kick.PlayerConfigPath), player + ".yml");
 	}
 }

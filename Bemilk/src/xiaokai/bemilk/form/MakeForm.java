@@ -14,6 +14,7 @@ import me.onebone.economyapi.EconomyAPI;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.shop.Shop;
 import xiaokai.tool.ModalForm;
 import xiaokai.tool.SimpleForm;
 import xiaokai.tool.Tool;
@@ -25,6 +26,22 @@ import xiaokai.tool.Tool;
 public class MakeForm {
 	private static Message msg = Kick.kick.Message;
 
+	/**
+	 * 创建一个界面给玩家搜索，这个界面是来至主页
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static boolean Seek(Player player) {
+		return true;
+	}
+
+	/**
+	 * 插件属性设置
+	 * 
+	 * @param player
+	 * @return
+	 */
 	public static boolean Setting(Player player) {
 		if (!Kick.isAdmin(player))
 			return MakeForm.Tip(player,
@@ -45,9 +62,17 @@ public class MakeForm {
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		if (!Shop.isOk(player, file))
+			return MakeForm.Tip(player, kick.Message.getSun("界面", "商店分页", "被过滤提示", DsK, DsO));
+		if (!Shop.isOkMoney(player, file))
+			return MakeForm.Tip(player,
+					kick.Message.getSun("界面", "商店分页", "被过滤提示",
+							new String[] { "{Player}", "{Money}", "{MoneyFloor}", "{MoneyLimit}" },
+							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
+									config.getDouble("MoneyFloor"), config.getDouble("MoneyLimit") }));
 		SimpleForm form = new SimpleForm(kick.formID.getID(2), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
-		
+
 		return true;
 	}
 
@@ -58,26 +83,34 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean MoreSettings(Player player) {
-		if (!Kick.isAdmin(player))
-			return MakeForm.Tip(player,
-					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		Config config = new Config(myPlayer.file, Config.YAML);
+		Config config = kick.ShopConfig;
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(1), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
+		Object object = config.get("Shops");
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
+				: (HashMap<String, Object>) object;
 		List<String> AdminList = new ArrayList<String>();
-		AdminList.add("add");
-		form.addButton(Tool.getRandColor() + "添加商店");
-		AdminList.add("del");
-		form.addButton(Tool.getRandColor() + "删除商店");
-		AdminList.add("ss");
-		form.addButton(Tool.getRandColor() + "设置商店");
-		AdminList.add("set");
-		form.addButton(Tool.getRandColor() + "系统设置");
-		myPlayer.AdminKeys = AdminList;
+		if (Shops.size() > 0) {
+			AdminList.add("seek");
+			form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
+		}
+		if (Kick.isAdmin(player)) {
+			AdminList.add("add");
+			form.addButton(Tool.getRandColor() + "添加商店");
+			if (Shops.size() > 0) {
+				AdminList.add("del");
+				form.addButton(Tool.getRandColor() + "删除商店");
+				AdminList.add("ss");
+				form.addButton(Tool.getRandColor() + "设置商店");
+			}
+			AdminList.add("set");
+			form.addButton(Tool.getRandColor() + "系统设置");
+		}
+		myPlayer.ExtraKeys = AdminList;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
@@ -96,11 +129,10 @@ public class MakeForm {
 				&& Duration.between(myPlayer.loadTime, Instant.now()).toMillis() < kick.config.getDouble("屏蔽玩家双击间隔"))
 			return false;
 		myPlayer.loadTime = Instant.now();
-		File file = new File(kick.mis.getDataFolder(), kick.ShopConfigName);
-		Config config = new Config(file, Config.YAML);
-		Map<String, Object> Shops = (config.get("Shop") == null || !(config.get("Shop") instanceof Map))
-				? new HashMap<String, Object>()
-				: (HashMap<String, Object>) config.get("Shops");
+		Config config = kick.ShopConfig;
+		Object object = config.get("Shops");
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
+				: (HashMap<String, Object>) object;
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(0), kick.Message.getText(config.get("Title"), DsK, DsO),
@@ -109,39 +141,46 @@ public class MakeForm {
 		if (Shops.size() < 1)
 			form.setContent(form.getContent() + "\n" + msg.getSun("界面", "主页", "没有商店分页时显示", DsK, DsO));
 		for (String ike : Shops.keySet()) {
-			Keys.add(ike);
 			Map<String, Object> map = (Map<String, Object>) Shops.get(ike);
-			Config config2 = new Config(
-					new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath), (String) map.get("Config")),
-					Config.YAML);
+			File file = new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath), (String) map.get("Config"));
+			Config config2 = new Config(file, Config.YAML);
+			if (!Kick.isAdmin(player) && (!Shop.isOk(player, file) && kick.config.getBoolean("隐藏无权商店"))
+					|| (!Shop.isOkMoney(player, file) && kick.config.getBoolean("隐藏金钱数不匹配的商店")))
+				continue;
 			String Button = msg.getText(map.get("Text"), DsK, DsO);
 			String ShopTitle = msg.getText(config2.get("Title"), DsK, DsO);
 			String Content = msg.getText(config2.get("Content"), DsK, DsO);
+			int IconType = Integer.valueOf(String.valueOf(map.get("IconType")));
 			form.addButton(
 					msg.getSun("界面", "主页", "商店分页按钮格式",
 							new String[] { "{Player}", "{ButtonName}", "{ShopTitle}", "{ShopContent}" },
 							new String[] { player.getName(), Button, ShopTitle, Content }),
-					map.get("IconType").equals("2"), (String) map.get("IconPath"));
+					IconType == 2 ? false : true, IconType != 0 ? (String) map.get("IconPath") : null);
+			Keys.add(ike);
 		}
-		myPlayer.AdminKeys = null;
-		if (Kick.isAdmin(player)) {
-			List<String> AdminList = new ArrayList<String>();
-			if (kick.config.getBoolean("折叠选项")) {
-				form.addButton("更多设置");
-				AdminList.add("ms");
-			} else {
+		List<String> AdminList = new ArrayList<String>();
+		if (kick.config.getBoolean("折叠选项")) {
+			form.addButton(msg.getSon("界面", "更多设置按钮", DsK, DsO));
+			AdminList.add("ms");
+		} else {
+			if (Shops.size() > 0) {
+				AdminList.add("seek");
+				form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
+			}
+			if (Kick.isAdmin(player)) {
 				AdminList.add("add");
 				form.addButton(Tool.getRandColor() + "添加商店");
-				AdminList.add("del");
-				form.addButton(Tool.getRandColor() + "删除商店");
-				AdminList.add("ss");
-				form.addButton(Tool.getRandColor() + "设置商店");
+				if (Shops.size() > 0) {
+					AdminList.add("del");
+					form.addButton(Tool.getRandColor() + "删除商店");
+					AdminList.add("ss");
+					form.addButton(Tool.getRandColor() + "设置商店");
+				}
 				AdminList.add("set");
 				form.addButton(Tool.getRandColor() + "系统设置");
 			}
-			myPlayer.AdminKeys = AdminList;
 		}
-		myPlayer.file = file;
+		myPlayer.ExtraKeys = AdminList;
 		myPlayer.Keys = Keys;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);

@@ -2,11 +2,13 @@ package xiaokai.bemilk;
 
 import java.time.Duration;
 import java.time.Instant;
+
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
+import xiaokai.bemilk.event.Monitor;
 import xiaokai.bemilk.event.PlayerEvent;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
@@ -29,6 +31,7 @@ public class Bemilk extends PluginBase {
 		Instant EnableTime = Instant.now();
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(getKick()), this);
+		pm.registerEvents(new Monitor(getKick()), this);
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "启动！") + "§6总耗时:§9"
 						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis())) + "§6ms 启动耗时:§9"
