@@ -8,8 +8,6 @@ import java.util.UUID;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.inventory.PlayerInventory;
-import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 import xiaokai.bemilk.Bemilk;
 import xiaokai.tool.Update;
@@ -53,7 +51,8 @@ public class Kick {
 	 * 要初始化的表单ID键值
 	 */
 	public String[] FormIDName = { /* 0 */ "主页", /* 1 */"更多设置", /* 2 */"商店分页", /* 3 */"添加分页", /* 4 */ "修改分页",
-			/* 5 */ "删除分页", /* 6 */"删除分页确认" };
+			/* 5 */ "删除分页", /* 6 */"删除分页确认", /* 7 */"出售回收添加商店项目选择添加方式页", /* 8 */"管理员选择的是从背包选择物品，列出的物品列表界面",
+			/* 9 */"管理员选择从背包选择物品，选择后输入上架数量的界面", /* 10 */"选择物品完毕，要求玩家输入项目价格的界面" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -89,7 +88,7 @@ public class Kick {
 	/**
 	 * 能创建的商店按钮的类型
 	 */
-	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔" };
+	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔", "工具修复" };
 	/**
 	 * 添加的商店的配置文件存储位置
 	 */

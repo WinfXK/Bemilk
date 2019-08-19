@@ -162,6 +162,18 @@ public class SimpleForm {
 	}
 
 	/**
+	 * 添加一些按钮
+	 * 
+	 * @param Text
+	 * @return
+	 */
+	public SimpleForm addButtons(String... Text) {
+		for (String string : Text)
+			addButton(string);
+		return this;
+	}
+
+	/**
 	 * 将表单发送给指定玩家
 	 * 
 	 * @param player

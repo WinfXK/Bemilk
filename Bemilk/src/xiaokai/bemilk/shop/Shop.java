@@ -17,6 +17,91 @@ import xiaokai.tool.Tool;
 @SuppressWarnings("unchecked")
 public class Shop {
 	/**
+	 * 往商店内添加项目
+	 * 
+	 * @author Winfxk
+	 */
+	public static class addItem {
+		private Map<String, Object> map = new HashMap<String, Object>();
+		private Config config;
+
+		/**
+		 * 往商店内添加项目
+		 * 
+		 * @param player 要添加项目的玩家对象
+		 * @param file   要添加项目的商店文件对象
+		 */
+		public addItem(Player player, File file) {
+			config = new Config(file, Config.YAML);
+			map.put("Player", player.getName());
+			map.put("Time", Tool.getDate() + " " + Tool.getTime());
+			map.put("Key", getKey(1, file));
+		}
+
+		/**
+		 * 添加一个回收类型的商店
+		 * 
+		 * @param Money 项目的价格
+		 * @param items 项目所包含的物品列表
+		 * @return
+		 */
+		public boolean addSell(double Money, Map<String, Map<String, Object>> items) {
+			map.put("Money", Money);
+			map.put("Items", items);
+			map.put("Type", "Sell");
+			return save();
+		}
+
+		/**
+		 * 添加一个出售类型的商店
+		 * 
+		 * @param Money 项目的价格
+		 * @param items 项目所包含的物品列表
+		 * @return
+		 */
+		public boolean addShop(double Money, Map<String, Map<String, Object>> items) {
+			map.put("Money", Money);
+			map.put("Items", items);
+			map.put("Type", "Shop");
+			return save();
+		}
+
+		/**
+		 * 保存数据
+		 * 
+		 * @return
+		 */
+		public boolean save() {
+			Object obj = config.get("Items");
+			Map<String, Object> ShopItems = (obj == null || !(obj instanceof Map)) ? new HashMap<String, Object>()
+					: (HashMap<String, Object>) obj;
+			ShopItems.put((String) map.get("Key"), map);
+			config.set("Items", ShopItems);
+			return config.save();
+		}
+
+		/**
+		 * 添加商店项目的时候获取一个不重复的商店key
+		 * 
+		 * @param JJLength
+		 * @param file
+		 * @return
+		 */
+		public static String getKey(int JJLength, File file) {
+			String key = "";
+			for (int i = 0; i < JJLength; i++)
+				key += Tool.getRandString("qwertyuiop[]asdfghjkl;'\\zxcvbnm,./");
+			Config config = new Config(file, Config.YAML);
+			Object obj = config.get("Items");
+			Map<String, Object> map = (obj == null || !(obj instanceof Map)) ? new HashMap<String, Object>()
+					: (HashMap<String, Object>) obj;
+			if (map.containsKey(key))
+				return getKey(JJLength++, file);
+			return key;
+		}
+	}
+
+	/**
 	 * 添加一个商店分页
 	 * 
 	 * @param player            添加这个商店分页的玩家对象

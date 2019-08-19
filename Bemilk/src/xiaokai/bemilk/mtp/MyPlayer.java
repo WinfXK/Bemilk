@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.List;
 
 import cn.nukkit.Player;
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 
 public class MyPlayer {
@@ -44,6 +45,28 @@ public class MyPlayer {
 	 * 用来临时存储一些字符串，例如说商店分页的文件名什么的
 	 */
 	public String string;
+	/**
+	 * 判断从背包添加物品到商店的时候是不是第二或之后的界面了
+	 */
+	public boolean isInventoryGetItem2 = false;
+	/**
+	 * 从背包添加物品到商店的时候已经确认添加的物品
+	 */
+	public List<Item> addIsItem;
+	/**
+	 * 从背包添加物品到商店的时候显示的物品列表
+	 */
+	public List<Item> addIsItemList;
+	/**
+	 * 缓存物品对象
+	 */
+	public Item CacheItem;
+	/**
+	 * 判断是出售还是回收类型的按钮 </br>
+	 * <b> true: 出售 </br>
+	 * false：回收</b>
+	 */
+	public boolean isShopOrSell = false;
 
 	public MyPlayer(Player player) {
 		this.player = player;

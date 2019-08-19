@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import me.onebone.economyapi.EconomyAPI;
+import xiaokai.bemilk.mtp.ItemID;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -25,6 +27,18 @@ import xiaokai.tool.Tool;
 @SuppressWarnings("unchecked")
 public class MakeForm {
 	private static Message msg = Kick.kick.Message;
+	private static Kick kick = Kick.kick;
+
+	/**
+	 * 商店分页点开的搜索
+	 * 
+	 * @param player
+	 * @param file
+	 * @return
+	 */
+	public static boolean OpenShopFoSeek(Player player, File file) {
+		return true;
+	}
 
 	/**
 	 * 创建一个界面给玩家搜索，这个界面是来至主页
@@ -57,7 +71,6 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean OpenShop(Player player, File file) {
-		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
@@ -70,9 +83,43 @@ public class MakeForm {
 							new String[] { "{Player}", "{Money}", "{MoneyFloor}", "{MoneyLimit}" },
 							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
 									config.getDouble("MoneyFloor"), config.getDouble("MoneyLimit") }));
+		Object object = config.get("Items");
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
+				: (HashMap<String, Object>) object;
 		SimpleForm form = new SimpleForm(kick.formID.getID(2), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
-
+		Set<String> ItemsSet = Shops.keySet();
+		List<String> Keys = new ArrayList<String>();
+		for (String ike : ItemsSet) {
+			Object ob = Shops.get(ike);
+			Map<String, Object> ItemAerS = (ob == null || !(ob instanceof Map)) ? new HashMap<String, Object>()
+					: (HashMap<String, Object>) ob;
+			String[] itemids = ItemAerS.keySet().toArray(new String[] {});
+			String[] itemKey = { "{Player}", "{Money}", "{ItemName}", "{ItemCount}" };
+			Object[] myData = { player.getName(), EconomyAPI.getInstance().myMoney(player),
+					ItemID.getNameByID(itemids[Tool.getRand(0, itemids.length - 1)]), itemids.length };
+			form.addButton(msg.getSun("界面", "商店分页", "项目格式", itemKey, myData), true,
+					ItemID.getPathByID(itemids[Tool.getRand(0, itemids.length - 1)]));
+			Keys.add(ike);
+		}
+		List<String> AdminList = new ArrayList<String>();
+		if (Shops.size() > 0) {
+			AdminList.add("seek");
+			form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
+		}
+		if (Kick.isAdmin(player)) {
+			AdminList.add("add");
+			form.addButton(Tool.getRandColor() + "添加商店");
+			if (Shops.size() > 0) {
+				AdminList.add("del");
+				form.addButton(Tool.getRandColor() + "删除商店");
+			}
+		}
+		myPlayer.ExtraKeys = AdminList;
+		myPlayer.file = file;
+		myPlayer.Keys = Keys;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
 		return true;
 	}
 
@@ -83,7 +130,6 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean MoreSettings(Player player) {
-		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = kick.ShopConfig;
 		String[] DsK = { "{Player}", "{Money}" };
@@ -123,7 +169,6 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean Main(Player player) {
-		Kick kick = Kick.kick;
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		if (myPlayer.loadTime != null
 				&& Duration.between(myPlayer.loadTime, Instant.now()).toMillis() < kick.config.getDouble("屏蔽玩家双击间隔"))
@@ -195,7 +240,7 @@ public class MakeForm {
 	 * @return <b>back</b>
 	 */
 	public static boolean Tip(Player player, String Content) {
-		return Tip(player, Tool.getRandColor() + Kick.kick.mis.getName(), Content, false);
+		return Tip(player, Tool.getRandColor() + kick.mis.getName(), Content, false);
 	}
 
 	/**
@@ -207,7 +252,7 @@ public class MakeForm {
 	 * @return <b>back</b>
 	 */
 	public static boolean Tip(Player player, String Content, boolean back) {
-		return Tip(player, Tool.getRandColor() + Kick.kick.mis.getName(), Content, back);
+		return Tip(player, Tool.getRandColor() + kick.mis.getName(), Content, back);
 	}
 
 	/**

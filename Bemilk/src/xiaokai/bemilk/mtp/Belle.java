@@ -62,7 +62,6 @@ public class Belle {
 		}
 		for (String formidKey : kick.FormIDName)
 			if (!kick.formIdConfig.exists(formidKey)) {
-				kick.mis.getLogger().info("§4未发现§6" + formidKey + "§4对应的表单值！正在写入...");
 				kick.formIdConfig.set(formidKey, Tool.getRand());
 				kick.formIdConfig.save();
 			}
@@ -73,7 +72,6 @@ public class Belle {
 		String content;
 		for (String FileNae : kick.isLoadFileName)
 			try {
-				kick.mis.getLogger().info("§6正在检查文件" + FileNae);
 				content = Utils.readFile(this.getClass().getResourceAsStream("/resources/" + FileNae));
 				map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
 				Config config = new Config(new File(kick.mis.getDataFolder(), FileNae), Config.YAML);
@@ -99,7 +97,6 @@ public class Belle {
 		for (String ike : map.keySet())
 			if (!cg.containsKey(ike)) {
 				cg.put(ike, map.get(ike));
-				kick.mis.getLogger().info("§6" + ike + "§4所属的数据错误！已回复默认");
 				continue;
 			} else if (!(((cg.get(ike) instanceof Map) || (map.get(ike) instanceof Map))
 					|| ((cg.get(ike) instanceof List) && (map.get(ike) instanceof List)
@@ -108,7 +105,6 @@ public class Belle {
 					|| ((map.get(ike) instanceof Boolean) && (cg.get(ike) instanceof Boolean))
 					|| ((map.get(ike) instanceof Float) && (cg.get(ike) instanceof Float)))) {
 				cg.put(ike, map.get(ike));
-				kick.mis.getLogger().info("§6" + ike + "§4属性不匹配！已回复默认");
 				continue;
 			} else if (map.get(ike) instanceof Map)
 				cg.put(ike, icMap((Map<String, Object>) map.get(ike), (Map<String, Object>) cg.get(ike)));
@@ -120,13 +116,11 @@ public class Belle {
 		for (String ike : map.keySet())
 			if (!cg.containsKey(ike)) {
 				cg.put(ike, map.get(ike));
-				kick.mis.getLogger().info("§6" + ike + "§4所属的数据错误！已回复默认");
 				continue;
 			} else if (!(((cg.get(ike) instanceof Map) && (map.get(ike) instanceof Map))
 					|| ((cg.get(ike) instanceof List) && (map.get(ike) instanceof List)
 							|| ((cg.get(ike) instanceof String) && (map.get(ike) instanceof String))))) {
 				cg.put(ike, map.get(ike));
-				kick.mis.getLogger().info("§6" + ike + "§4属性不匹配！已回复默认");
 				continue;
 			} else if (map.get(ike) instanceof Map)
 				cg.put(ike, icMap((Map<String, Object>) map.get(ike), (Map<String, Object>) cg.get(ike)));

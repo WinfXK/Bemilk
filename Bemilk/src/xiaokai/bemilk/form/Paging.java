@@ -93,19 +93,26 @@ public class Paging {
 			}
 			String itemString = "";
 			if (Items.size() > 0) {
-				int i = 0;
 				Set<String> ItemKey = Items.keySet();
+				int i = 0;
 				for (String ike : ItemKey) {
 					Map<String, Object> map = (Map<String, Object>) Items.get(ike);
-					Item item = Tool.loadItem((Map<String, Object>) map.get("Item"));
-					itemString += ItemID.getNameByID(item.getId() + ":" + item.getDamage())
-							+ (i < (ItemKey.size() + 1) ? "§f,§9" : "");
+					Map<String, Object> items = (map.get("Items") != null) && (map.get("Items") instanceof Map)
+							? (HashMap<String, Object>) map.get("Items")
+							: new HashMap<String, Object>();
+					Set<String> temsKey = items.keySet();
+					int j = 0;
+					for (String kie : temsKey) {
+						itemString += "§9" + ItemID.getNameByID(kie)
+								+ (((i + 1) < ItemKey.size()) ? ((j + 1) < temsKey.size() ? "§f," : "") : "");
+						j++;
+					}
 					i++;
 				}
 				itemString = "§f[§9" + itemString + "§f]";
 			} else
 				itemString = "§4没有上架任何物品";
-			string += itemString + "\n\n§4您确定要删除这个分页吗？";
+			string += Tool.getRandColor() + "已上架物品: " + itemString + "\n\n§4您确定要删除这个分页吗？";
 			form.setContent(string);
 			form.addButton("§a取消");
 			form.addButton("§4确定删除");

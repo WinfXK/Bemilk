@@ -12,6 +12,7 @@ import xiaokai.bemilk.form.Dispose;
 import xiaokai.bemilk.form.Paging;
 import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.shop.ShopRegulate.addShop.ShopOrSell;
 
 /**
  * @author Winfxk
@@ -34,11 +35,11 @@ public class Monitor implements Listener {
 						&& !(e.getResponse() instanceof FormResponseModal)))
 			return;
 		if (f.getID(0) == ID)
-			new Dispose(player).Main((FormResponseSimple) data);
+			Dispose.Main(player, (FormResponseSimple) data);
 		else if (f.getID(1) == ID)
-			new Dispose(player).MoreSettings((FormResponseSimple) data);
+			Dispose.MoreSettings(player, (FormResponseSimple) data);
 		else if (f.getID(2) == ID)
-			new Dispose(player).OpenShop((FormResponseSimple) data);
+			Dispose.OpenShop(player, (FormResponseSimple) data);
 		else if (f.getID(3) == ID)
 			Paging.addShop.Dispose(player, (FormResponseCustom) data);
 		else if (f.getID(4) == ID)
@@ -47,5 +48,11 @@ public class Monitor implements Listener {
 			Paging.delShop.start(player, (FormResponseSimple) data);
 		else if (f.getID(6) == ID)
 			Paging.delShop.dis(player, (FormResponseSimple) data);
+		else if (f.getID(7) == ID)
+			ShopOrSell.disShellOrSellMakeForm(player, (FormResponseSimple) data);
+		else if (f.getID(8) == ID)
+			ShopOrSell.disInventoryGetItem(player, (FormResponseSimple) data);
+		else if (f.getID(9) == ID)
+			ShopOrSell.disInventoryGetItemIsData(player, (FormResponseCustom) data);
 	}
 }

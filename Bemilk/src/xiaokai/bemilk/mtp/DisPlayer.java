@@ -111,10 +111,7 @@ public class DisPlayer {
 	 */
 	public static boolean isConfig(String player) {
 		File file = getFile(player);
-		if (file.exists())
-			return file.isFile();
-		else
-			return false;
+		return file.exists();
 	}
 
 	/**

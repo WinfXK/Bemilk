@@ -26,4 +26,5 @@
       搜索按钮: '{RandColor}搜索商品'
    商店分页:
       被过滤提示: §4您无法使用这个商店！因为您已被当前商店列为黑名单！
-      金币数不在范围内: §4您无法使用这个商店！因为您的{MoneyName}数不在范围内§f(§6{MoneyFloor}§f-§9{MoneyLimit}§f)§4！
+      金币数不在范围内: §4您无法使用这个商店！因为您的{MoneyName}数不在范围内§f(§6{MoneyFloor}§f-§9{MoneyLimit}§f)§4！
+      项目格式: §6{ItemName}§9等§4{ItemCount}§9个物品每份§c{Money}§5{MoneyName}

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 import xiaokai.tool.ItemIDSunName;
 import xiaokai.tool.Tool;
@@ -25,6 +26,11 @@ public class ItemID {
 		Items = ItemID.load();
 	}
 
+	/**
+	 * 初始化数据
+	 * 
+	 * @return
+	 */
 	public static int load() {
 		Kick kick = Kick.kick;
 		iDList = new HashMap<String, Map<String, String>>();
@@ -62,6 +68,36 @@ public class ItemID {
 		}
 		ItemID.Items = iDList.size();
 		return iDList.size();
+	}
+
+	/**
+	 * 根据物品的对象获取ID
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static String getID(Item item) {
+		return item.getId() + ":" + item.getDamage();
+	}
+
+	/**
+	 * 根据物品的对象获取贴图路径
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static String getPath(Item item) {
+		return getPathByID(item.getId(), item.getDamage());
+	}
+
+	/**
+	 * 根据物品的对象获取名字
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static String getName(Item item) {
+		return getNameByID(item.getId(), item.getDamage());
 	}
 
 	/**
