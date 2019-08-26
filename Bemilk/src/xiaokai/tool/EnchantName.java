@@ -3,7 +3,6 @@ package xiaokai.tool;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-
 import cn.nukkit.item.enchantment.Enchantment;
 
 /**
@@ -167,6 +166,61 @@ public enum EnchantName {
 			ItemKey.put(item.getID(), item);
 			All.add(item);
 		}
+	}
+
+	/**
+	 * 啥都不知道获取一个附魔的名字
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static String UnknownToName(Object obj) {
+		return UnknownToName(obj, null);
+	}
+
+	/**
+	 * 啥都不知道获取一个附魔的名字
+	 * 
+	 * @param obj
+	 * @param Default
+	 * @return
+	 */
+	public static String UnknownToName(Object obj, String Default) {
+		if (obj == null || !IDKey.containsKey(Integer.valueOf(String.valueOf(obj))))
+			return Default;
+		return IDKey.get(Integer.valueOf(String.valueOf(obj)));
+	}
+
+	/**
+	 * 啥都不知道获取一个附魔的ID
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static int UnknownToID(Object obj) {
+		return UnknownToID(obj, 0);
+	}
+
+	/**
+	 * 啥都不知道获取一个附魔的ID
+	 * 
+	 * @param obj
+	 * @param Default
+	 * @return
+	 */
+	public static int UnknownToID(Object obj, int Default) {
+		if (obj == null || !NameKey.containsKey(String.valueOf(obj)))
+			return Default;
+		return NameKey.get(String.valueOf(obj));
+	}
+
+	/**
+	 * 返回所有的附魔名称
+	 * 
+	 * @return
+	 */
+	public static List<String> getNameList() {
+		return new ArrayList<String>(NameKey.keySet());
 	}
 
 	/**

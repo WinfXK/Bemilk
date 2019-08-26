@@ -71,6 +71,33 @@ public class ItemID {
 	}
 
 	/**
+	 * 啥玩意都不知道获取Item对象
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static Item UnknownToItem(Object obj) {
+		return UnknownToItem(obj, null);
+	}
+
+	/**
+	 * 啥玩意都不知道获取Item对象
+	 * 
+	 * @param obj
+	 * @param Default
+	 * @return
+	 */
+	public static Item UnknownToItem(Object obj, Item Default) {
+		if (obj == null)
+			return Default;
+		String ID = UnknownToID(obj, null);
+		if (ID == null)
+			return Default;
+		int[] IDs = Tool.IDtoFullID(ID);
+		return new Item(IDs[0], IDs[1]);
+	}
+
+	/**
 	 * 根据物品的对象获取ID
 	 * 
 	 * @param item

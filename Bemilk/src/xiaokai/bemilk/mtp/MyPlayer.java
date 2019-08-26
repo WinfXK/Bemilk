@@ -54,6 +54,10 @@ public class MyPlayer {
 	 */
 	public List<Item> addIsItem;
 	/**
+	 * 同上，这是存储物品兑换物品的时候用来当做货币兑换物品的物品列表，这是已经确定要添加的
+	 */
+	public List<Item> addItemTradeItems;
+	/**
 	 * 从背包添加物品到商店的时候显示的物品列表
 	 */
 	public List<Item> addIsItemList;
@@ -67,6 +71,10 @@ public class MyPlayer {
 	 * false：回收</b>
 	 */
 	public boolean isShopOrSell = false;
+	/**
+	 * 存储玩家是不是在设置兑换所需的物品列表,
+	 */
+	public boolean isGetItemSSXXXX = false;
 
 	public MyPlayer(Player player) {
 		this.player = player;

@@ -110,8 +110,7 @@ public class DisPlayer {
 	 * @return
 	 */
 	public static boolean isConfig(String player) {
-		File file = getFile(player);
-		return file.exists();
+		return getFile(player).exists();
 	}
 
 	/**

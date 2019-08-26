@@ -12,6 +12,9 @@ import xiaokai.bemilk.form.Dispose;
 import xiaokai.bemilk.form.Paging;
 import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.shop.ShopRegulate.addShop;
+import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemEnchant;
+import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemTradeItem;
 import xiaokai.bemilk.shop.ShopRegulate.addShop.ShopOrSell;
 
 /**
@@ -20,10 +23,20 @@ import xiaokai.bemilk.shop.ShopRegulate.addShop.ShopOrSell;
 public class Monitor implements Listener {
 	private Kick kick;
 
+	/**
+	 * 处理玩家UI表单数据回调事件的类
+	 * 
+	 * @param kick
+	 */
 	public Monitor(Kick kick) {
 		this.kick = kick;
 	}
 
+	/**
+	 * 表单响应事件
+	 * 
+	 * @param e
+	 */
 	@EventHandler
 	public void onPlayerForm(PlayerFormRespondedEvent e) {
 		FormResponse data = e.getResponse();
@@ -49,10 +62,26 @@ public class Monitor implements Listener {
 		else if (f.getID(6) == ID)
 			Paging.delShop.dis(player, (FormResponseSimple) data);
 		else if (f.getID(7) == ID)
-			ShopOrSell.disShellOrSellMakeForm(player, (FormResponseSimple) data);
+			addShop.disShellOrSellMakeForm(player, (FormResponseSimple) data);
 		else if (f.getID(8) == ID)
 			ShopOrSell.disInventoryGetItem(player, (FormResponseSimple) data);
 		else if (f.getID(9) == ID)
 			ShopOrSell.disInventoryGetItemIsData(player, (FormResponseCustom) data);
+		else if (f.getID(10) == ID)
+			ShopOrSell.startAddShopItemInventory(player, (FormResponseCustom) data);
+		else if (f.getID(11) == ID)
+			ShopOrSell.disInputItem(player, (FormResponseCustom) data);
+		else if (f.getID(12) == ID)
+			ItemTradeItem.disInputItem(player, (FormResponseCustom) data);
+		else if (f.getID(13) == ID)
+			ItemTradeItem.disInventoryGetItem(player, (FormResponseSimple) data);
+		else if (f.getID(14) == ID)
+			ItemTradeItem.dismakeItemCount(player, (FormResponseCustom) data);
+		else if (f.getID(15) == ID)
+			ItemTradeItem.disMakeFormInventoryGetItemIsOKStop(player, (FormResponseCustom) data);
+		else if (f.getID(16) == ID)
+			ItemEnchant.disMakeMain(player, (FormResponseSimple) data);
+		else if (f.getID(17) == ID)
+			new ItemEnchant.Dis(player, (FormResponseCustom) data).disMakeForm();
 	}
 }
