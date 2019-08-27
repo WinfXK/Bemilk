@@ -27,4 +27,15 @@
    商店分页:
       被过滤提示: §4您无法使用这个商店！因为您已被当前商店列为黑名单！
       金币数不在范围内: §4您无法使用这个商店！因为您的{MoneyName}数不在范围内§f(§6{MoneyFloor}§f-§9{MoneyLimit}§f)§4！
-      项目格式: §6{ItemName}§9等§4{ItemCount}§9个物品每份§c{Money}§5{MoneyName}
+按钮:
+   物品修复:
+      定量增加: §6增加§4{Count}§6耐久§e{Money}§6{MoneyName}
+      总量增加: §6设置物品为§4{Count}§6耐久§e{Money}§6{MoneyName}
+      随机增加: §6增加§f{MinRepair}§6-§f{MaxRepair}§6耐久§e{Money}§6{MoneyName}§f|§e{Success}
+   物品附魔:
+      自定义附魔: §6不明所以的附魔§e{Money}§6{MoneyName}
+      随机定级附魔: §f{EnchantName}§4(§f{EnchantID}§4)§e-§f{EnchantLevel}§e{Money}§6{MoneyName}§f|§e{Success}
+      定等附魔: §f{EnchantName}§4(§f{EnchantID}§4)§e-§f{EnchantLevel}§e{Money}§6{MoneyName}
+   物品兑换: §4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}兑换§4{ByItemName}§4(§f{ByItemID}§4)§6{ByIsMultiMsg}§e{Money}§6{MoneyName}
+   物品回收: §6回收§4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}§e{Money}§6{MoneyName}
+   物品出售: §6出售§4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}§e{Money}§6{MoneyName}

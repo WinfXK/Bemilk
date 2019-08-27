@@ -32,7 +32,8 @@ import xiaokai.tool.Tool;
 public class ShopRegulate {
 	private static final String[] addShopType = { "从背包选择物品", "手动输入数据" };
 	private static final String[] addItemEnchantType = { "自定义概率", "定级概率", "定级出售" };
-	private static Kick kick;
+	private static final String[] addItemRepairType = { "定量增加", "总量增加", "随机增加" };
+	private static Kick kick = Kick.kick;
 	private static Message msg = Kick.kick.Message;
 
 	/**
@@ -50,19 +51,24 @@ public class ShopRegulate {
 		 * @return
 		 */
 		public static boolean disMakeForm(Player player, FormResponseSimple data) {
-			// { "物品出售", "物品回收", "物品兑换", "物品附魔" ,"工具修复"};
 			MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 			switch (Kick.ButtonTypeList[data.getClickedButtonId()]) {
+			case "工具修复":
+				return ItemRepair.MakeMain(player, myPlayer.file);
 			case "物品附魔":
 				return ItemEnchant.MakeMain(player, myPlayer.file);
 			case "物品兑换":
+				myPlayer.string = "ItemTradeItem";
+				kick.PlayerDataMap.put(player.getName(), myPlayer);
 				return ItemTradeItem.MakeForm(player, myPlayer.file);
 			case "物品回收":
+				myPlayer.string = "ShopOrSell";
 				myPlayer.isShopOrSell = false;
 				kick.PlayerDataMap.put(player.getName(), myPlayer);
 				return ShopOrSell.ShopAndSellMakeForm(player, myPlayer.file);
 			case "物品出售":
 			default:
+				myPlayer.string = "ShopOrSell";
 				myPlayer.isShopOrSell = true;
 				kick.PlayerDataMap.put(player.getName(), myPlayer);
 				return ShopOrSell.ShopAndSellMakeForm(player, myPlayer.file);
@@ -85,11 +91,230 @@ public class ShopRegulate {
 			Config config = new Config(file, Config.YAML);
 			String[] DsK = { "{Player}", "{Money}" };
 			Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-			SimpleForm form = new SimpleForm(kick.formID.getID(7), kick.Message.getText(config.get("Title"), DsK, DsO),
+			SimpleForm form = new SimpleForm(kick.formID.getID(20), kick.Message.getText(config.get("Title"), DsK, DsO),
 					Tool.getColorFont("请输入想要添加的商店类型"));
 			kick.PlayerDataMap.put(player.getName(), myPlayer);
 			form.addButtons(Kick.ButtonTypeList).sendPlayer(player);
 			return true;
+		}
+
+		/**
+		 * 物品修复处理类
+		 * 
+		 * @author Winfxk
+		 */
+		public static class ItemRepair {
+			private Player player;
+			private MyPlayer myPlayer;
+			private CustomForm form;
+			private FormResponseCustom data;
+
+			/**
+			 * 处理数据
+			 * 
+			 * @param player
+			 */
+			public ItemRepair(Player player) {
+				this.player = player;
+				myPlayer = kick.PlayerDataMap.get(player.getName());
+			}
+
+			/**
+			 * 处理在输入数据界面输入后点击提交发回的数据
+			 * 
+			 * @param data
+			 */
+			public boolean disAdd(FormResponseCustom data) {
+				this.data = data;
+				switch (myPlayer.string) {
+				case "随机增加":
+					return disRandom();
+				case "总量增加":
+					return disSoarTo();
+				case "定量增加":
+				default:
+					return disaddSome();
+				}
+			}
+
+			private boolean disaddSome() {
+				form.addInput("请输入将要增加的耐久");
+				form.addInput("请输入每次使用的价格");
+				form.addToggle("允许非工具使用", false);
+				String string = data.getInputResponse(0);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入将要增加的耐久");
+				int Repair = 0;
+				if (!Tool.isInteger(string) || (Repair = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4要增加的耐久只能为大于零的纯整数！");
+				string = data.getInputResponse(1);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入每次使用的价格");
+				int Money = 0;
+				if (!Tool.isInteger(string) || (Money = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4每次使用的价格只能为大于零的纯整数！");
+				boolean isTool = data.getToggleResponse(2);
+				return new Shop.addItem(player, myPlayer.file).addItemRepairSome(Repair, Money, isTool);
+			}
+
+			/**
+			 * 设置手持物品的特殊值为指定值
+			 * 
+			 * @return
+			 */
+			private boolean disSoarTo() {
+				String string = data.getInputResponse(0);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入将要设置的物品特殊值");
+				int Repair = 0;
+				if (!Tool.isInteger(string) || (Repair = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4要设置的物品特殊值只能为大于零的纯整数！");
+				string = data.getInputResponse(1);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入每次使用的价格");
+				int Money = 0;
+				if (!Tool.isInteger(string) || (Money = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4每次使用的价格只能为大于零的纯整数！");
+				boolean isTool = data.getToggleResponse(2);
+				return new Shop.addItem(player, myPlayer.file).addItemRepairSoarTo(Repair, Money, isTool);
+			}
+
+			/**
+			 * 随机增加或减少工具耐久
+			 * 
+			 * @return
+			 */
+			private boolean disRandom() {
+				String string = data.getInputResponse(0);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入随机增加耐久的最小值");
+				int MinRepair = 0;
+				if (!Tool.isInteger(string) || (MinRepair = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4随机增加耐久的最小值只能为大于零的纯整数！");
+				string = data.getInputResponse(1);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入随机增加耐久的最大值");
+				int MaxRepair = 0;
+				if (!Tool.isInteger(string) || (MaxRepair = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4随机增加耐久的最大值只能为大于零的纯整数！");
+				string = data.getInputResponse(2);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入成功占比");
+				int RepairCount = 0;
+				if (!Tool.isInteger(string) || (RepairCount = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4成功占比只能为大于零的纯整数！");
+				string = data.getInputResponse(3);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入失败后将会减少的耐久度最小值");
+				int SBMinRepair = 0;
+				if (!Tool.isInteger(string) || (SBMinRepair = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4失败后将会减少的耐久度最小值只能为大于零的纯整数！");
+				string = data.getInputResponse(4);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入失败后将会减少的耐久度最大值");
+				int SBMaxRepair = 0;
+				if (!Tool.isInteger(string) || (SBMaxRepair = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4失败后将会减少的耐久度最大值只能为大于零的纯整数！");
+				string = data.getInputResponse(5);
+				if (string == null || string.isEmpty())
+					return MakeForm.Tip(player, "§4请输入每次使用的价格");
+				int Money = 0;
+				if (!Tool.isInteger(string) || (Money = Float.valueOf(string).intValue()) < 1)
+					return MakeForm.Tip(player, "§4每次使用的价格只能为大于零的纯整数！");
+				boolean isTool = data.getToggleResponse(6);
+				return new Shop.addItem(player, myPlayer.file).addItemRepairRandom(MinRepair, MaxRepair, RepairCount,
+						SBMinRepair, SBMaxRepair, Money, isTool);
+			}
+
+			/**
+			 * 随机增加或减少工具耐久
+			 * 
+			 * @return
+			 */
+			private void Random() {
+				form.addInput("请输入随机增加耐久的最小值");
+				form.addInput("请输入随机增加耐久的最大值");
+				form.addInput("请输入成功占比", 100);
+				form.addInput("失败后将会减少的耐久度最小值（小于等于零时不启用)", 0);
+				form.addInput("失败后将会减少的耐久度最大值（小于等于零时不启用)", 0);
+				form.addInput("请输入每次使用的价格");
+				form.addToggle("允许非工具使用", false);
+			}
+
+			/**
+			 * 将工具的特殊值设置为
+			 * 
+			 * @return
+			 */
+			private void SoarTo() {
+				form.addInput("请输入将要设置的物品特殊值");
+				form.addInput("请输入每次使用的价格");
+				form.addToggle("允许非工具使用", false);
+			}
+
+			/**
+			 * 购买后获得一段修复值
+			 * 
+			 * @return
+			 */
+			private void addSome() {
+				form.addInput("请输入将要增加的耐久");
+				form.addInput("请输入每次使用的价格");
+				form.addToggle("允许非工具使用", false);
+			}
+
+			/**
+			 * 处理主页发回的数据
+			 * 
+			 * @param data
+			 * @return
+			 */
+			public boolean disMakeMain(FormResponseSimple data) {
+				if (!Kick.isAdmin(player))
+					return MakeForm.Tip(player,
+							msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
+				myPlayer.string = addItemRepairType[data.getClickedButtonId()];
+				Config config = new Config(myPlayer.file, Config.YAML);
+				String[] DsK = { "{Player}", "{Money}" };
+				Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+				form = new CustomForm(kick.formID.getID(19), kick.Message.getText(config.get("Title"), DsK, DsO));
+				switch (myPlayer.string) {
+				case "随机增加":
+					Random();
+					break;
+				case "总量增加":
+					SoarTo();
+					break;
+				case "定量增加":
+				default:
+					addSome();
+					break;
+				}
+				form.sendPlayer(player);
+				return true;
+			}
+
+			/**
+			 * 物品修复功能主页
+			 * 
+			 * @param player
+			 * @return
+			 */
+			private static boolean MakeMain(Player player, File file) {
+				if (!Kick.isAdmin(player))
+					return MakeForm.Tip(player,
+							msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
+				MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+				myPlayer.file = file;
+				Config config = new Config(file, Config.YAML);
+				String[] DsK = { "{Player}", "{Money}" };
+				Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+				SimpleForm form = new SimpleForm(kick.formID.getID(18),
+						kick.Message.getText(config.get("Title"), DsK, DsO), Tool.getColorFont("请输入想要添加的商店类型"));
+				kick.PlayerDataMap.put(player.getName(), myPlayer);
+				form.addButtons(addItemRepairType).sendPlayer(player);
+				return true;
+			}
 		}
 
 		/**
@@ -325,7 +550,6 @@ public class ShopRegulate {
 			 * @return
 			 */
 			public static boolean disMakeMain(Player player, FormResponseSimple data) {
-				// { "自定义概率", "定级概率", "定级出售" }
 				switch (addItemEnchantType[data.getClickedButtonId()]) {
 				case "定级概率":
 					return MakeFormLevelRand(player);
@@ -941,7 +1165,6 @@ public class ShopRegulate {
 				SimpleForm form = new SimpleForm(kick.formID.getID(7),
 						kick.Message.getText(config.get("Title"), DsK, DsO), Tool.getColorFont("请输入想要添加的方式"));
 				MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-				myPlayer.string = "ShopOrSell";
 				kick.PlayerDataMap.put(player.getName(), myPlayer);
 				form.addButtons(addShopType).sendPlayer(player);
 				return true;

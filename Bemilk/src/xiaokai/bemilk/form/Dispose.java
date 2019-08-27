@@ -80,8 +80,9 @@ public class Dispose {
 		Object object = config.get("Shops");
 		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
 				: (HashMap<String, Object>) object;
-		return MakeForm.OpenShop(player, new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath),
-				(String) ((Map<String, Object>) Shops.get(Key)).get("Config")));
+		return xiaokai.bemilk.shop.OpenShop.ShowShop(player,
+				new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath),
+						(String) ((Map<String, Object>) Shops.get(Key)).get("Config")));
 	}
 
 	/**

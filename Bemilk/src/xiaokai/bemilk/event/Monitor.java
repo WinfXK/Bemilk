@@ -14,6 +14,7 @@ import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.shop.ShopRegulate.addShop;
 import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemEnchant;
+import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemRepair;
 import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemTradeItem;
 import xiaokai.bemilk.shop.ShopRegulate.addShop.ShopOrSell;
 
@@ -83,5 +84,11 @@ public class Monitor implements Listener {
 			ItemEnchant.disMakeMain(player, (FormResponseSimple) data);
 		else if (f.getID(17) == ID)
 			new ItemEnchant.Dis(player, (FormResponseCustom) data).disMakeForm();
+		else if (f.getID(18) == ID)
+			new ItemRepair(player).disMakeMain((FormResponseSimple) data);
+		else if (f.getID(19) == ID)
+			new ItemRepair(player).disAdd((FormResponseCustom) data);
+		else if (f.getID(20) == ID)
+			addShop.disMakeForm(player, (FormResponseSimple) data);
 	}
 }

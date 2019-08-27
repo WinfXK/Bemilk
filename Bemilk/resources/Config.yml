@@ -16,3 +16,6 @@
 隐藏无权商店: false
 隐藏金钱数不匹配的商店: false
 定时保存间隔: 10
+物品修复项目图标: textures/gui/newgui/anvil-hammer.png
+物品附魔项目图标: textures/items/textures/ui/haste_effect.png
+搜索按钮图标: textures/gui/newgui/magnifyingGlass.png

@@ -39,6 +39,66 @@ public class Shop {
 		}
 
 		/**
+		 * 添加的商店项目是为手持物品增加或者减少一段特殊值
+		 * 
+		 * @param Repair 要增加的特殊值大小
+		 * @param Money  每次使用的价格
+		 * @param isTool 是否非工具可用
+		 * @return
+		 */
+		public boolean addItemRepairSome(int Repair, int Money, boolean isTool) {
+			map.put("Repair", Repair);
+			map.put("Money", Money);
+			map.put("isTool", isTool);
+			map.put("Type", "Repair");
+			map.put("Style", "Some");
+			return save();
+		}
+
+		/**
+		 * 添加的商店项目是设置手持物品的特殊值为指定值
+		 * 
+		 * @param Repair 要设置的值
+		 * @param Money  每次使用的价格
+		 * @param isTool 是否非工具可用
+		 * @return
+		 */
+		public boolean addItemRepairSoarTo(int Repair, int Money, boolean isTool) {
+			map.put("Repair", Repair);
+			map.put("Money", Money);
+			map.put("isTool", isTool);
+			map.put("Type", "Repair");
+			map.put("Style", "SoarTo");
+			return save();
+		}
+
+		/**
+		 * 添加的项目是随机增加或者减少工具或者物品的特殊值得商店项目
+		 * 
+		 * @param MinRepair   随机增加得特殊值最小值
+		 * @param MaxRepair   随机增加的特殊值最大值
+		 * @param RepairCount 能成功的占比
+		 * @param SBMinRepair 失败后将会减少的特殊值最小值
+		 * @param SBMaxRepair 失败后会减少的特殊值最大值
+		 * @param Money       每次使用的价格
+		 * @param isTool      非工具是否可以使用
+		 * @return
+		 */
+		public boolean addItemRepairRandom(int MinRepair, int MaxRepair, int RepairCount, int SBMinRepair,
+				int SBMaxRepair, int Money, boolean isTool) {
+			map.put("MinRepair", MinRepair);
+			map.put("MaxRepair", MaxRepair);
+			map.put("RepairCount", RepairCount);
+			map.put("SBMinRepair", SBMinRepair);
+			map.put("SBMaxRepair", SBMaxRepair);
+			map.put("Money", Money);
+			map.put("isTool", isTool);
+			map.put("Type", "Repair");
+			map.put("Style", "Random");
+			return save();
+		}
+
+		/**
 		 * 添加的项目是玩家自定义的附魔商店项目
 		 * 
 		 * @param EnchantData 自定义的数据集
@@ -49,9 +109,9 @@ public class Shop {
 		public boolean addEnchantByCustom(Map<String, Map<String, Object>> EnchantData, double Money, boolean isTool) {
 			map.put("Money", Money);
 			map.put("isTool", isTool);
-			map.put("EnchantData", EnchantData);
 			map.put("Type", "Enchant");
 			map.put("Style", "EnchantByCustom");
+			map.put("EnchantData", EnchantData);
 			return save();
 		}
 
@@ -114,13 +174,13 @@ public class Shop {
 		public boolean addItemTradeItem(Map<String, Map<String, Object>> ShopItem,
 				Map<String, Map<String, Object>> MoneyItem, int MinCount, int MaxCount, double Money,
 				double ItemMoney) {
-			map.put("ShopItem", ShopItem);
-			map.put("MoneyItem", MoneyItem);
 			map.put("MinCount", MinCount);
+			map.put("MaxCount", MaxCount);
 			map.put("Money", Money);
 			map.put("ItemMoney", ItemMoney);
-			map.put("MaxCount", MaxCount);
 			map.put("Type", "ItemTradeItem");
+			map.put("ShopItem", ShopItem);
+			map.put("MoneyItem", MoneyItem);
 			return true;
 		}
 
@@ -135,10 +195,10 @@ public class Shop {
 		 */
 		public boolean addSell(double Money, Map<String, Map<String, Object>> items, int MinCount, int MaxCount) {
 			map.put("Money", Money);
-			map.put("Items", items);
 			map.put("MinCount", MinCount);
 			map.put("MaxCount", MaxCount);
 			map.put("Type", "Sell");
+			map.put("Items", items);
 			return save();
 		}
 
@@ -153,10 +213,10 @@ public class Shop {
 		 */
 		public boolean addShop(double Money, Map<String, Map<String, Object>> items, int MinCount, int MaxCount) {
 			map.put("Money", Money);
-			map.put("Items", items);
 			map.put("MinCount", MinCount);
 			map.put("MaxCount", MaxCount);
 			map.put("Type", "Shop");
+			map.put("Items", items);
 			return save();
 		}
 

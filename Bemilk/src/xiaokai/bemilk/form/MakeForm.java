@@ -7,12 +7,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import me.onebone.economyapi.EconomyAPI;
-import xiaokai.bemilk.mtp.ItemID;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -60,66 +57,6 @@ public class MakeForm {
 		if (!Kick.isAdmin(player))
 			return MakeForm.Tip(player,
 					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		return true;
-	}
-
-	/**
-	 * 打开一个商店分页
-	 * 
-	 * @param player 要显示上点分页的玩家对象
-	 * @param file   要显示的商店分页的文件对象
-	 * @return
-	 */
-	public static boolean OpenShop(Player player, File file) {
-		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		Config config = new Config(file, Config.YAML);
-		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		if (!Shop.isOk(player, file))
-			return MakeForm.Tip(player, kick.Message.getSun("界面", "商店分页", "被过滤提示", DsK, DsO));
-		if (!Shop.isOkMoney(player, file))
-			return MakeForm.Tip(player,
-					kick.Message.getSun("界面", "商店分页", "被过滤提示",
-							new String[] { "{Player}", "{Money}", "{MoneyFloor}", "{MoneyLimit}" },
-							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
-									config.getDouble("MoneyFloor"), config.getDouble("MoneyLimit") }));
-		Object object = config.get("Items");
-		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
-				: (HashMap<String, Object>) object;
-		SimpleForm form = new SimpleForm(kick.formID.getID(2), kick.Message.getText(config.get("Title"), DsK, DsO),
-				kick.Message.getText(config.get("Content"), DsK, DsO));
-		Set<String> ItemsSet = Shops.keySet();
-		List<String> Keys = new ArrayList<String>();
-		for (String ike : ItemsSet) {
-			Object ob = Shops.get(ike);
-			Map<String, Object> ItemAerS = (ob == null || !(ob instanceof Map)) ? new HashMap<String, Object>()
-					: (HashMap<String, Object>) ob;
-			String[] itemids = ItemAerS.keySet().toArray(new String[] {});
-			String[] itemKey = { "{Player}", "{Money}", "{ItemName}", "{ItemCount}" };
-			Object[] myData = { player.getName(), EconomyAPI.getInstance().myMoney(player),
-					ItemID.getNameByID(itemids[Tool.getRand(0, itemids.length - 1)]), itemids.length };
-			form.addButton(msg.getSun("界面", "商店分页", "项目格式", itemKey, myData), true,
-					ItemID.getPathByID(itemids[Tool.getRand(0, itemids.length - 1)]));
-			Keys.add(ike);
-		}
-		List<String> AdminList = new ArrayList<String>();
-		if (Shops.size() > 0) {
-			AdminList.add("seek");
-			form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
-		}
-		if (Kick.isAdmin(player)) {
-			AdminList.add("add");
-			form.addButton(Tool.getRandColor() + "添加商店");
-			if (Shops.size() > 0) {
-				AdminList.add("del");
-				form.addButton(Tool.getRandColor() + "删除商店");
-			}
-		}
-		myPlayer.ExtraKeys = AdminList;
-		myPlayer.file = file;
-		myPlayer.Keys = Keys;
-		kick.PlayerDataMap.put(player.getName(), myPlayer);
-		form.sendPlayer(player);
 		return true;
 	}
 

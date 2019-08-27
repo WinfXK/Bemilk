@@ -2,6 +2,7 @@ package xiaokai.bemilk;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Set;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
@@ -32,9 +33,10 @@ public class Bemilk extends PluginBase {
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new PlayerEvent(getKick()), this);
 		pm.registerEvents(new Monitor(getKick()), this);
+		float entime = ((float) (Duration.between(loadTime, Instant.now()).toMillis()));
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "启动！") + "§6总耗时:§9"
-						+ ((float) (Duration.between(loadTime, Instant.now()).toMillis())) + "§6ms 启动耗时:§9"
+						+ (entime > 1000 ? ((entime / 1000) + "§6s! ") : entime + "§6ms") + " 启动耗时:§9"
 						+ ((float) (Duration.between(EnableTime, Instant.now()).toMillis())) + "§6ms");
 		if (Tool.getRand(1, 5) == 1)
 			getLogger().info(Tool.getColorFont("本插件完全免费，如果你是给钱了的，那你就可能被坑啦~"));
@@ -54,6 +56,9 @@ public class Bemilk extends PluginBase {
 	 */
 	@Override
 	public void onDisable() {
+		Set<String> keys1 = kick.PlayerDataMap.keySet();
+		for (String player : keys1)
+			kick.PlayerDataMap.get(player).config.save();
 		this.getServer().getLogger()
 				.info(Tool.getColorFont(this.getName() + "关闭！") + TextFormat.GREEN + "本次运行时长" + TextFormat.BLUE
 						+ Tool.getTimeBy(((float) (Duration.between(loadTime, Instant.now()).toMillis()) / 1000)));

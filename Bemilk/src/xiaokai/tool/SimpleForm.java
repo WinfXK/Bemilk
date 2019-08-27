@@ -16,6 +16,7 @@ public class SimpleForm {
 	private int ID;
 	private String Title = "";
 	private String Content = "";
+	public List<String> Keys = new ArrayList<String>();
 
 	/**
 	 * @param ID    表单ID
