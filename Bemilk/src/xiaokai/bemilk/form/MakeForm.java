@@ -10,13 +10,14 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import me.onebone.economyapi.EconomyAPI;
+
+import xiaokai.bemilk.data.Message;
+import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.mtp.Message;
-import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.shop.Shop;
-import xiaokai.tool.ModalForm;
-import xiaokai.tool.SimpleForm;
 import xiaokai.tool.Tool;
+import xiaokai.tool.form.ModalForm;
+import xiaokai.tool.form.SimpleForm;
 
 /**
  * @author Winfxk
@@ -74,9 +75,9 @@ public class MakeForm {
 		SimpleForm form = new SimpleForm(kick.formID.getID(1), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
 		Object object = config.get("Shops");
-		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) object;
-		List<String> AdminList = new ArrayList<String>();
+		List<String> AdminList = new ArrayList<>();
 		if (Shops.size() > 0) {
 			AdminList.add("seek");
 			form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
@@ -113,13 +114,13 @@ public class MakeForm {
 		myPlayer.loadTime = Instant.now();
 		Config config = kick.ShopConfig;
 		Object object = config.get("Shops");
-		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) object;
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(0), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
-		List<String> Keys = new ArrayList<String>();
+		List<String> Keys = new ArrayList<>();
 		if (Shops.size() < 1)
 			form.setContent(form.getContent() + "\n" + msg.getSun("界面", "主页", "没有商店分页时显示", DsK, DsO));
 		for (String ike : Shops.keySet()) {
@@ -140,7 +141,7 @@ public class MakeForm {
 					IconType == 2 ? false : true, IconType != 0 ? (String) map.get("IconPath") : null);
 			Keys.add(ike);
 		}
-		List<String> AdminList = new ArrayList<String>();
+		List<String> AdminList = new ArrayList<>();
 		if (kick.config.getBoolean("折叠选项")) {
 			form.addButton(msg.getSon("界面", "更多设置按钮", DsK, DsO));
 			AdminList.add("ms");

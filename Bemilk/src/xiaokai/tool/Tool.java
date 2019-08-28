@@ -301,7 +301,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static <K, V extends Comparable<? super V>> Map<K, V> sortByValueDescending(Map<K, V> map) {
-		List<Map.Entry<K, V>> list = new LinkedList<Map.Entry<K, V>>(map.entrySet());
+		List<Map.Entry<K, V>> list = new LinkedList<>(map.entrySet());
 		Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
 			@Override
 			public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
@@ -309,7 +309,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 				return -compare;
 			}
 		});
-		Map<K, V> result = new LinkedHashMap<K, V>();
+		Map<K, V> result = new LinkedHashMap<>();
 		for (Map.Entry<K, V> entry : list)
 			result.put(entry.getKey(), entry.getValue());
 		return result;
@@ -450,8 +450,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		File file = new File(saveDir + File.separator + fileName);
 		FileOutputStream fos = new FileOutputStream(file);
 		fos.write(getData);
-		if (fos != null)
-			fos.close();
+		fos.close();
 		if (inputStream != null)
 			inputStream.close();
 	}
@@ -646,8 +645,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 			saveDir.mkdirs();
 		FileOutputStream fos = new FileOutputStream(new File(saveDir, fileName));
 		fos.write(getData);
-		if (fos != null)
-			fos.close();
+		fos.close();
 		if (inputStream != null)
 			inputStream.close();
 	}
@@ -691,7 +689,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static Map<String, Object> saveItem(Item item) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("Nbt", item.getCompoundTag());
 		map.put("ID", item.getId());
 		map.put("Damage", item.getDamage());
@@ -707,7 +705,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static Map<Integer, Item> loadInventory(List<Map<String, Object>> list) {
-		Map<Integer, Item> Contents = new HashMap<Integer, Item>();
+		Map<Integer, Item> Contents = new HashMap<>();
 		for (int i = 0; i < list.size(); i++) {
 			Map<String, Object> map = list.get(i);
 			Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"),
@@ -725,11 +723,11 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static List<Map<String, Object>> saveInventory(Player player) {
-		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+		List<Map<String, Object>> list = new ArrayList<>();
 		Map<Integer, Item> Contents = player.getInventory().getContents();
 		for (Integer i : Contents.keySet()) {
 			Item item = Contents.get(i);
-			Map<String, Object> map = new HashMap<String, Object>();
+			Map<String, Object> map = new HashMap<>();
 			map.put("Nbt", item.getCompoundTag());
 			map.put("ID", item.getId());
 			map.put("Damage", item.getDamage());

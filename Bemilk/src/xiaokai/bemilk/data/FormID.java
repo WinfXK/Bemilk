@@ -1,8 +1,9 @@
-package xiaokai.bemilk.mtp;
+package xiaokai.bemilk.data;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
 
 /**
@@ -14,7 +15,7 @@ public class FormID {
 
 	public FormID(Kick k) {
 		this.kick = k;
-		config = new HashMap<String, Integer>();
+		config = new HashMap<>();
 	}
 
 	public Map<String, Integer> getMap() {

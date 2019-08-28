@@ -1,5 +1,13 @@
 package xiaokai.bemilk.form;
 
+import xiaokai.bemilk.data.MyPlayer;
+import xiaokai.bemilk.form.manage.addShop;
+import xiaokai.bemilk.form.manage.delShop;
+import xiaokai.bemilk.form.manage.setShop;
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.shop.delShopItem;
+import xiaokai.bemilk.shop.add.addShopItem;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,9 +15,8 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.mtp.MyPlayer;
-import xiaokai.bemilk.shop.ShopRegulate;
+
+import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -31,12 +38,20 @@ public class Dispose {
 					|| (myPlayer.ExtraKeys.size() - 1) < (data.getClickedButtonId() - myPlayer.Keys.size()))
 				return false;
 			switch (myPlayer.ExtraKeys.get(data.getClickedButtonId() - myPlayer.Keys.size())) {
+			case "myshop":
+				String[] DsK = { "{Player}", "{Money}" };
+				Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+				if (!Kick.isAdmin(player) && kick.config.getBoolean("限制OP使用个人商店") && player.isOp())
+					return MakeForm.Tip(player, kick.Message.getSon("个人商店", "限制OP使用个人商店", DsK, DsO));
+				if (!Kick.isAdmin(player) && kick.config.getBoolean("限制创造模式使用个人商店") && player.getGamemode() == 1)
+					return MakeForm.Tip(player, kick.Message.getSon("个人商店", "限制创造模式使用个人商店", DsK, DsO));
+				return xiaokai.bemilk.shop.myshop.MyShop.MakeMain(player, myPlayer.file);
 			case "seek":
 				return MakeForm.OpenShopFoSeek(player, myPlayer.file);
 			case "add":
-				return ShopRegulate.addShop.MakeForm(player, myPlayer.file);
+				return addShopItem.MakeForm(player, myPlayer.file);
 			case "del":
-				return ShopRegulate.delShop.MakeForm(player, myPlayer.file);
+				return delShopItem.MakeForm(player, myPlayer.file);
 			}
 			player.sendMessage(kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Error}" },
 					new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));
@@ -65,11 +80,11 @@ public class Dispose {
 			case "set":
 				return MakeForm.Setting(player);
 			case "add":
-				return Paging.addShop.MakeForm(player);
+				return addShop.MakeForm(player);
 			case "ss":
-				return Paging.setShop.MakeForm(player);
+				return setShop.MakeForm(player);
 			case "del":
-				return Paging.delShop.MakeForm(player);
+				return delShop.MakeForm(player);
 			}
 			player.sendMessage(kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Error}" },
 					new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));
@@ -78,7 +93,7 @@ public class Dispose {
 		String Key = myPlayer.Keys.get(data.getClickedButtonId());
 		Config config = new Config(new File(kick.mis.getDataFolder(), kick.ShopConfigName), Config.YAML);
 		Object object = config.get("Shops");
-		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<String, Object>()
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) object;
 		return xiaokai.bemilk.shop.OpenShop.ShowShop(player,
 				new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath),
@@ -104,11 +119,11 @@ public class Dispose {
 			case "set":
 				return MakeForm.Setting(player);
 			case "add":
-				return Paging.addShop.MakeForm(player);
+				return addShop.MakeForm(player);
 			case "ss":
-				return Paging.setShop.MakeForm(player);
+				return setShop.MakeForm(player);
 			case "del":
-				return Paging.delShop.MakeForm(player);
+				return delShop.MakeForm(player);
 			default:
 				player.sendMessage(kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Error}" },
 						new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));

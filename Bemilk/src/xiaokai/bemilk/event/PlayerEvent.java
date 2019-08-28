@@ -11,12 +11,13 @@ import cn.nukkit.event.player.PlayerInteractEvent.Action;
 import cn.nukkit.item.Item;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
+
+import xiaokai.bemilk.data.DisPlayer;
+import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Belle;
-import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.mtp.MyPlayer;
-import xiaokai.tool.ItemIDSunName;
+import xiaokai.tool.data.ItemIDSunName;
 
 /**
  * @author Winfxk
@@ -80,6 +81,9 @@ public class PlayerEvent implements Listener {
 	@EventHandler
 	public void onQuit(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		if (myPlayer.config != null)
+			myPlayer.config.save();
 		if (kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.remove(player.getName());
 	}
@@ -92,16 +96,10 @@ public class PlayerEvent implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
-		if (!DisPlayer.isConfig(player))
-			new Thread() {
-				@Override
-				public void run() {
-					kick.mis.getLogger().info("§6未检测到玩家§9" + player.getName() + "§6的数据！正在创建...");
-					boolean isok = DisPlayer.initializePlayerConfig(player);
-					while (!isok)
-						isok = DisPlayer.initializePlayerConfig(player);
-				}
-			}.start();
+		if (!DisPlayer.isConfig(player)) {
+			kick.mis.getLogger().info("§6未检测到玩家§9" + player.getName() + "§6的数据！正在创建...");
+			DisPlayer.initializePlayerConfig(player);
+		}
 	}
 
 	/**
@@ -114,10 +112,8 @@ public class PlayerEvent implements Listener {
 		Player player = e.getPlayer();
 		if (!kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
-		new Thread() {
-			public void run() {
-				Belle.exMaterials(player);
-			}
-		}.start();
+		Belle.exMaterials(player);
+		if(kick.config.getBoolean("玩家重生时重置玩家缓存数据"))
+			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
 	}
 }

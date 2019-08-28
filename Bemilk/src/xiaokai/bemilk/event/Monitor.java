@@ -1,5 +1,19 @@
 package xiaokai.bemilk.event;
 
+import xiaokai.bemilk.data.FormID;
+import xiaokai.bemilk.form.Dispose;
+import xiaokai.bemilk.form.manage.addShop;
+import xiaokai.bemilk.form.manage.delShop;
+import xiaokai.bemilk.form.manage.setShop;
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.shop.delShopItem;
+import xiaokai.bemilk.shop.add.ItemEnchant;
+import xiaokai.bemilk.shop.add.ItemRepair;
+import xiaokai.bemilk.shop.add.ItemTradeItem;
+import xiaokai.bemilk.shop.add.ShopOrSell;
+import xiaokai.bemilk.shop.add.addShopItem;
+import xiaokai.bemilk.shop.myshop.Receive;
+
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
@@ -8,15 +22,6 @@ import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
-import xiaokai.bemilk.form.Dispose;
-import xiaokai.bemilk.form.Paging;
-import xiaokai.bemilk.mtp.FormID;
-import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.shop.ShopRegulate.addShop;
-import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemEnchant;
-import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemRepair;
-import xiaokai.bemilk.shop.ShopRegulate.addShop.ItemTradeItem;
-import xiaokai.bemilk.shop.ShopRegulate.addShop.ShopOrSell;
 
 /**
  * @author Winfxk
@@ -55,15 +60,15 @@ public class Monitor implements Listener {
 		else if (f.getID(2) == ID)
 			Dispose.OpenShop(player, (FormResponseSimple) data);
 		else if (f.getID(3) == ID)
-			Paging.addShop.Dispose(player, (FormResponseCustom) data);
+			addShop.Dispose(player, (FormResponseCustom) data);
 		else if (f.getID(4) == ID)
-			Paging.setShop.start(player, (FormResponseSimple) data);
+			setShop.start(player, (FormResponseSimple) data);
 		else if (f.getID(5) == ID)
-			Paging.delShop.start(player, (FormResponseSimple) data);
+			delShop.start(player, (FormResponseSimple) data);
 		else if (f.getID(6) == ID)
-			Paging.delShop.dis(player, (FormResponseSimple) data);
+			delShop.dis(player, (FormResponseSimple) data);
 		else if (f.getID(7) == ID)
-			addShop.disShellOrSellMakeForm(player, (FormResponseSimple) data);
+			addShopItem.disShellOrSellMakeForm(player, (FormResponseSimple) data);
 		else if (f.getID(8) == ID)
 			ShopOrSell.disInventoryGetItem(player, (FormResponseSimple) data);
 		else if (f.getID(9) == ID)
@@ -89,6 +94,18 @@ public class Monitor implements Listener {
 		else if (f.getID(19) == ID)
 			new ItemRepair(player).disAdd((FormResponseCustom) data);
 		else if (f.getID(20) == ID)
-			addShop.disMakeForm(player, (FormResponseSimple) data);
+			addShopItem.disMakeForm(player, (FormResponseSimple) data);
+		else if (f.getID(21) == ID)
+			ItemTradeItem.disInventoryGetItem(player, (FormResponseSimple) data);
+		else if (f.getID(22) == ID)
+			delShopItem.disMakeForm(player, (FormResponseSimple) data);
+		else if (f.getID(23) == ID)
+			delShopItem.disOK(player, (FormResponseSimple) data);
+		else if (f.getID(24) == ID)
+			Receive.MakeMain(player, (FormResponseSimple) data);
+		else if (f.getID(25) == ID)
+			Receive.InputItem(player, (FormResponseCustom) data);
+		else if (f.getID(26) == ID)
+			Receive.InventoryGetItem(player, (FormResponseCustom) data);
 	}
 }

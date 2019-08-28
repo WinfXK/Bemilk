@@ -1,4 +1,6 @@
-package xiaokai.tool;
+package xiaokai.tool.data;
+
+import xiaokai.tool.Tool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1953,7 +1955,7 @@ public enum ItemIDSunName {
 	private static final ArrayList<HashMap<String, Object>> All = new ArrayList<>();
 	static {
 		for (ItemIDSunName item : ItemIDSunName.values()) {
-			HashMap<String, Object> map = new HashMap<String, Object>();
+			HashMap<String, Object> map = new HashMap<>();
 			map.put("ID", item.ID);
 			map.put("Damage", item.Damage);
 			map.put("Path", item.Path);

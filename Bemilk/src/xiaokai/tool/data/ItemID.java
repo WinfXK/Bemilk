@@ -1,4 +1,7 @@
-package xiaokai.bemilk.mtp;
+package xiaokai.tool.data;
+
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.tool.Tool;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -8,8 +11,6 @@ import java.util.Set;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-import xiaokai.tool.ItemIDSunName;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
@@ -33,10 +34,10 @@ public class ItemID {
 	 */
 	public static int load() {
 		Kick kick = Kick.kick;
-		iDList = new HashMap<String, Map<String, String>>();
+		iDList = new HashMap<>();
 		ArrayList<HashMap<String, Object>> All = ItemIDSunName.getAll();
 		for (HashMap<String, Object> map2 : All) {
-			Map<String, String> Item = new HashMap<String, String>();
+			Map<String, String> Item = new HashMap<>();
 			String iDString = map2.get("ID") + ":" + map2.get("Damage");
 			Item.put("ID", iDString);
 			Item.put("Path", (String) map2.get("Path"));
@@ -52,7 +53,7 @@ public class ItemID {
 			ID = IDs[0] + ":" + IDs[1];
 			if (obj instanceof Map) {
 				Map<String, Object> map1 = (Map<String, Object>) obj;
-				Map<String, String> Item = new HashMap<String, String>();
+				Map<String, String> Item = new HashMap<>();
 				Item.put("ID", ID);
 				String Path = (String) map1.get("Path");
 				if (Path == null || Path.isEmpty())
@@ -88,7 +89,7 @@ public class ItemID {
 	 * @return
 	 */
 	public static Item UnknownToItem(Object obj, Item Default) {
-		if (obj == null)
+		if (obj == null || String.valueOf(obj).isEmpty())
 			return Default;
 		String ID = UnknownToID(obj, null);
 		if (ID == null)

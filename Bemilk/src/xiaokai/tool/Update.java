@@ -48,7 +48,7 @@ public class Update {
 						} catch (Exception e) {
 							mis.getLogger().info("§4自动下载新版文件以失败！请尝试手动下载！错误详情：" + e.getMessage());
 						}
-						LinkedHashMap<String, Object> map = new LinkedHashMap<String, Object>();
+						LinkedHashMap<String, Object> map = new LinkedHashMap<>();
 						map.put("下载地址", userBean.Http);
 						map.put("更新内容", userBean.Msg);
 						map.put("更新版本", userBean.V);

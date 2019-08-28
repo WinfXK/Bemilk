@@ -1,4 +1,4 @@
-package xiaokai.bemilk.mtp;
+package xiaokai.bemilk.data;
 /**
  * @author Winfxk
  */
@@ -28,7 +28,7 @@ public class MyPlayer {
 	/**
 	 * 玩家配置文件对象
 	 */
-	public Config config;
+	public Config config = null;
 	/**
 	 * 当前显示页面的文件对象
 	 */
@@ -75,10 +75,17 @@ public class MyPlayer {
 	 * 存储玩家是不是在设置兑换所需的物品列表,
 	 */
 	public boolean isGetItemSSXXXX = false;
+	/**
+	 * 存储一些临时缓存
+	 */
+	public int CacheInt;
+	/**
+	 * 存储临时Integer組
+	 */
+	public List<Integer> integers;
 
 	public MyPlayer(Player player) {
 		this.player = player;
-		config = new Config(new File(new File(Kick.kick.mis.getDataFolder(), Kick.PlayerConfigPath), player.getName()),
-				Config.YAML);
+		config = new Config(DisPlayer.getFile(player), Config.YAML);
 	}
 }

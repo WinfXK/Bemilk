@@ -1,4 +1,4 @@
-package xiaokai.tool;
+package xiaokai.tool.form;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ public class SimpleForm {
 	private int ID;
 	private String Title = "";
 	private String Content = "";
-	public List<String> Keys = new ArrayList<String>();
+	public List<String> Keys = new ArrayList<>();
 
 	/**
 	 * @param ID    表单ID
@@ -156,9 +156,9 @@ public class SimpleForm {
 	 * @param players
 	 * @return
 	 */
-	public int sendPlayers(List<Player> players) {
-		for (Player player : players)
-			player.showFormWindow(new FormWindowSimple(Title, Content, list), ID);
+	public int sendPlayer(Player... player) {
+		for (Player p : player)
+			p.showFormWindow(new FormWindowSimple(Title, Content, list), ID);
 		return ID;
 	}
 
@@ -172,16 +172,5 @@ public class SimpleForm {
 		for (String string : Text)
 			addButton(string);
 		return this;
-	}
-
-	/**
-	 * 将表单发送给指定玩家
-	 * 
-	 * @param player
-	 * @return 表单ID
-	 */
-	public int sendPlayer(Player player) {
-		player.showFormWindow(new FormWindowSimple(Title, Content, list), ID);
-		return ID;
 	}
 }

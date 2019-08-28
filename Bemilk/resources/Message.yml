@@ -27,6 +27,44 @@
    商店分页:
       被过滤提示: §4您无法使用这个商店！因为您已被当前商店列为黑名单！
       金币数不在范围内: §4您无法使用这个商店！因为您的{MoneyName}数不在范围内§f(§6{MoneyFloor}§f-§9{MoneyLimit}§f)§4！
+   个人商店:
+      出售按钮: §6出售商店
+      回收按钮: §6回收商店
+      新建个人商店: §6创建个人商店
+      拒绝创建个人商店: §6这个界面禁止普通玩家创建商店
+个人商店:
+   限制OP使用个人商店: §4服务器限制了OP对个人商店的使用！
+   限制创造模式使用个人商店: §4服务器限制了创造模式下的玩家使用个人商店
+   从背包获取物品:
+      标题: '{Title}'
+      选择个人商店上架方式: §6请选择您想要上架的方式
+      想要出售或者回收的数量: §6请输入想要出售或者回收的数量
+      输入物品的价格: §6请输入物品的价格
+      允许分批出售或收购: §6允许玩家分批次购买或出售
+      选择要上架的物品: §6请选择您想要上架的物品
+      物品列表格式: §e{ItemName}§f(§4{ItemID}§f)§d>{ItemCount}§6个
+      物品数量不能小于零: §4物品数量必须为大于零的纯整数！
+      物品的价格不能小于零: §4物品价格必须为大于零的纯整数！
+      物品上架结果: §4物品上架{Result}！
+      物品不足: §4您的物品数量不足！
+      金币不足: §4您的{MoneyName}不足以支付收购物品所需的费用！
+   选择添加物品方式:
+      标题: '{Title}'
+      手动输入物品数据: §6手动输入物品数据
+      从背包获取添加物品: §6从背包获取添加物品
+   手动输入物品数据:
+      标题: '{Title}'
+      选择个人商店上架方式: §6请选择您想要上架的方式
+      输入物品名称: §6请输入您想要上架的物品ID/名称
+      输入物品的价格: §6请输入物品的价格
+      想要出售或者回收的数量: §6请输入想要出售或者回收的数量
+      允许分批出售或收购: §6允许玩家分批次购买或出售
+      输入的物品名称不正确: §4您输入的物品ID或名称暂不在支持范围内
+      物品数量不能小于零: §4物品数量必须为大于零的纯整数！
+      物品的价格不能小于零: §4物品价格必须为大于零的纯整数！
+      物品上架结果: §4物品上架{Result}！
+      物品不足: §4您的物品数量不足！
+      金币不足: §4您的{MoneyName}不足以支付收购物品所需的费用！
 按钮:
    物品修复:
       定量增加: §6增加§4{Count}§6耐久§e{Money}§6{MoneyName}
@@ -34,8 +72,9 @@
       随机增加: §6增加§f{MinRepair}§6-§f{MaxRepair}§6耐久§e{Money}§6{MoneyName}§f|§e{Success}
    物品附魔:
       自定义附魔: §6不明所以的附魔§e{Money}§6{MoneyName}
-      随机定级附魔: §f{EnchantName}§4(§f{EnchantID}§4)§e-§f{EnchantLevel}§e{Money}§6{MoneyName}§f|§e{Success}
-      定等附魔: §f{EnchantName}§4(§f{EnchantID}§4)§e-§f{EnchantLevel}§e{Money}§6{MoneyName}
+      随机定级附魔: §6附魔§f{EnchantName}§4(§f{EnchantID}§4)§e-§f{EnchantLevel}§e{Money}§6{MoneyName}§f|§e{Success}
+      定等附魔: §6附魔§f{EnchantName}§4(§f{EnchantID}§4)§e-§f{EnchantLevel}§e{Money}§6{MoneyName}
    物品兑换: §4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}兑换§4{ByItemName}§4(§f{ByItemID}§4)§6{ByIsMultiMsg}§e{Money}§6{MoneyName}
    物品回收: §6回收§4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}§e{Money}§6{MoneyName}
    物品出售: §6出售§4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}§e{Money}§6{MoneyName}
+   个人商店: §4{ShopType}§5{ItemCount}§6个§4{ItemName}§f(§5{ItemID}§f)§e{Money}§6{MoneyName}

@@ -1,4 +1,4 @@
-package xiaokai.bemilk.mtp;
+package xiaokai.bemilk.data;
 
 import java.io.File;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.Map;
 
 import cn.nukkit.utils.Config;
 import xiaokai.bemilk.Bemilk;
+import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
 
 /**
@@ -79,7 +80,7 @@ public class Message {
 				text = text.replace(Key[i], Data[i]);
 		for (int i = 0; (i < myKey.length && i < myData.length); i++)
 			if (text.contains(myKey[i]))
-				text = text.replace(myKey[i], myData[i].toString());
+				text = text.replace(myKey[i], String.valueOf(myData[i]));
 		return text;
 	}
 }

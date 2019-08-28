@@ -2,15 +2,15 @@ package xiaokai.bemilk.mtp;
 
 import java.io.File;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
 import xiaokai.bemilk.Bemilk;
-import xiaokai.tool.Update;
+import xiaokai.bemilk.data.FormID;
+import xiaokai.bemilk.data.Message;
+import xiaokai.bemilk.data.MyPlayer;
+import xiaokai.tool.data.ItemID;
 
 /**
  * @author Winfxk
@@ -55,7 +55,9 @@ public class Kick {
 			/* 9 */"管理员选择从背包选择物品，选择后输入上架数量的界面", /* 10 */"选择物品完毕，要求玩家输入项目价格的界面", /* 11 */"管理员添加出售回收类型的商店手动输入物品数据的界面",
 			/* 12 */"物品兑换上架手动输入数据页面", /* 13 */"物品兑换上架从背包选择物品的物品列表页面", /* 14 */"物品兑换物品界面给玩家设置要添加的物品的数量的界面",
 			/* 15 */"在添加物品兑换物品项目的时候物品选择完毕，设置物品数量的界面", /* 16 */"再添加附魔商店的时候让选择附魔方式的界面", /* 17 */"添加附魔商店的时候输入附魔数据的界面",
-			/* 18 */"添加物品修复商店项目时的添加类型界面", /* 19 */"再添加工具修复商店项目的时候输入数据的界面", /* 20 */"添加商店时显示能添加的项目列表页" };
+			/* 18 */"添加物品修复商店项目时的添加类型界面", /* 19 */"再添加工具修复商店项目的时候输入数据的界面", /* 20 */"添加商店时显示能添加的项目列表页",
+			/* 21 */"物品兑换上架从背包选择物品的物品列表备用页面", /* 22 */"商店删除项目页面显示列表", /* 23 */"商店删除项目确认界面",
+			/* 24 */"创建个人商店让选择添加物品方式的页面", /* 25 */"创建个人商店并且是以手动输入数据的页面", /* 26 */"创建个人商店并且是以从背包获取物品数据的页面" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -67,7 +69,7 @@ public class Kick {
 	/**
 	 * 玩家数据库
 	 */
-	public LinkedHashMap<String, MyPlayer> PlayerDataMap = new LinkedHashMap<String, MyPlayer>();
+	public LinkedHashMap<String, MyPlayer> PlayerDataMap = new LinkedHashMap<>();
 	/**
 	 * 要检查默认设置的配置文件
 	 */
@@ -108,6 +110,22 @@ public class Kick {
 	 * 异步线程类
 	 */
 	public startThread sThread;
+	/**
+	 * 创建项目的时候添加物品的方式
+	 */
+	public static final String[] addShopType = { "从背包选择物品", "手动输入数据" };
+	/**
+	 * 创建项目时附魔的方式
+	 */
+	public static final String[] addItemEnchantType = { "自定义概率", "定级概率", "定级出售" };
+	/**
+	 * 创建项目时的耐久方式
+	 */
+	public static final String[] addItemRepairType = { "定量增加", "总量增加", "随机增加" };
+	/**
+	 * 个人商店的类型
+	 */
+	public static final String[] addMyShopType = { "出售", "回收" };
 
 	public Kick(Bemilk knickers) {
 		kick = this;
@@ -122,67 +140,8 @@ public class Kick {
 		formID.setConfig(formIdConfig.getAll());
 		Message = new Message(this);
 		mis.getLogger().info("§6已加载§9" + ItemID.load() + "§6个物品数据~");
-		sThread = new startThread();
+		sThread = new startThread(this);
 		sThread.start();
-	}
-
-	/**
-	 * 异步类
-	 * 
-	 * @author Winfxk
-	 */
-	public class startThread extends Thread {
-		public int 定时保存间隔, 定时检查快捷工具间隔, 检测更新间隔;
-
-		public startThread() {
-			定时保存间隔 = config.getInt("定时保存间隔");
-			定时检查快捷工具间隔 = config.getInt("定时检查快捷工具间隔");
-			检测更新间隔 = config.getInt("检测更新间隔");
-		}
-
-		public void load() {
-			定时保存间隔 = config.getInt("定时保存间隔");
-			定时检查快捷工具间隔 = config.getInt("定时检查快捷工具间隔");
-			检测更新间隔 = config.getInt("检测更新间隔");
-		}
-
-		@Override
-		public void run() {
-			while (true) {
-				try {
-					sleep(1000);
-					if (config.getBoolean("检测更新")) {
-						if (检测更新间隔 < 0) {
-							检测更新间隔 = config.getInt("检测更新间隔");
-							new Update(mis).start();
-						} else
-							检测更新间隔--;
-					}
-					if (定时检查快捷工具间隔 < 0) {
-						定时检查快捷工具间隔 = config.getInt("定时检查快捷工具间隔");
-						Map<UUID, Player> Players = mis.getServer().getOnlinePlayers();
-						Set<UUID> keys = Players.keySet();
-						for (UUID id : keys)
-							Belle.exMaterials(Players.get(id));
-					} else
-						定时检查快捷工具间隔--;
-					if (定时保存间隔 < 0) {
-						定时保存间隔 = config.getInt("定时保存间隔");
-						if (mis.getServer().getOnlinePlayers().size() < 1)
-							continue;
-						mis.getLogger().info("§6正在保存数据");
-						Set<String> keys1 = PlayerDataMap.keySet();
-						int count = keys1.size(), i = 0;
-						for (String player : keys1)
-							i += (PlayerDataMap.get(player).config.save() ? 1 : 0);
-						mis.getLogger().info("§6保存成功§5" + i + "§6项，失败§4" + (count - i) + "§6项。");
-					} else
-						定时保存间隔--;
-				} catch (InterruptedException e) {
-					mis.getLogger().error("§4异步线程类出现问题！" + e.getMessage());
-				}
-			}
-		}
 	}
 
 	/**

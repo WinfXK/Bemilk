@@ -19,3 +19,7 @@
 物品修复项目图标: textures/gui/newgui/anvil-hammer.png
 物品附魔项目图标: textures/items/textures/ui/haste_effect.png
 搜索按钮图标: textures/gui/newgui/magnifyingGlass.png
+个人商店创建按钮图标: textures/gui/newgui/Friends.png
+限制OP使用个人商店: false
+限制创造模式使用个人商店: true
+玩家重生时重置玩家缓存数据: false

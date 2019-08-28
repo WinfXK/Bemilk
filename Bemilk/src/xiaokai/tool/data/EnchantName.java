@@ -1,4 +1,6 @@
-package xiaokai.tool;
+package xiaokai.tool.data;
+
+import xiaokai.tool.Tool;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -155,10 +157,10 @@ public enum EnchantName {
 	QUICK_CHARGE("快速装填", 35);
 	private String Name;
 	private int ID;
-	private static final LinkedHashMap<String, Integer> NameKey = new LinkedHashMap<String, Integer>();
-	private static final LinkedHashMap<Integer, String> IDKey = new LinkedHashMap<Integer, String>();
-	private static final LinkedHashMap<Integer, EnchantName> ItemKey = new LinkedHashMap<Integer, EnchantName>();
-	private static final List<EnchantName> All = new ArrayList<EnchantName>();
+	private static final LinkedHashMap<String, Integer> NameKey = new LinkedHashMap<>();
+	private static final LinkedHashMap<Integer, String> IDKey = new LinkedHashMap<>();
+	private static final LinkedHashMap<Integer, EnchantName> ItemKey = new LinkedHashMap<>();
+	private static final List<EnchantName> All = new ArrayList<>();
 	static {
 		for (EnchantName item : EnchantName.values()) {
 			IDKey.put(item.getID(), item.getName());
@@ -220,7 +222,7 @@ public enum EnchantName {
 	 * @return
 	 */
 	public static List<String> getNameList() {
-		return new ArrayList<String>(NameKey.keySet());
+		return new ArrayList<>(NameKey.keySet());
 	}
 
 	/**
