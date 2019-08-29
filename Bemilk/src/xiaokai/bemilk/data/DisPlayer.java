@@ -8,6 +8,9 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
+
+import me.onebone.economyapi.EconomyAPI;
+
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
 
@@ -16,6 +19,7 @@ import xiaokai.tool.Tool;
  */
 @SuppressWarnings("unchecked")
 public class DisPlayer {
+
 	/**
 	 * 给玩家添加一个未售罄的商店记录
 	 * 
@@ -80,15 +84,27 @@ public class DisPlayer {
 	 * 增加玩家收入
 	 * 
 	 * @param player 要增加的玩家对象
-	 * @param Moeny
+	 * @param Money
 	 * @return
 	 */
-	public static double addMoney(String player, double Moeny) {
+	public static double addMoney(Player player, double Money) {
+		return addMoney(player.getName(), Money);
+	}
+
+	/**
+	 * 增加玩家收入
+	 * 
+	 * @param player 要增加的玩家对象
+	 * @param Money
+	 * @return
+	 */
+	public static double addMoney(String player, double Money) {
 		Config config = getConfig(player);
 		double M;
-		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Moeny).intValue()));
-		config.set("收入", M = (config.getDouble("收入") + Moeny));
-		config.set("总交易额", config.getDouble("总交易额") + Moeny);
+		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Money).intValue()));
+		config.set("收入", M = (config.getDouble("收入") + Money));
+		config.set("总交易额", config.getDouble("总交易额") + Money);
+		EconomyAPI.getInstance().addMoney(player, Money);
 		setConfig(player, config);
 		return M;
 	}
@@ -108,15 +124,16 @@ public class DisPlayer {
 	 * 增加玩家支出
 	 * 
 	 * @param player 要增加的玩家对象
-	 * @param Moeny
+	 * @param Money
 	 * @return
 	 */
-	public static double delMoney(String player, double Moeny) {
+	public static double delMoney(String player, double Money) {
 		Config config = getConfig(player);
 		double M;
-		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Moeny).intValue()));
-		config.set("支出", M = (config.getDouble("支出") + Moeny));
-		config.set("总交易额", config.getDouble("总交易额") + Moeny);
+		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Money).intValue()));
+		config.set("支出", M = (config.getDouble("支出") + Money));
+		config.set("总交易额", config.getDouble("总交易额") + Money);
+		EconomyAPI.getInstance().reduceMoney(player, Money);
 		setConfig(player, config);
 		return M;
 	}

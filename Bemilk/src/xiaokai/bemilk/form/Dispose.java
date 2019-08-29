@@ -57,7 +57,7 @@ public class Dispose {
 					new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));
 			return false;
 		}
-		return xiaokai.bemilk.shop.OpenShop.Open(player, myPlayer.file, myPlayer.Keys.get(data.getClickedButtonId()));
+		return xiaokai.bemilk.shop.open.OpenShop.Open(player, myPlayer.file, myPlayer.Keys.get(data.getClickedButtonId()));
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class Dispose {
 		Object object = config.get("Shops");
 		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) object;
-		return xiaokai.bemilk.shop.OpenShop.ShowShop(player,
+		return xiaokai.bemilk.shop.open.OpenShop.ShowShop(player,
 				new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath),
 						(String) ((Map<String, Object>) Shops.get(Key)).get("Config")));
 	}

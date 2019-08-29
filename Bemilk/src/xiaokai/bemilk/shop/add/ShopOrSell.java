@@ -78,7 +78,8 @@ public class ShopOrSell {
 		if (myPlayer.isShopOrSell)
 			isok = new addItem(player, myPlayer.file).addShop(Money, Items, MinCount, MaxCount);
 		else
-			isok = new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount);
+			isok = new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount,
+					data.getToggleResponse(4));
 		player.sendMessage(
 				"§6您" + (isok ? "§9成功" : "§4失败") + "§6了一个" + (myPlayer.isShopOrSell ? "§a出售" : "§c回收") + "§6类型的商店");
 		return isok;
@@ -104,6 +105,8 @@ public class ShopOrSell {
 				+ "请输入您想要上架的物品ID/名称\n多个使用；分割\n\n可用格式：\n\n物品ID;物品ID;物品ID\n物品ID>物品数量;物品ID>物品数量\n物品名称;物品名称;物品名称\n物品名称>物品数量;物品名称>物品数量");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最少数\n小于等于零时不启用该功能", "1");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
+		if (!myPlayer.isShopOrSell)
+			form.addToggle("严格检查NBt", false);
 		form.sendPlayer(player);
 		return true;
 	}
@@ -135,7 +138,8 @@ public class ShopOrSell {
 		if (myPlayer.isShopOrSell)
 			isok = new addItem(player, myPlayer.file).addShop(Money, Items, MinCount, MaxCount);
 		else
-			isok = new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount);
+			isok = new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount,
+					data.getToggleResponse(3));
 		player.sendMessage(
 				"§6您" + (isok ? "§9成功" : "§4失败") + "§6了一个" + (myPlayer.isShopOrSell ? "§a出售" : "§c回收") + "§6类型的商店");
 		return isok;
@@ -160,6 +164,8 @@ public class ShopOrSell {
 				+ "数量\n§4请输入一个正确的数值(大于零的纯整数)！\n§4否则之前的数据将会失效！");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最少数\n小于等于零时不启用该功能", "1");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
+		if (!myPlayer.isShopOrSell)
+			form.addToggle("严格检查NBt", false);
 		form.sendPlayer(player);
 		return true;
 	}

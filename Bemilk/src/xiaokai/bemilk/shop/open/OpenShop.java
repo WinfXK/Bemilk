@@ -1,4 +1,4 @@
-package xiaokai.bemilk.shop;
+package xiaokai.bemilk.shop.open;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.shop.Shop;
 import xiaokai.tool.Tool;
 import xiaokai.tool.data.EnchantName;
 import xiaokai.tool.data.ItemID;
@@ -30,6 +31,49 @@ public class OpenShop {
 	private static Message msg = Kick.kick.Message;
 
 	/**
+	 * 开始判断玩家打开的商店是什么类型
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private static boolean Switch(ShopData data) {
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(data.player.getName());
+		try {
+			switch (data.Type) {
+			case "shop":
+				myPlayer.OpenShopDis = new xiaokai.bemilk.shop.open.Shop(data);
+				break;
+			case "sell":
+				myPlayer.OpenShopDis = new Sell(data);
+				break;
+			case "itemtradeitem":
+				myPlayer.OpenShopDis = new ItemTradeItem(data);
+				break;
+			case "enchant":
+				myPlayer.OpenShopDis = new Enchant(data);
+				break;
+			case "repair":
+				myPlayer.OpenShopDis = new Repair(data);
+				break;
+			case "myshop":
+				myPlayer.OpenShopDis = new MyShop(data);
+				break;
+			default:
+				return MakeForm.Tip(myPlayer.player,
+						msg.getSun("界面", "商店分页", "无法获取项目类型", new String[] { "{Player}", "{Money}" },
+								new Object[] { data.player.getName(), EconomyAPI.getInstance().myMoney(data.player) }));
+			}
+			kick.PlayerDataMap.put(data.player.getName(), myPlayer);
+			return myPlayer.OpenShopDis.MakeMain();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return MakeForm.Tip(data.player,
+					msg.getSon("界面", "商店项目打开失败", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] {
+							data.player.getName(), EconomyAPI.getInstance().myMoney(data.player), e.getMessage() }));
+		}
+	}
+
+	/**
 	 * 当在商店分页打开一个项目
 	 * 
 	 * @param player 打开项目的玩家对象
@@ -38,7 +82,34 @@ public class OpenShop {
 	 * @return
 	 */
 	public static boolean Open(Player player, File file, String Key) {
-		return true;
+		String[] DsK = { "{Player}", "{Money}" };
+		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		if (!Kick.isAdmin(player) && kick.config.getBoolean("限制创造模式使用商店") && player.getGamemode() == 1)
+			return MakeForm.Tip(player, msg.getSon("界面", "限制创造模式使用商店", DsK, DsO));
+		Config config = new Config(file, Config.YAML);
+		Object object = config.get("Items");
+		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
+				: (HashMap<String, Object>) object;
+		if (Shops.size() < 1)
+			return MakeForm.Tip(player, msg.getSun("界面", "商店分页", "不存在项目", DsK, DsO));
+		if (!Shops.containsKey(Key))
+			return MakeForm.Tip(player, msg.getSun("界面", "商店分页", "打开的项目不存在", DsK, DsO));
+		Object ob = Shops.get(Key);
+		Map<String, Object> Item = (ob == null || !(ob instanceof Map)) ? new HashMap<>()
+				: (HashMap<String, Object>) ob;
+		if (Item.size() < 1)
+			return MakeForm.Tip(player, msg.getSun("界面", "商店分页", "打开的项目数据错误", DsK, DsO));
+		if (Item.get("Type") == null)
+			return MakeForm.Tip(player, msg.getSun("界面", "商店分页", "无法获取项目类型", DsK, DsO));
+		ShopData data = new ShopData();
+		data.Type = Item.get("Type").toString().toLowerCase();
+		data.config = config;
+		data.file = file;
+		data.Item = Item;
+		data.Shops = Shops;
+		data.player = player;
+		data.Key = Key;
+		return Switch(data);
 	}
 
 	/**
@@ -54,7 +125,7 @@ public class OpenShop {
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
 		if (!Shop.isOk(player, file))
-			return MakeForm.Tip(player, kick.Message.getSun("界面", "商店分页", "被过滤提示", DsK, DsO));
+			return MakeForm.Tip(player, msg.getSun("界面", "商店分页", "被过滤提示", DsK, DsO));
 		if (!Shop.isOkMoney(player, file))
 			return MakeForm.Tip(player,
 					kick.Message.getSun("界面", "商店分页", "被过滤提示",
@@ -130,10 +201,11 @@ public class OpenShop {
 			Map<String, Object> ShopItems = (Map<String, Object>) item.get("Items");
 			List<String> ShopItemsKeys = new ArrayList<>(ShopItems.keySet());
 			String ShopItemsID = ShopItemsKeys.get(Tool.getRand(0, ShopItemsKeys.size() - 1));
+			Item item3 = Tool.loadItem((Map<String, Object>) ShopItems.get(ShopItemsID));
 			k = new String[] { "{Player}", "{Money}", "{ItemName}", "{ItemID}", "{IsMultiMsg}" };
 			d = new Object[] { player.getName(),
 					Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-					ItemID.getNameByID(ShopItemsID), ShopItemsID,
+					ItemID.getName(item3), ShopItemsID,
 					(ShopItemsKeys.size() > 1) ? ("等§4" + ShopItemsKeys.size() + "§6个物品") : "" };
 			form.addButton(msg.getSon("按钮", "物品出售", k, d), true, ItemID.getPathByID(ShopItemsID));
 			break;
@@ -141,10 +213,11 @@ public class OpenShop {
 			Map<String, Object> Items = (Map<String, Object>) item.get("Items");
 			List<String> ItemsKeys = new ArrayList<>(Items.keySet());
 			String ItemsID = ItemsKeys.get(Tool.getRand(0, ItemsKeys.size() - 1));
+			Item item31 = Tool.loadItem((Map<String, Object>) Items.get(ItemsID));
 			k = new String[] { "{Player}", "{Money}", "{ItemName}", "{ItemID}", "{IsMultiMsg}" };
 			d = new Object[] { player.getName(),
 					Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-					ItemID.getNameByID(ItemsID), ItemsID,
+					ItemID.getName(item31), ItemsID,
 					(ItemsKeys.size() > 1) ? ("等§4" + ItemsKeys.size() + "§6个物品") : "" };
 			form.addButton(msg.getSon("按钮", "物品回收", k, d), true, ItemID.getPathByID(ItemsID));
 			break;
@@ -157,11 +230,13 @@ public class OpenShop {
 			Map<String, Object> MoneyItem = (Map<String, Object>) item.get("MoneyItem");
 			List<String> MoneyItemKeys = new ArrayList<>(MoneyItem.keySet());
 			String MoneyItemID = MoneyItemKeys.get(Tool.getRand(0, MoneyItemKeys.size() - 1));
+			Item Shopitem311 = Tool.loadItem((Map<String, Object>) ShopItem.get(ShopItemID));
+			Item Moneyitem311 = Tool.loadItem((Map<String, Object>) MoneyItem.get(MoneyItemID));
 			d = new Object[] { player.getName(),
 					Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-					ItemID.getNameByID(ShopItemID, "未知"), ShopItemID, ShopItemKeys.size(),
+					ItemID.getName(Shopitem311), ShopItemID, ShopItemKeys.size(),
 					(ShopItemKeys.size() > 0) ? ("等§4" + ShopItemKeys.size() + "§6个物品") : "",
-					ItemID.getNameByID(MoneyItemID, "未知"), MoneyItemID,
+					ItemID.getName(Moneyitem311), MoneyItemID,
 					(MoneyItemKeys.size() > 1) ? ("等§4" + MoneyItemKeys.size() + "§6个物品") : "", MoneyItemKeys.size() };
 			form.addButton(msg.getSon("按钮", "物品兑换", k, d), true, ItemID.getPathByID(ShopItemID));
 			break;

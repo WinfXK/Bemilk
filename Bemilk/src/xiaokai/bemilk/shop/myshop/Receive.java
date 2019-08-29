@@ -1,5 +1,6 @@
 package xiaokai.bemilk.shop.myshop;
 
+import xiaokai.bemilk.data.DisPlayer;
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
@@ -61,6 +62,8 @@ public class Receive {
 		boolean isInt = data.getToggleResponse(2);
 		String ShopType = data.getDropdownResponse(3).getElementID() == 0 ? "Shop" : "Sell";
 		Item item = myPlayer.addIsItemList.get(data.getDropdownResponse(4).getElementID());
+		if (ItemCount > item.getCount())
+			return MakeForm.Tip(player, msg.getSun("个人商店", "从背包获取物品", "所选的物品不足", k, d));
 		if (ShopType.equals("Shop")) {
 			Item sitem = new Item(0);
 			if (item.getCount() > ItemCount) {
@@ -79,7 +82,7 @@ public class Receive {
 			double MyMoney = EconomyAPI.getInstance().myMoney(player);
 			if (MyMoney < Money)
 				return MakeForm.Tip(player, msg.getSun("个人商店", "从背包获取物品", "金币不足", k, d));
-			EconomyAPI.getInstance().reduceMoney(player, Money);
+			DisPlayer.delMoney(player, Money);
 		}
 		boolean isok = new addItem(player, myPlayer.file).addMyShop(item, ItemCount, Money, isInt, ShopType);
 		player.sendMessage(msg.getSun("个人商店", "从背包获取物品", "物品上架结果", new String[] { "{Player}", "{Money}", "{Result}" },
@@ -145,7 +148,7 @@ public class Receive {
 			double MyMoney = EconomyAPI.getInstance().myMoney(player);
 			if (MyMoney < Money)
 				return MakeForm.Tip(player, msg.getSun("个人商店", "手动输入物品数据", "金币不足", k, d));
-			EconomyAPI.getInstance().reduceMoney(player, Money);
+			DisPlayer.delMoney(player, Money);
 		}
 		boolean isok = new addItem(player, myPlayer.file).addMyShop(item, ItemCount, Money, isInt, ShopType);
 		player.sendMessage(msg.getSun("个人商店", "手动输入物品数据", "物品上架结果", new String[] { "{Player}", "{Money}", "{Result}" },

@@ -125,7 +125,7 @@ public class ItemID {
 	 * @return
 	 */
 	public static String getName(Item item) {
-		return getNameByID(item.getId(), item.getDamage());
+		return item.hasCustomName() ? item.getName() : getNameByID(item.getId(), item.getDamage());
 	}
 
 	/**

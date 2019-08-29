@@ -676,8 +676,10 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static Item loadItem(Map<String, Object> map) {
-		Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"),
-				(String) map.get("Name"));
+		Item item = new Item((int) map.get("ID"), (int) map.get("Damage"), (int) map.get("Count"));
+		String name = (String) map.get("Name");
+		if (name != null && !name.isEmpty())
+			item.setCustomName(name);
 		item.setCompoundTag((byte[]) map.get("Nbt"));
 		return item;
 	}
@@ -693,7 +695,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		map.put("Nbt", item.getCompoundTag());
 		map.put("ID", item.getId());
 		map.put("Damage", item.getDamage());
-		map.put("Name", item.getName());
+		map.put("Name", item.hasCustomName() ? item.getName() : null);
 		map.put("Count", item.getCount());
 		return map;
 	}

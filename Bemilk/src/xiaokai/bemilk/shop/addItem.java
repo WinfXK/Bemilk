@@ -55,8 +55,6 @@ public class addItem {
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
 		ShopType = ShopType.toLowerCase().equals("sell") ? "Sell" : "Shop";
 		item.setCount(ItemCount);
-		if (ShopType.equals("Sell"))
-			DisPlayer.delMoney(player, Money);
 		map.put("ItemCount", ItemCount);
 		map.put("Money", Money);
 		map.put("isInt", isInt);
@@ -201,12 +199,14 @@ public class addItem {
 	 * @return
 	 */
 	public boolean addItemTradeItem(Map<String, Map<String, Object>> ShopItem,
-			Map<String, Map<String, Object>> MoneyItem, int MinCount, int MaxCount, double Money, double ItemMoney) {
+			Map<String, Map<String, Object>> MoneyItem, int MinCount, int MaxCount, double Money, double ItemMoney,
+			boolean isNbt) {
 		map.put("MinCount", MinCount);
 		map.put("MaxCount", MaxCount);
 		map.put("Money", Money);
 		map.put("ItemMoney", ItemMoney);
 		map.put("Type", "ItemTradeItem");
+		map.put("isNbt", isNbt);
 		map.put("ShopItem", ShopItem);
 		map.put("MoneyItem", MoneyItem);
 		return save();
@@ -221,11 +221,13 @@ public class addItem {
 	 * @param MaxCount 最高兑换数
 	 * @return
 	 */
-	public boolean addSell(double Money, Map<String, Map<String, Object>> items, int MinCount, int MaxCount) {
+	public boolean addSell(double Money, Map<String, Map<String, Object>> items, int MinCount, int MaxCount,
+			boolean isNbt) {
 		map.put("Money", Money);
 		map.put("MinCount", MinCount);
 		map.put("MaxCount", MaxCount);
 		map.put("Type", "Sell");
+		map.put("isNbt", isNbt);
 		map.put("Items", items);
 		return save();
 	}

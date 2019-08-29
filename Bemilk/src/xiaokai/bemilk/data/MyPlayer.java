@@ -10,6 +10,7 @@ import java.util.List;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
+import xiaokai.bemilk.shop.open.BaseDis;
 
 public class MyPlayer {
 	/**
@@ -83,6 +84,10 @@ public class MyPlayer {
 	 * 存储临时Integer組
 	 */
 	public List<Integer> integers;
+	/**
+	 * 打开大开商店项目的处理类
+	 */
+	public BaseDis OpenShopDis;
 
 	public MyPlayer(Player player) {
 		this.player = player;

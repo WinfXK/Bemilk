@@ -52,8 +52,8 @@ public class ItemTradeItem {
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		SimpleForm form = new SimpleForm(kick.formID.getID(7),
-				kick.Message.getText(config.get("Title"), DsK, DsO), Tool.getColorFont("请输入想要添加的方式"));
+		SimpleForm form = new SimpleForm(kick.formID.getID(7), kick.Message.getText(config.get("Title"), DsK, DsO),
+				Tool.getColorFont("请输入想要添加的方式"));
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		myPlayer.string = "ItemTradeItem";
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
@@ -119,8 +119,8 @@ public class ItemTradeItem {
 				: 0;
 		boolean isOK;
 		player.sendMessage("§6您"
-				+ ((isOK = new addItem(player, kick.PlayerDataMap.get(player.getName()).file)
-						.addItemTradeItem(sjItems, sxItems, MinCount, MaxCount, Money, ItemMoney)) ? "§e成功" : "§4未成功")
+				+ ((isOK = new addItem(player, kick.PlayerDataMap.get(player.getName()).file).addItemTradeItem(sjItems,
+						sxItems, MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(6))) ? "§e成功" : "§4未成功")
 				+ "§6创建一个物品兑换商店");
 		return isOK;
 	}
@@ -139,8 +139,7 @@ public class ItemTradeItem {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		CustomForm form = new CustomForm(kick.formID.getID(12),
-				kick.Message.getText(config.get("Title"), DsK, DsO));
+		CustomForm form = new CustomForm(kick.formID.getID(12), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput(Tool.getRandColor()
 				+ "请输入您想要上架的物品ID/名称\n多个使用；分割\n\n可用格式：\n\n物品ID;物品ID;物品ID\n物品ID>物品数量;物品ID>物品数量\n物品名称;物品名称;物品名称\n物品名称>物品数量;物品名称>物品数量");
 		form.addInput(Tool.getRandColor() + "请输入兑换所需的物品ID/名称；格式同上");
@@ -148,6 +147,7 @@ public class ItemTradeItem {
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
 		form.addInput(Tool.getRandColor() + "请输入每次兑换需要扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是每次兑换扣除的金币数量");
 		form.addInput(Tool.getRandColor() + "请输入兑换每个项目所扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是按照兑换的数量来扣除金币");
+		form.addToggle("严格检查NBt", false);
 		form.sendPlayer(player);
 		return true;
 	}
@@ -191,7 +191,7 @@ public class ItemTradeItem {
 		}
 		boolean isOK;
 		player.sendMessage("§6您" + ((isOK = new addItem(player, myPlayer.file).addItemTradeItem(sjItems, sxItems,
-				MinCount, MaxCount, Money, ItemMoney)) ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
+				MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(4))) ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
 		return isOK;
 	}
 
@@ -212,12 +212,12 @@ public class ItemTradeItem {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		CustomForm form = new CustomForm(kick.formID.getID(15),
-				kick.Message.getText(config.get("Title"), DsK, DsO));
+		CustomForm form = new CustomForm(kick.formID.getID(15), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput(Tool.getRandColor() + "请输入每次兑换需要扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是每次兑换扣除的金币数量");
 		form.addInput(Tool.getRandColor() + "请输入兑换每个项目所扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是按照兑换的数量来扣除金币");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最少数\n小于等于零时不启用该功能", "1");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
+		form.addToggle("严格检查NBt", false);
 		form.sendPlayer(player);
 		return true;
 	}
@@ -254,8 +254,7 @@ public class ItemTradeItem {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		CustomForm form = new CustomForm(kick.formID.getID(14),
-				kick.Message.getText(config.get("Title"), DsK, DsO));
+		CustomForm form = new CustomForm(kick.formID.getID(14), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput("§6请设置§4" + ItemID.getName(item) + "§6的数量", item.getCount(), item.getCount());
 		myPlayer.CacheItem = item;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
@@ -295,8 +294,7 @@ public class ItemTradeItem {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		SimpleForm form = new SimpleForm(
-				kick.formID.getID((myPlayer.CacheInt = myPlayer.CacheInt != 13 ? 13 : 21)),
+		SimpleForm form = new SimpleForm(kick.formID.getID((myPlayer.CacheInt = myPlayer.CacheInt != 13 ? 13 : 21)),
 				kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont((myPlayer.isInventoryGetItem2 ? "添加成功！\n\n" : "") + "请选择您"
 						+ (myPlayer.isInventoryGetItem2 ? "还" : "") + (myPlayer.isGetItemSSXXXX ? "兑换所需" : "想要上架")
