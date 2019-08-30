@@ -9,9 +9,9 @@ import xiaokai.bemilk.shop.addItem;
 import xiaokai.tool.Tool;
 import xiaokai.tool.data.ItemID;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
-
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
@@ -87,6 +87,7 @@ public class Receive {
 		boolean isok = new addItem(player, myPlayer.file).addMyShop(item, ItemCount, Money, isInt, ShopType);
 		player.sendMessage(msg.getSun("个人商店", "从背包获取物品", "物品上架结果", new String[] { "{Player}", "{Money}", "{Result}" },
 				new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), isok ? "§e成功！" : "§4失败！" }));
+		DisPlayer.addSB(player.getName());
 		return isok;
 	}
 
@@ -125,8 +126,9 @@ public class Receive {
 				return MakeForm.Tip(player, msg.getSun("个人商店", "手动输入物品数据", "物品不足", k, d));
 			if (!Kick.isAdmin(player)) {
 				int SBPlayer = 0;
-				Set<Integer> Keys = C.keySet();
-				for (Integer i : Keys) {
+				List<Integer> Keys = new ArrayList<>(C.keySet());
+				for (int is = 0; is < Keys.size(); is++) {
+					Integer i = Keys.get(is);
 					Item item1 = C.get(i);
 					if (ItemID.getID(item).equals(ItemID.getID(item1)))
 						if (item1.getCount() < (ItemCount - SBPlayer)) {
@@ -153,6 +155,7 @@ public class Receive {
 		boolean isok = new addItem(player, myPlayer.file).addMyShop(item, ItemCount, Money, isInt, ShopType);
 		player.sendMessage(msg.getSun("个人商店", "手动输入物品数据", "物品上架结果", new String[] { "{Player}", "{Money}", "{Result}" },
 				new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), isok ? "§e成功！" : "§4失败！" }));
+		DisPlayer.addSB(player.getName());
 		return isok;
 	}
 }

@@ -151,7 +151,7 @@ public class ItemEnchant {
 			for (String EnchData : EnchantDatas) {
 				Map<String, Object> item = new HashMap<>();
 				String[] EnchDatas = EnchData.split(">");
-				item.put("EnchantID", EnchantName.UnknownToID(EnchDatas.length > 0 ? EnchDatas[0] : null, -1));
+				item.put("EnchantID", EnchantName.UnknownToID(EnchDatas[0], -1));
 				item.put("EnchantLevel", EnchDatas.length > 1
 						? (Tool.isInteger(EnchDatas[1]) && Float.valueOf(EnchDatas[1]).intValue() > 0)
 								? Float.valueOf(EnchDatas[1]).intValue()
@@ -162,13 +162,13 @@ public class ItemEnchant {
 								? Float.valueOf(EnchDatas[2]).intValue()
 								: 10
 						: 10);
-				map.put(getKey(map, 1), item);
+				item.put("Key", getKey(map, 1));
+				map.put((String) item.get("Key"), item);
 			}
 			boolean isOK;
-			player.sendMessage("§6您"
-					+ ((isOK = new addItem(player, myPlayer.file).addEnchantByCustom(map, Money, isTool)) ? "§e成功"
-							: "§4未成功")
-					+ "§6创建一个附魔商店");
+			player.sendMessage(
+					"§6您" + ((isOK = new addItem(player, myPlayer.file).addEnchantByCustom(map, Money, isTool)) ? "§e成功"
+							: "§4未成功") + "§6创建一个附魔商店");
 			return isOK;
 		}
 
@@ -201,8 +201,7 @@ public class ItemEnchant {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		CustomForm form = new CustomForm(kick.formID.getID(17),
-				kick.Message.getText(config.get("Title"), DsK, DsO));
+		CustomForm form = new CustomForm(kick.formID.getID(17), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addDropdown("请选择要添加的附魔", EnchantName.getNameList());
 		form.addDropdown("请选择附魔等级", new String[] { "I", "II", "III", "IV", "V" });
 		form.addInput("请输入附魔的价格");
@@ -224,8 +223,7 @@ public class ItemEnchant {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		CustomForm form = new CustomForm(kick.formID.getID(17),
-				kick.Message.getText(config.get("Title"), DsK, DsO));
+		CustomForm form = new CustomForm(kick.formID.getID(17), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addDropdown("请选择要添加的附魔", EnchantName.getNameList());
 		form.addDropdown("请选择附魔等级", new String[] { "I", "II", "III", "IV", "V" });
 		form.addInput("请输入成功比\n当输入10时，成功概率为1/10，\n当输入100时，成功概率为1/100,\n以此类推");
@@ -252,8 +250,7 @@ public class ItemEnchant {
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		CustomForm form = new CustomForm(kick.formID.getID(17),
-				kick.Message.getText(config.get("Title"), DsK, DsO));
+		CustomForm form = new CustomForm(kick.formID.getID(17), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput("§6请输入附魔数据，多个使用;分割\n§6例(附魔名称、附魔ID均可): \n§6附魔ID§f>§4附魔等级§f>§6概率占比§e;§6附魔ID§f>§4附魔等级§f>§6概率占比§e\n\n"
 				+ getEnchantString());
 		form.addToggle("允许附魔非工具物品", true);
@@ -295,8 +292,8 @@ public class ItemEnchant {
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
 		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		SimpleForm form = new SimpleForm(kick.formID.getID(16),
-				kick.Message.getText(config.get("Title"), DsK, DsO), Tool.getColorFont("请输入想要添加的方式"));
+		SimpleForm form = new SimpleForm(kick.formID.getID(16), kick.Message.getText(config.get("Title"), DsK, DsO),
+				Tool.getColorFont("请输入想要添加的方式"));
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		myPlayer.string = "ShopOrSell";
 		kick.PlayerDataMap.put(player.getName(), myPlayer);

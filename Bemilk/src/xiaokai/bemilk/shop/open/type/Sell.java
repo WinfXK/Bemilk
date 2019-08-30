@@ -1,20 +1,21 @@
-package xiaokai.bemilk.shop.open;
+package xiaokai.bemilk.shop.open.type;
 
+import xiaokai.bemilk.shop.open.BaseDis;
+import xiaokai.bemilk.shop.open.ShopData;
 import xiaokai.tool.Tool;
 import xiaokai.tool.data.ItemID;
-import xiaokai.tool.form.CustomForm;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import cn.nukkit.form.response.FormResponseCustom;
+import cn.nukkit.nbt.tag.CompoundTag;
 
 /**
  * @author Winfxk
  */
-@SuppressWarnings("unchecked")
+@SuppressWarnings({ "unchecked", "null" })
 public class Sell extends BaseDis {
 	/**
 	 * 处理回收商店的数据
@@ -32,7 +33,6 @@ public class Sell extends BaseDis {
 		int MaxCount = Tool.ObjectToInt(Item.get("MaxCount"), 64);
 		Object[] myData = { player.getName(), getItems(), Money, MyMoney() };
 		String Contxt = msg.getSun("界面", "回收商店", "内容", myKey, myData);
-		CustomForm form = new CustomForm(kick.formID.getID(27), Title);
 		form.addLabel(Contxt);
 		form.addSlider(msg.getSun("界面", "回收商店", "出售数量", k, d), MinCount, MaxCount, 1, MinCount);
 		form.sendPlayer(player);
@@ -52,7 +52,11 @@ public class Sell extends BaseDis {
 			cn.nukkit.item.Item item = Tool.loadItem((Map<String, Object>) items.get(ID));
 			for (Integer ike : iSet) {
 				cn.nukkit.item.Item item2 = Contents.get(ike);
-				if ((!isNbt || item.getNamedTag().equals(item2.getNamedTag()))
+				CompoundTag nbt1 = item.getNamedTag();
+				CompoundTag nbt2 = item2.getNamedTag();
+				nbt1 = nbt1 == null ? new CompoundTag() : nbt1;
+				nbt2 = nbt2 == null ? new CompoundTag() : nbt2;
+				if ((!isNbt || !(item == null || item2 == null) || nbt1 == nbt2 || nbt1.equals(nbt2))
 						&& ItemID.getID(item).equals(ItemID.getID(item2)))
 					ItemCount += item2.getCount();
 			}
@@ -68,7 +72,11 @@ public class Sell extends BaseDis {
 			for (int i = 0; i < siSet.size(); i++) {
 				Integer ike = siSet.get(i);
 				cn.nukkit.item.Item item2 = Contents.get(ike);
-				if ((!isNbt || item.getNamedTag().equals(item2.getNamedTag()))
+				CompoundTag nbt1 = item.getNamedTag();
+				CompoundTag nbt2 = item2.getNamedTag();
+				nbt1 = nbt1 == null ? new CompoundTag() : nbt1;
+				nbt2 = nbt2 == null ? new CompoundTag() : nbt2;
+				if ((!isNbt || !(item == null || item2 == null) || nbt1 == nbt2 || nbt1.equals(nbt2))
 						&& ItemID.getID(item).equals(ItemID.getID(item2)))
 					if (item2.getCount() < ItemCount) {
 						ItemCount -= item2.getCount();
@@ -85,7 +93,8 @@ public class Sell extends BaseDis {
 			Inventory.setContents(Contents);
 		}
 		return send(msg.getSun("界面", "回收商店", "出售成功",
-				new String[] { "{Player}", "{Money}", "{Items}", "{ItemCount}", "{addsMoney}" }, new Object[] {
-						player.getName(), MyMoney(), getItems(), Count, Count * Money, addMoney(Count * Money) }));
+				new String[] { "{Player}", "{Money}", "{Items}", "{ItemCount}", "{addsMoney}", "{addMoney}" },
+				new Object[] { player.getName(), MyMoney(), getItems(), Count, Count * Money,
+						addMoney(Count * Money) }));
 	}
 }

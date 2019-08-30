@@ -1,6 +1,7 @@
 package xiaokai.bemilk.form;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.shop.Shop;
 import xiaokai.tool.Tool;
+import xiaokai.tool.form.CustomForm;
 import xiaokai.tool.form.ModalForm;
 import xiaokai.tool.form.SimpleForm;
 
@@ -23,7 +25,7 @@ import xiaokai.tool.form.SimpleForm;
  * @author Winfxk
  */
 @SuppressWarnings("unchecked")
-public class MakeForm {
+public class MakeForm implements FilenameFilter {
 	private static Message msg = Kick.kick.Message;
 	private static Kick kick = Kick.kick;
 
@@ -35,6 +37,14 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean OpenShopFoSeek(Player player, File file) {
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		myPlayer.file = file;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		String[] DsK = { "{Player}", "{Money}" };
+		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		CustomForm form = new CustomForm(kick.formID.getID(30), msg.getSon("搜索", "标题", DsK, DsO));
+		form.addInput(msg.getSon("搜索", "关键字", DsK, DsO));
+		form.sendPlayer(player);
 		return true;
 	}
 
@@ -45,7 +55,18 @@ public class MakeForm {
 	 * @return
 	 */
 	public static boolean Seek(Player player) {
+		String[] DsK = { "{Player}", "{Money}" };
+		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		CustomForm form = new CustomForm(kick.formID.getID(29), msg.getSon("搜索", "标题", DsK, DsO));
+		form.addInput(msg.getSon("搜索", "关键字", DsK, DsO));
+		form.sendPlayer(player);
 		return true;
+	}
+
+	@Override
+	public boolean accept(File dir, String name) {
+		File file = new File(dir, name);
+		return file.isFile();
 	}
 
 	/**
@@ -82,6 +103,8 @@ public class MakeForm {
 			AdminList.add("seek");
 			form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
 		}
+		AdminList.add("mydata");
+		form.addButton(msg.getSon("界面", "个人数据", DsK, DsO));
 		if (Kick.isAdmin(player)) {
 			AdminList.add("add");
 			form.addButton(Tool.getRandColor() + "添加商店");
@@ -150,6 +173,8 @@ public class MakeForm {
 				AdminList.add("seek");
 				form.addButton(msg.getSun("界面", "主页", "搜索按钮", DsK, DsO));
 			}
+			AdminList.add("mydata");
+			form.addButton(msg.getSon("界面", "个人数据", DsK, DsO));
 			if (Kick.isAdmin(player)) {
 				AdminList.add("add");
 				form.addButton(Tool.getRandColor() + "添加商店");

@@ -61,7 +61,7 @@ public class addItem {
 		map.put("Item", Tool.saveItem(item));
 		map.put("Type", "MyShop");
 		map.put("Style", ShopType);
-		DisPlayer.newShop(player, myPlayer.file, (String) map.get("Key"));
+		DisPlayer.addnewShop(player, myPlayer.file, (String) map.get("Key"));
 		return save();
 	}
 

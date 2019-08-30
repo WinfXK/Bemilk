@@ -15,7 +15,6 @@ import xiaokai.bemilk.shop.add.ItemTradeItem;
 import xiaokai.bemilk.shop.add.ShopOrSell;
 import xiaokai.bemilk.shop.add.addShopItem;
 import xiaokai.bemilk.shop.myshop.Receive;
-
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
@@ -115,10 +114,16 @@ public class Monitor implements Listener {
 				Receive.InventoryGetItem(player, (FormResponseCustom) data);
 			else if (f.getID(27) == ID)
 				myPlayer.OpenShopDis.disMain((FormResponseCustom) data);
+			else if (f.getID(28) == ID)
+				Dispose.ddisSeek(player, (FormResponseSimple) data);
+			else if (f.getID(29) == ID)
+				Dispose.disSeek(player, (FormResponseCustom) data);
+			else if (f.getID(30) == ID)
+				Dispose.disSHopSeek(player, (FormResponseCustom) data);
 		} catch (Exception e2) {
 			e2.printStackTrace();
-			MakeForm.Tip(player, kick.Message.getMessage("界面", new String[] { "{Player}", "{Money}" },
-					new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player) }));
+			MakeForm.Tip(player, kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Money}", "{Error}" },
+					new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), e2.getMessage() }));
 		}
 	}
 }

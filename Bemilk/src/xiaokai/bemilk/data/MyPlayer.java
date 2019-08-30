@@ -88,6 +88,10 @@ public class MyPlayer {
 	 * 打开大开商店项目的处理类
 	 */
 	public BaseDis OpenShopDis;
+	/**
+	 * 搜索结果存储地
+	 */
+	public List<SeekData> SeekData;
 
 	public MyPlayer(Player player) {
 		this.player = player;

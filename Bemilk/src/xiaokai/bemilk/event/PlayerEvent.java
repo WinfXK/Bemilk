@@ -100,6 +100,7 @@ public class PlayerEvent implements Listener {
 			kick.mis.getLogger().info("§6未检测到玩家§9" + player.getName() + "§6的数据！正在创建...");
 			DisPlayer.initializePlayerConfig(player);
 		}
+		DisPlayer.inspect(player.getName());
 	}
 
 	/**
@@ -113,7 +114,9 @@ public class PlayerEvent implements Listener {
 		if (!kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
 		Belle.exMaterials(player);
-		if(kick.config.getBoolean("玩家重生时重置玩家缓存数据"))
+		if (kick.config.getBoolean("玩家重生时重置玩家缓存数据")) {
+			kick.PlayerDataMap.get(player.getName()).config.save();
 			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
+		}
 	}
 }

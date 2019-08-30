@@ -6,6 +6,7 @@ import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
 import xiaokai.tool.data.ItemID;
+import xiaokai.tool.form.CustomForm;
 
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +27,14 @@ public abstract class BaseDis {
 	public Message msg;
 	public String[] k;
 	public Object[] d;
+	/**
+	 * 项目子类型
+	 */
+	public String Style;
+	/**
+	 * 主交互界面ID
+	 */
+	public int MainFormID = 27;
 	/**
 	 * 交互界面的标题
 	 */
@@ -55,7 +64,16 @@ public abstract class BaseDis {
 	 * 玩家背包对象
 	 */
 	public PlayerInventory Inventory;
+	/**
+	 * 界面
+	 */
+	public CustomForm form;
 
+	/**
+	 * 开始处理点击的商店项目的数据
+	 * 
+	 * @param data
+	 */
 	public BaseDis(ShopData data) {
 		this.data = data;
 		player = data.player;
@@ -66,10 +84,13 @@ public abstract class BaseDis {
 		msg = kick.Message;
 		k = new String[] { "{Player}", "{Money}" };
 		d = new Object[] { player.getName(), MyMoney() };
-		Title = msg.getSon("界面", "交互界面标题", new String[] { "{Player}", "{Money}", "{Title}" },
-				new Object[] { player.getName(), MyMoney(), Tool.getColorFont(data.Type.toUpperCase()) });
+		String Style = (String) Item.get("Style");
+		Title = msg.getSon("界面", "交互界面标题", new String[] { "{Player}", "{Money}", "{Title}" }, new Object[] {
+				player.getName(), MyMoney(),
+				Tool.getColorFont(data.Type.toUpperCase() + ((Style == null || Style.isEmpty()) ? "" : "-" + Style)) });
 		Money = Double.valueOf(String.valueOf(Item.get("Money")));
 		Inventory = player.getInventory();
+		form = new CustomForm(kick.formID.getID(MainFormID), Title);
 	}
 
 	/**
@@ -93,8 +114,16 @@ public abstract class BaseDis {
 	 * @return
 	 */
 	public String getItems() {
+		return getItems((Map<String, Object>) Item.get("Items"));
+	}
+
+	/**
+	 * 获取物品列表
+	 * 
+	 * @return
+	 */
+	public String getItems(Map<String, Object> items) {
 		String string = "";
-		Map<String, Object> items = (Map<String, Object>) Item.get("Items");
 		Set<String> list = items.keySet();
 		for (String ID : list) {
 			cn.nukkit.item.Item item = Tool.loadItem((Map<String, Object>) items.get(ID));
@@ -173,5 +202,14 @@ public abstract class BaseDis {
 	public boolean send(String string, boolean isok) {
 		player.sendMessage(string);
 		return isok;
+	}
+
+	/**
+	 * 取得调用的类型
+	 * 
+	 * @return
+	 */
+	public String getType() {
+		return data.Type;
 	}
 }

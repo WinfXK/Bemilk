@@ -1,8 +1,8 @@
-package xiaokai.bemilk.shop.open;
+package xiaokai.bemilk.shop.open.type;
 
+import xiaokai.bemilk.shop.open.BaseDis;
+import xiaokai.bemilk.shop.open.ShopData;
 import xiaokai.tool.Tool;
-import xiaokai.tool.form.CustomForm;
-
 import java.util.Map;
 import java.util.Set;
 
@@ -31,7 +31,6 @@ public class Shop extends BaseDis {
 		isShopCount = isShopCount > MaxCount ? MaxCount : isShopCount;
 		Object[] myData = { player.getName(), getItems(), Money, MyMoney(), isShopCount };
 		String Contxt = msg.getSun("界面", "出售商店", "内容", myKey, myData);
-		CustomForm form = new CustomForm(kick.formID.getID(27), Title);
 		form.addLabel(Contxt);
 		form.addSlider(msg.getSun("界面", "出售商店", "购买数量", k, d), MinCount, MaxCount, 1, isShopCount);
 		form.sendPlayer(player);

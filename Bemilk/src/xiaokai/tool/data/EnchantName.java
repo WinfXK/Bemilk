@@ -211,9 +211,14 @@ public enum EnchantName {
 	 * @return
 	 */
 	public static int UnknownToID(Object obj, int Default) {
-		if (obj == null || !NameKey.containsKey(String.valueOf(obj)))
+		String string = String.valueOf(obj);
+		if (obj == null || string.isEmpty())
 			return Default;
-		return NameKey.get(String.valueOf(obj));
+		if (Tool.isInteger(obj) && IDKey.containsKey(Tool.ObjectToInt(obj)))
+			return Tool.ObjectToInt(obj);
+		if (NameKey.containsKey(string))
+			return NameKey.get(string);
+		return Default;
 	}
 
 	/**

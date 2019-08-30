@@ -17,6 +17,11 @@ import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.shop.Shop;
+import xiaokai.bemilk.shop.open.type.Enchant;
+import xiaokai.bemilk.shop.open.type.ItemTradeItem;
+import xiaokai.bemilk.shop.open.type.MyShop;
+import xiaokai.bemilk.shop.open.type.Repair;
+import xiaokai.bemilk.shop.open.type.Sell;
 import xiaokai.tool.Tool;
 import xiaokai.tool.data.EnchantName;
 import xiaokai.tool.data.ItemID;
@@ -41,7 +46,7 @@ public class OpenShop {
 		try {
 			switch (data.Type) {
 			case "shop":
-				myPlayer.OpenShopDis = new xiaokai.bemilk.shop.open.Shop(data);
+				myPlayer.OpenShopDis = new xiaokai.bemilk.shop.open.type.Shop(data);
 				break;
 			case "sell":
 				myPlayer.OpenShopDis = new Sell(data);
