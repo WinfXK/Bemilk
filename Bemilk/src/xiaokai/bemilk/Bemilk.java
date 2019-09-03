@@ -1,5 +1,11 @@
 package xiaokai.bemilk;
 
+import xiaokai.bemilk.cmd.ShopCommand;
+import xiaokai.bemilk.event.Monitor;
+import xiaokai.bemilk.event.PlayerEvent;
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.tool.Tool;
+
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Set;
@@ -9,10 +15,6 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
-import xiaokai.bemilk.event.Monitor;
-import xiaokai.bemilk.event.PlayerEvent;
-import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
 
 /**
  * @author Winfxk
@@ -34,6 +36,7 @@ public class Bemilk extends PluginBase {
 		pm.registerEvents(new PlayerEvent(getKick()), this);
 		pm.registerEvents(new Monitor(getKick()), this);
 		float entime = ((float) (Duration.between(loadTime, Instant.now()).toMillis()));
+		this.getServer().getCommandMap().register(getName(), new ShopCommand(kick));
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "启动！") + "§6总耗时:§9"
 				+ (entime > 1000 ? ((entime / 1000) + "§6s! ") : entime + "§6ms") + " 启动耗时:§9"
 				+ ((float) (Duration.between(EnableTime, Instant.now()).toMillis())) + "§6ms" + "    §4此版本仅作为测试使用！");

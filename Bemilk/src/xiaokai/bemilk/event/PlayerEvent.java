@@ -82,7 +82,7 @@ public class PlayerEvent implements Listener {
 	public void onQuit(PlayerQuitEvent e) {
 		Player player = e.getPlayer();
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
-		if (myPlayer.config != null)
+		if (myPlayer != null && myPlayer.config != null)
 			myPlayer.config.save();
 		if (kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.remove(player.getName());
@@ -96,6 +96,8 @@ public class PlayerEvent implements Listener {
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
 		Player player = e.getPlayer();
+		if (!kick.PlayerDataMap.containsKey(player.getName()))
+			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
 		if (!DisPlayer.isConfig(player)) {
 			kick.mis.getLogger().info("§6未检测到玩家§9" + player.getName() + "§6的数据！正在创建...");
 			DisPlayer.initializePlayerConfig(player);
@@ -113,7 +115,8 @@ public class PlayerEvent implements Listener {
 		Player player = e.getPlayer();
 		if (!kick.PlayerDataMap.containsKey(player.getName()))
 			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
-		Belle.exMaterials(player);
+		if (kick.config.getBoolean("重生进服等事件检测玩家快捷工具持有"))
+			Belle.exMaterials(player);
 		if (kick.config.getBoolean("玩家重生时重置玩家缓存数据")) {
 			kick.PlayerDataMap.get(player.getName()).config.save();
 			kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));

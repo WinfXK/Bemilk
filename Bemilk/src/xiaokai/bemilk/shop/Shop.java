@@ -8,6 +8,8 @@ import java.util.Map;
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import me.onebone.economyapi.EconomyAPI;
+
+import xiaokai.bemilk.cmd.ShopCommand;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.tool.Tool;
 
@@ -73,6 +75,7 @@ public class Shop {
 		Kick.kick.ShopConfig.save();
 		if (isMsg)
 			player.sendMessage("§6您成功" + (isMake ? "§4创建§6一个商店" : "§9修改§6了这个商店"));
+		ShopCommand.reload();
 		return true;
 	}
 

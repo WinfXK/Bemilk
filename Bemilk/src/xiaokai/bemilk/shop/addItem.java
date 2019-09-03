@@ -7,6 +7,7 @@ import xiaokai.tool.Tool;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
@@ -39,6 +40,79 @@ public class addItem {
 		map.put("Player", player.getName());
 		map.put("Time", Tool.getDate() + " " + Tool.getTime());
 		map.put("Key", getKey(1, file));
+	}
+
+	/**
+	 * 添加一种定级定效的效果项目
+	 * 
+	 * @param Effects 效果的ID的信息
+	 * @param Money   效果的购买价格
+	 * @return
+	 */
+	public boolean addEffectByCustomEffect(Map<String, Map<String, Object>> Effects, int Money) {
+		map.put("Money", Money);
+		map.put("Type", "Effect");
+		map.put("Style", "CustomEffect");
+		map.put("Effects", Effects);
+		return save();
+	}
+
+	/**
+	 * 添加一种定级定效随机事件的效果项目
+	 * 
+	 * @param ID    效果的ID列表
+	 * @param Level 效果的等级
+	 * @param Time  效果的持续时间
+	 * @param Money 效果的购买价格
+	 * @return
+	 */
+	public boolean addEffectByRandTime(int ID, int Level, int MinTime, int MaxTime, int Money) {
+		map.put("ID", ID);
+		map.put("Level", Level);
+		map.put("MinTime", MinTime);
+		map.put("MaxTime", MaxTime);
+		map.put("Money", Money);
+		map.put("Type", "Effect");
+		map.put("Style", "RandTime");
+		return save();
+	}
+
+	/**
+	 * 添加一种定级随机效果的效果项目
+	 * 
+	 * @param ID    效果的ID列表
+	 * @param Level 效果的等级
+	 * @param Time  效果的持续时间
+	 * @param Money 效果的购买价格
+	 * @return
+	 */
+	public boolean addEffectByRandEffect(List<Integer> ID, int Level, int Time, int Money) {
+		map.put("Level", Level);
+		map.put("EffectTime", Time);
+		map.put("Money", Money);
+		map.put("Type", "Effect");
+		map.put("Style", "RandEffect");
+		map.put("ID", ID);
+		return save();
+	}
+
+	/**
+	 * 添加一种定级定效的效果项目
+	 * 
+	 * @param ID    效果的ID
+	 * @param Level 效果的等级
+	 * @param Time  效果的持续时间
+	 * @param Money 效果的购买价格
+	 * @return
+	 */
+	public boolean addEffectByisEffect(int ID, int Level, int Time, int Money) {
+		map.put("ID", ID);
+		map.put("Level", Level);
+		map.put("EffectTime", Time);
+		map.put("Money", Money);
+		map.put("Type", "Effect");
+		map.put("Style", "isEffect");
+		return save();
 	}
 
 	/**

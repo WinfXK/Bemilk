@@ -4,6 +4,7 @@ import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.shop.add.effect.addEffect;
 import xiaokai.tool.Tool;
 import xiaokai.tool.form.SimpleForm;
 
@@ -38,6 +39,8 @@ public class addShopItem {
 	public static boolean disMakeForm(Player player, FormResponseSimple data) {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		switch (Kick.ButtonTypeList[data.getClickedButtonId()]) {
+		case "药水效果":
+			return addEffect.makeMain(player, myPlayer.file);
 		case "工具修复":
 			return ItemRepair.MakeMain(player, myPlayer.file);
 		case "物品附魔":

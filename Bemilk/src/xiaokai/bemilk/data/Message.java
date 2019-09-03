@@ -33,13 +33,13 @@ public class Message {
 		return getSun(t, Son, Sun, new String[] {}, new String[] {});
 	}
 
-	public String getSun(String t, String Son, String Sun, String[] myKey, Object[] myData) {
+	public String getSun(String t, String Son, String Sun, String[] k, Object[] d) {
 		if (Message.exists(t) && (Message.get(t) instanceof Map)) {
 			HashMap<String, Object> map = (HashMap<String, Object>) Message.get(t);
 			if (map.containsKey(Son) && (map.get(Son) instanceof Map)) {
 				map = (HashMap<String, Object>) map.get(Son);
 				if (map.containsKey(Sun))
-					return getText(map.get(Sun).toString(), myKey, myData);
+					return getText(map.get(Sun).toString(), k, d);
 			}
 		}
 		return null;
@@ -49,11 +49,11 @@ public class Message {
 		return getSon(t, Son, new String[] {}, new String[] {});
 	}
 
-	public String getSon(String t, String Son, String[] myKey, Object[] myData) {
+	public String getSon(String t, String Son, String[] k, Object[] d) {
 		if (Message.exists(t) && (Message.get(t) instanceof Map)) {
 			HashMap<String, Object> map = (HashMap<String, Object>) Message.get(t);
 			if (map.containsKey(Son))
-				return getText(map.get(Son).toString(), myKey, myData);
+				return getText(map.get(Son).toString(), k, d);
 		}
 		return null;
 	}
@@ -62,9 +62,9 @@ public class Message {
 		return getMessage(t, new String[] {}, new String[] {});
 	}
 
-	public String getMessage(String t, String[] myKey, Object[] myData) {
+	public String getMessage(String t, String[] k, Object[] d) {
 		if (Message.exists(t))
-			return getText(Message.getString(t), myKey, myData);
+			return getText(Message.getString(t), k, d);
 		return null;
 	}
 
@@ -72,15 +72,15 @@ public class Message {
 		return getText(text, new String[] {}, new String[] {});
 	}
 
-	public String getText(Object tex, String[] myKey, Object[] myData) {
+	public String getText(Object tex, String[] k, Object[] d) {
 		load();
 		String text = String.valueOf(tex);
 		for (int i = 0; i < Key.length; i++)
 			if (text.contains(Key[i]))
 				text = text.replace(Key[i], Data[i]);
-		for (int i = 0; (i < myKey.length && i < myData.length); i++)
-			if (text.contains(myKey[i]))
-				text = text.replace(myKey[i], String.valueOf(myData[i]));
+		for (int i = 0; (i < k.length && i < d.length); i++)
+			if (text.contains(k[i]))
+				text = text.replace(k[i], String.valueOf(d[i]));
 		return text;
 	}
 }

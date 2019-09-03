@@ -680,7 +680,11 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		String name = (String) map.get("Name");
 		if (name != null && !name.isEmpty())
 			item.setCustomName(name);
-		item.setCompoundTag((byte[]) map.get("Nbt"));
+		try {
+			item.setCompoundTag((byte[]) map.get("Nbt"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return item;
 	}
 

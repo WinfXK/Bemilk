@@ -10,6 +10,7 @@ import xiaokai.bemilk.Bemilk;
 import xiaokai.bemilk.data.FormID;
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
+import xiaokai.tool.data.Effectrec;
 import xiaokai.tool.data.ItemID;
 
 /**
@@ -58,7 +59,8 @@ public class Kick {
 			/* 18 */"添加物品修复商店项目时的添加类型界面", /* 19 */"再添加工具修复商店项目的时候输入数据的界面", /* 20 */"添加商店时显示能添加的项目列表页",
 			/* 21 */"物品兑换上架从背包选择物品的物品列表备用页面", /* 22 */"商店删除项目页面显示列表", /* 23 */"商店删除项目确认界面",
 			/* 24 */"创建个人商店让选择添加物品方式的页面", /* 25 */"创建个人商店并且是以手动输入数据的页面", /* 26 */"创建个人商店并且是以从背包获取物品数据的页面",
-			/* 27 */"商店项目数据交互界面", /* 28 */"处理搜索结果", /* 29 */"主页搜索", /* 30 */"子页搜索页" };
+			/* 27 */"商店项目数据交互界面", /* 28 */"处理搜索结果", /* 29 */"主页搜索", /* 30 */"子页搜索页", /* 31 */"添加药水项目主页",
+			/* 32 */"输入药水信息页" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -94,7 +96,7 @@ public class Kick {
 	/**
 	 * 能创建的商店按钮的类型
 	 */
-	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔", "工具修复" };
+	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔", "工具修复", "药水效果" };
 	/**
 	 * 添加的商店的配置文件存储位置
 	 */
@@ -127,20 +129,24 @@ public class Kick {
 	 * 个人商店的类型
 	 */
 	public static final String[] addMyShopType = { "出售", "回收" };
+	/**
+	 * 存储自定义药水效果ID名称的文件名
+	 */
+	public static final String EffectrowConfigName = "Effectrow.yml";
 
-	public Kick(Bemilk knickers) {
+	public Kick(Bemilk bemilk) {
 		kick = this;
-		if (!knickers.getDataFolder().exists())
-			knickers.getDataFolder().mkdirs();
-		mis = knickers;
-		formIdConfig = new Config(new File(knickers.getDataFolder(), FormIDConfigName), Config.YAML);
+		if (!bemilk.getDataFolder().exists())
+			bemilk.getDataFolder().mkdirs();
+		mis = bemilk;
+		formIdConfig = new Config(new File(bemilk.getDataFolder(), FormIDConfigName), Config.YAML);
 		(new Belle(this)).start();
-		config = new Config(new File(knickers.getDataFolder(), ConfigName), Config.YAML);
+		config = new Config(new File(bemilk.getDataFolder(), ConfigName), Config.YAML);
 		ShopConfig = new Config(new File(mis.getDataFolder(), ShopConfigName), Config.YAML);
 		formID = new FormID(this);
 		formID.setConfig(formIdConfig.getAll());
 		Message = new Message(this);
-		mis.getLogger().info("§6已加载§9" + ItemID.load() + "§6个物品数据~");
+		mis.getLogger().info("§6已加载§9" + ItemID.load() + "§6个物品数据及§8" + Effectrec.reload() + "§6种效果数据！");
 		sThread = new startThread(this);
 		sThread.start();
 	}

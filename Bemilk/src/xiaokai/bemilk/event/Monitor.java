@@ -14,6 +14,7 @@ import xiaokai.bemilk.shop.add.ItemRepair;
 import xiaokai.bemilk.shop.add.ItemTradeItem;
 import xiaokai.bemilk.shop.add.ShopOrSell;
 import xiaokai.bemilk.shop.add.addShopItem;
+import xiaokai.bemilk.shop.add.effect.addEffect;
 import xiaokai.bemilk.shop.myshop.Receive;
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
@@ -112,7 +113,7 @@ public class Monitor implements Listener {
 				Receive.InputItem(player, (FormResponseCustom) data);
 			else if (f.getID(26) == ID)
 				Receive.InventoryGetItem(player, (FormResponseCustom) data);
-			else if (f.getID(27) == ID)
+			else if (f.getID(27) == ID && myPlayer != null && myPlayer.OpenShopDis != null)
 				myPlayer.OpenShopDis.disMain((FormResponseCustom) data);
 			else if (f.getID(28) == ID)
 				Dispose.ddisSeek(player, (FormResponseSimple) data);
@@ -120,10 +121,17 @@ public class Monitor implements Listener {
 				Dispose.disSeek(player, (FormResponseCustom) data);
 			else if (f.getID(30) == ID)
 				Dispose.disSHopSeek(player, (FormResponseCustom) data);
+			else if (f.getID(31) == ID)
+				addEffect.disMain(player, (FormResponseCustom) data);
+			else if (f.getID(32) == ID && myPlayer != null && myPlayer.makeBaseEffect != null)
+				myPlayer.makeBaseEffect.disMain((FormResponseCustom) data);
 		} catch (Exception e2) {
 			e2.printStackTrace();
-			MakeForm.Tip(player, kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Money}", "{Error}" },
-					new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), e2.getMessage() }));
+			kick.mis.getLogger().error("ID为" + ID + "的表单数据发生错误！");
+			MakeForm.Tip(player,
+					kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Money}", "{Error}" },
+							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
+									"ID为" + ID + "的表单数据发生错误！\n" + e2.getMessage() }));
 		}
 	}
 }

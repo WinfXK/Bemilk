@@ -2,21 +2,16 @@ name: Bemilk
 main: xiaokai.bemilk.Bemilk
 api:
 - 1.0.0
-version: 1.0.0.alpha
+version: 1.0Beta
 load: POSTWORLD
 website: http://EpicFX.cn
 author: Winfxk
 loadbefore:
 - EconomyAPI
-commands:
-   shop:
-      description: §9商店主命令
-      permission: Bemilk.Command.main
-      usage: §b/§6shop §chelp
-      aliases:
-      - 商店
-      - bemilk
 permissions:
-   Bemilk.Command.main:
-      description: 商店主命令
+   Bemilk.Command.Shop:
+      description: 商店命令
+      default: true
+   Bemilk.Command.Admin:
+      description: 管理命令
       default: true
