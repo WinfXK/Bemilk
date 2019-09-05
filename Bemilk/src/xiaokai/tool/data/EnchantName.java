@@ -5,6 +5,7 @@ import xiaokai.tool.Tool;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+
 import cn.nukkit.item.enchantment.Enchantment;
 
 /**
@@ -188,9 +189,16 @@ public enum EnchantName {
 	 * @return
 	 */
 	public static String UnknownToName(Object obj, String Default) {
-		if (obj == null || !IDKey.containsKey(Integer.valueOf(String.valueOf(obj))))
+		if (obj == null)
 			return Default;
-		return IDKey.get(Integer.valueOf(String.valueOf(obj)));
+		if (Tool.isInteger(obj) && IDKey.containsKey(Tool.ObjectToInt(obj)))
+			return IDKey.get(Tool.ObjectToInt(obj));
+		String string = String.valueOf(obj);
+		if (string.isEmpty())
+			return Default;
+		if (NameKey.containsKey(string))
+			return string;
+		return Default;
 	}
 
 	/**

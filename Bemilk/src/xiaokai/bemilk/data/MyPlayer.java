@@ -3,6 +3,10 @@ package xiaokai.bemilk.data;
  * @author Winfxk
  */
 
+import xiaokai.bemilk.set.Baseset;
+import xiaokai.bemilk.shop.add.effect.makeBaseEffect;
+import xiaokai.bemilk.shop.open.BaseDis;
+
 import java.io.File;
 import java.time.Instant;
 import java.util.List;
@@ -10,9 +14,6 @@ import java.util.List;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-
-import xiaokai.bemilk.shop.add.effect.makeBaseEffect;
-import xiaokai.bemilk.shop.open.BaseDis;
 
 public class MyPlayer {
 	/**
@@ -98,6 +99,10 @@ public class MyPlayer {
 	 * 添加药水项目的处理类
 	 */
 	public makeBaseEffect makeBaseEffect;
+	/**
+	 * 服务器配置构建类
+	 */
+	public Baseset baseset;
 
 	public MyPlayer(Player player) {
 		this.player = player;

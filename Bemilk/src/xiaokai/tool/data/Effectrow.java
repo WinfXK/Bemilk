@@ -193,7 +193,7 @@ public enum Effectrow {
 	 */
 	private Effectrow(int ID, String Name, String Path) {
 		this.ID = ID;
-		this.Name = name();
+		this.Name = Name;
 		this.Path = "textures/ui/" + Path;
 	}
 

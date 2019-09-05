@@ -74,7 +74,7 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 		int h = (int) (time / 3600);
 		time = time % 3600;
 		int i = (int) (time / 60);
-		double s = (double) (time % 60);
+		double s = time % 60;
 		return (y > 0 ? y + "年" : "") + (d > 0 ? d + "天" : "") + (h > 0 ? h + "小时" : "") + (i > 0 ? i + "分钟" : "")
 				+ (s > 0 ? Double2(s, 1) + "秒" : "");
 	}
@@ -490,8 +490,12 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	 * @return
 	 */
 	public static int ObjectToInt(Object object, int i) {
-		return object == null || object.toString().isEmpty() ? i
-				: isInteger(object) ? Float.valueOf(object.toString()).intValue() : i;
+		if (object == null)
+			return i;
+		String string = String.valueOf(object);
+		if (string.isEmpty() || !isInteger(object))
+			return i;
+		return string.contains(".") ? Float.valueOf(object.toString()).intValue() : Integer.valueOf(string);
 	}
 
 	/**

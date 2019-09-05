@@ -34,6 +34,17 @@
 效果商店:
    无法获取项目类型: §4打开失败！{n}§4无法获取项目类型！
    钱不足: §4滚你妹的！钱不够还来消遣我！滚去多挖点矿吧ヽ(‘⌒´メ)ノ
+   自定义效果:
+      内容: §6欢迎尊敬的§8{Player}§6使用效果商店{n}§c出售项目：{n}{Effects}{n}§2价格：§1{Money}
+      项目: §5{EffectName}§f(§8{EffectID}§f)§b*§2{EffectLevel}§a>§6时长：§3{EffectTime}{n}
+      购买成功: §6您成功购买了这个效果§f(§5{EffectName}§d[§4{EffectID}§d]§f)§6！您已在商店消费§5{reduceMoney}
+   定级定效随机时间:
+      内容: §6欢迎尊敬的§8{Player}§6使用效果商店{n}§c出售项目：{EffectName}{n}§a等级：§5{Level}{n}§b持续时长分别为：§d{LastTimes}{n}§2价格：§1{Money}
+      购买成功: §6您成功购买了这个效果§f(§5{EffectName}§d[§4{EffectID}§d]§f)§6！您已在商店消费§5{reduceMoney}
+   定级随机效果:
+      内容: §6欢迎尊敬的§8{Player}§6使用效果商店{n}§c出售项目：{n}{Effects}{n}§a等级：§5{Level}{n}§b持续时长：§d{LastTime}{n}§2价格：§1{Money}
+      购买成功: §6您成功购买了这个效果§f(§5{EffectName}§d[§4{EffectID}§d]§f)§6！您已在商店消费§5{reduceMoney}
+      效果项目: §6{EffectName}§f(§5{EffectID}§f}§f)
    定点出售:
       内容: §6欢迎尊敬的§8{Player}§6使用效果商店{n}§c出售项目：§5{EffectName}§f(§4{EffectID}§f){n}§a等级：§5{Level}{n}§b持续时长：§d{LastTime}{n}§2价格：§1{Money}
       购买成功: §6您成功购买了这个效果§f(§5{EffectName}§d[§4{EffectID}§d]§f)§6！您已在商店消费§5{reduceMoney}
@@ -179,3 +190,8 @@
    物品回收: §6回收§4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}§e{Money}§6{MoneyName}
    物品出售: §6出售§4{ItemName}§4(§f{ItemID}§4)§6{IsMultiMsg}§e{Money}§6{MoneyName}
    个人商店: §4{ShopType}§5{ItemCount}§6个§4{ItemName}§f(§5{ItemID}§f)§e{Money}§6{MoneyName}
+   药水效果:
+      自定义效果: §6包含§8{EffectName}等§5{EffectCount}§6种效果 售价：§5{Money}§6{MoneyName}
+      随机时间: §8{EffectName}§f(§5{EffectID}§f)§b*§3{EffectLevel}§f>§5T： §a{MinTime}§f-§c{MaxTime} §6售价：§5{Money}§6{MoneyName}
+      随机效果: §8{EffectName}§6等§5{EffectCount}§6种效果§b*§3{EffectLevel}§f>§5T： §a{LastTimes} §6售价：§5{Money}§6{MoneyName}
+      效果: §8{EffectName}§f(§5{EffectID}§f)§b*§3{EffectLevel}§f>§5T： §a{LastTimes}§f §6售价：§5{Money}§6{MoneyName}

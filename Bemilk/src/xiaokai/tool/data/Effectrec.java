@@ -83,11 +83,31 @@ public class Effectrec {
 	 * @param obj
 	 * @return
 	 */
+	public static String UnknownToName(Object obj) {
+		return UnknownToName(obj, null);
+	}
+
+	/**
+	 * 啥都不知道获取一个效果的名称
+	 * 
+	 * @param obj
+	 * @return
+	 */
 	public static String UnknownToName(Object obj, String Default) {
 		int ID = UnknownToID(obj, -1);
 		if (ID == -1)
 			return Default;
 		return getName(ID, Default);
+	}
+
+	/**
+	 * 啥都不知道获取一个效果的ID
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static int UnknownToID(Object obj) {
+		return UnknownToID(obj, 1);
 	}
 
 	/**
@@ -330,7 +350,7 @@ public class Effectrec {
 		int a = -1;
 		for (Integer i : list.keySet()) {
 			EffectData data = list.get(i);
-			string += "§2" + data.ID + "§f>§5" + data.Path + (((a++) - 1) % 3 == 0 ? "\n" : "  ");
+			string += "§2" + data.ID + "§f>§5" + data.name + (((a++) - 1) % 3 == 0 ? "\n" : "  ");
 		}
 		return string;
 	}

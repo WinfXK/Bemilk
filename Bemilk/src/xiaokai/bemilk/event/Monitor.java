@@ -16,6 +16,7 @@ import xiaokai.bemilk.shop.add.ShopOrSell;
 import xiaokai.bemilk.shop.add.addShopItem;
 import xiaokai.bemilk.shop.add.effect.addEffect;
 import xiaokai.bemilk.shop.myshop.Receive;
+
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
@@ -125,6 +126,10 @@ public class Monitor implements Listener {
 				addEffect.disMain(player, (FormResponseCustom) data);
 			else if (f.getID(32) == ID && myPlayer != null && myPlayer.makeBaseEffect != null)
 				myPlayer.makeBaseEffect.disMain((FormResponseCustom) data);
+			else if (f.getID(33) == ID)
+				Dispose.SettingSwitch(player, (FormResponseSimple) data);
+			else if (f.getID(34) == ID && myPlayer != null && myPlayer.baseset != null)
+				myPlayer.baseset.disMain(data);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 			kick.mis.getLogger().error("ID为" + ID + "的表单数据发生错误！");

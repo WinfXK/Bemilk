@@ -1,17 +1,5 @@
 package xiaokai.bemilk.form;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.time.Duration;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import cn.nukkit.Player;
-import cn.nukkit.utils.Config;
-import me.onebone.economyapi.EconomyAPI;
-
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Kick;
@@ -21,6 +9,20 @@ import xiaokai.tool.form.CustomForm;
 import xiaokai.tool.form.ModalForm;
 import xiaokai.tool.form.SimpleForm;
 
+import java.io.File;
+import java.io.FilenameFilter;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.nukkit.Player;
+import cn.nukkit.utils.Config;
+
+import me.onebone.economyapi.EconomyAPI;
+
 /**
  * @author Winfxk
  */
@@ -28,6 +30,31 @@ import xiaokai.tool.form.SimpleForm;
 public class MakeForm implements FilenameFilter {
 	private static Message msg = Kick.kick.Message;
 	private static Kick kick = Kick.kick;
+
+	/**
+	 * 插件属性设置
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static boolean Setting(Player player) {
+		if (!Kick.isAdmin(player))
+			return MakeForm.Tip(player,
+					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		SimpleForm form = new SimpleForm(kick.formID.getID(33), Tool.getColorFont("系统设置"), "§6请选择您想要设置的选项");
+		List<String> AdminList = new ArrayList<>();
+		form.addButton(Tool.getRandColor() + "配置设置");
+		AdminList.add("set");
+		form.addButton(Tool.getRandColor() + "自定义物品");
+		AdminList.add("item");
+		form.addButton(Tool.getRandColor() + "自定义效果");
+		AdminList.add("effect");
+		myPlayer.ExtraKeys = AdminList;
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		form.sendPlayer(player);
+		return true;
+	}
 
 	/**
 	 * 商店分页点开的搜索
@@ -67,19 +94,6 @@ public class MakeForm implements FilenameFilter {
 	public boolean accept(File dir, String name) {
 		File file = new File(dir, name);
 		return file.isFile();
-	}
-
-	/**
-	 * 插件属性设置
-	 * 
-	 * @param player
-	 * @return
-	 */
-	public static boolean Setting(Player player) {
-		if (!Kick.isAdmin(player))
-			return MakeForm.Tip(player,
-					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		return true;
 	}
 
 	/**

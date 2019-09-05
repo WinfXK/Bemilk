@@ -1,17 +1,5 @@
 package xiaokai.bemilk.shop.open;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import cn.nukkit.Player;
-import cn.nukkit.item.Item;
-import cn.nukkit.utils.Config;
-import me.onebone.economyapi.EconomyAPI;
-
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
@@ -24,9 +12,23 @@ import xiaokai.bemilk.shop.open.type.MyShop;
 import xiaokai.bemilk.shop.open.type.Repair;
 import xiaokai.bemilk.shop.open.type.Sell;
 import xiaokai.tool.Tool;
+import xiaokai.tool.data.Effectrec;
 import xiaokai.tool.data.EnchantName;
 import xiaokai.tool.data.ItemID;
 import xiaokai.tool.form.SimpleForm;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import cn.nukkit.Player;
+import cn.nukkit.item.Item;
+import cn.nukkit.utils.Config;
+
+import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -192,20 +194,63 @@ public class OpenShop {
 			return form;
 		String[] k;
 		Object[] d;
-		String Style;
-		String Icon;
+		int ID;
 		try {
+			List<String> strings;
+			String Style, Icon, ike;
+			Object ItemMoney = Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money");
 			switch (type.toLowerCase()) {
+			case "effect":
+				Style = (String) item.get("Style");
+				if (Style == null || Style.isEmpty())
+					return form;
+				switch (Style.toLowerCase()) {
+				case "iseffect":
+					k = new String[] { "{Player}", "{Money}", "{EffectName}", "{EffectID}", "{EffectLevel}",
+							"{LastTimes}" };
+					ID = Tool.ObjectToInt(item.get("ID"));
+					ike = msg.getSun("按钮", "药水效果", "效果", k, new Object[] { player.getName(), ItemMoney,
+							Effectrec.getName(ID), ID, item.get("Level"), item.get("EffectTime") });
+					form.addButton(ike, true, Effectrec.getPath(ID));
+					break;
+				case "randeffect":
+					k = new String[] { "{Player}", "{Money}", "{EffectName}", "{EffectCount}", "{EffectLevel}",
+							"{LastTimes}" };
+					List<Integer> IDs = (List<Integer>) item.get("ID");
+					ID = IDs.get(Tool.getRand(0, IDs.size() - 1));
+					ike = msg.getSun("按钮", "药水效果", "随机效果", k, new Object[] { player.getName(), ItemMoney,
+							Effectrec.getName(ID), IDs.size(), item.get("Level"), item.get("EffectTime") });
+					form.addButton(ike, true, Effectrec.getPath(ID));
+					break;
+				case "randtime":
+					ID = Tool.ObjectToInt(item.get("ID"));
+					k = new String[] { "{Player}", "{Money}", "{EffectName}", "{EffectID}", "{EffectLevel}",
+							"{MinTime}", "{MaxTime}" };
+					ike = msg.getSun("按钮", "药水效果", "随机时间", k, new Object[] { player.getName(), ItemMoney,
+							Effectrec.getName(ID), ID, item.get("Level"), item.get("MinTime"), item.get("MaxTime") });
+					form.addButton(ike, true, Effectrec.getPath(ID));
+					break;
+				case "customeffect":
+					Map<String, Object> Effects = (Map<String, Object>) item.get("Effects");
+					strings = new ArrayList<>(Effects.keySet());
+					ike = strings.get(Tool.getRand(0, strings.size() - 1));
+					ID = Tool.ObjectToInt(((Map<String, Object>) Effects.get(ike)).get("ID"));
+					k = new String[] { "{Player}", "{Money}", "{EffectName}", "{EffectCount}" };
+					ike = msg.getSun("按钮", "药水效果", "自定义效果", k,
+							new Object[] { player.getName(), ItemMoney, Effectrec.getName(ID), Effects.size() });
+					form.addButton(ike, true, Effectrec.getPath(ID));
+					break;
+				default:
+					return form;
+				}
+				break;
 			case "myshop":
 				Item item2 = Tool.loadItem((Map<String, Object>) item.get("Item"));
 				k = new String[] { "{Player}", "{Money}", "{ShopType}", "{ItemCount}", "{ItemName}", "{ItemID}" };
+				ike = String.valueOf(item.get("Style")).toLowerCase().equals("sell") ? "回收" : "出售";
 				form.addButton(
-						msg.getSon("按钮", "个人商店", k,
-								new Object[] { player.getName(),
-										Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要"
-												: item.get("Money"),
-										String.valueOf(item.get("Style")).toLowerCase().equals("sell") ? "回收" : "出售",
-										item.get("ItemCount"), ItemID.getName(item2), ItemID.getID(item2) }),
+						msg.getSon("按钮", "个人商店", k, new Object[] { player.getName(), ItemMoney, ike,
+								item.get("ItemCount"), ItemID.getName(item2), ItemID.getID(item2) }),
 						true, ItemID.getPath(item2));
 				break;
 			case "shop":
@@ -214,9 +259,7 @@ public class OpenShop {
 				String ShopItemsID = ShopItemsKeys.get(Tool.getRand(0, ShopItemsKeys.size() - 1));
 				Item item3 = Tool.loadItem((Map<String, Object>) ShopItems.get(ShopItemsID));
 				k = new String[] { "{Player}", "{Money}", "{ItemName}", "{ItemID}", "{IsMultiMsg}" };
-				d = new Object[] { player.getName(),
-						Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-						ItemID.getName(item3), ShopItemsID,
+				d = new Object[] { player.getName(), ItemMoney, ItemID.getName(item3), ShopItemsID,
 						(ShopItemsKeys.size() > 1) ? ("等§4" + ShopItemsKeys.size() + "§6个物品") : "" };
 				form.addButton(msg.getSon("按钮", "物品出售", k, d), true, ItemID.getPathByID(ShopItemsID));
 				break;
@@ -226,9 +269,7 @@ public class OpenShop {
 				String ItemsID = ItemsKeys.get(Tool.getRand(0, ItemsKeys.size() - 1));
 				Item item31 = Tool.loadItem((Map<String, Object>) Items.get(ItemsID));
 				k = new String[] { "{Player}", "{Money}", "{ItemName}", "{ItemID}", "{IsMultiMsg}" };
-				d = new Object[] { player.getName(),
-						Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-						ItemID.getName(item31), ItemsID,
+				d = new Object[] { player.getName(), ItemMoney, ItemID.getName(item31), ItemsID,
 						(ItemsKeys.size() > 1) ? ("等§4" + ItemsKeys.size() + "§6个物品") : "" };
 				form.addButton(msg.getSon("按钮", "物品回收", k, d), true, ItemID.getPathByID(ItemsID));
 				break;
@@ -243,10 +284,8 @@ public class OpenShop {
 				String MoneyItemID = MoneyItemKeys.get(Tool.getRand(0, MoneyItemKeys.size() - 1));
 				Item Shopitem311 = Tool.loadItem((Map<String, Object>) ShopItem.get(ShopItemID));
 				Item Moneyitem311 = Tool.loadItem((Map<String, Object>) MoneyItem.get(MoneyItemID));
-				d = new Object[] { player.getName(),
-						Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-						ItemID.getName(Shopitem311), ShopItemID, ShopItemKeys.size(),
-						(ShopItemKeys.size() > 0) ? ("等§4" + ShopItemKeys.size() + "§6个物品") : "",
+				d = new Object[] { player.getName(), ItemMoney, ItemID.getName(Shopitem311), ShopItemID,
+						ShopItemKeys.size(), (ShopItemKeys.size() > 0) ? ("等§4" + ShopItemKeys.size() + "§6个物品") : "",
 						ItemID.getName(Moneyitem311), MoneyItemID,
 						(MoneyItemKeys.size() > 1) ? ("等§4" + MoneyItemKeys.size() + "§6个物品") : "",
 						MoneyItemKeys.size() };
@@ -259,8 +298,7 @@ public class OpenShop {
 				switch (Style.toLowerCase()) {
 				case "enchantlevel":
 					k = new String[] { "{Player}", "{Money}", "{EnchantName}", "{EnchantID}", "{EnchantLevel}" };
-					d = new Object[] { player.getName(),
-							Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
+					d = new Object[] { player.getName(), ItemMoney,
 							EnchantName.UnknownToName(item.get("EnchantID"), "未知"), item.get("EnchantID"),
 							item.get("EnchantLevel") };
 					Icon = (String) kick.config.get("物品附魔项目图标");
@@ -268,11 +306,10 @@ public class OpenShop {
 					break;
 				case "enchantlevelrand":
 					int EnchantRand = Tool.ObjectToInt(item.get("EnchantRand"), 100);
-					String Success = ((double) ((double) (1 / EnchantRand)) * 100) + "%";
+					String Success = ((1 / EnchantRand) * 100) + "%";
 					k = new String[] { "{Player}", "{Money}", "{EnchantName}", "{EnchantID}", "{EnchantLevel}",
 							"{Success}", "{SBEnchantID}", "{SBEnchantName}", "{SBEnchantLevel}" };
-					d = new Object[] { player.getName(),
-							Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
+					d = new Object[] { player.getName(), ItemMoney,
 							EnchantName.UnknownToName(item.get("EnchantID"), "未知"), item.get("EnchantID"),
 							item.get("EnchantLevel"), Success, item.get("SBEnchantID"),
 							EnchantName.UnknownToName(item.get("SBEnchantID"), "未知"), item.get("SBEnchantLevel") };
@@ -281,8 +318,7 @@ public class OpenShop {
 					break;
 				case "enchantbycustom":
 					k = new String[] { "{Player}", "{Money}" };
-					d = new Object[] { player.getName(),
-							Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money") };
+					d = new Object[] { player.getName(), ItemMoney };
 					Icon = (String) kick.config.get("物品附魔项目图标");
 					form.addButton(msg.getSun("按钮", "物品附魔", "自定义附魔", k, d), true, Icon);
 					break;
@@ -297,27 +333,23 @@ public class OpenShop {
 				switch (Style.toLowerCase()) {
 				case "random":
 					int RepairCount = Tool.ObjectToInt(item.get("RepairCount"), 100);
-					String Success = ((double) ((double) (1 / RepairCount)) * 100) + "%";
+					String Success = ((1 / RepairCount) * 100) + "%";
 					k = new String[] { "{Player}", "{Money}", "{MinRepair}", "{MaxRepair}", "{Success}",
 							"{SBMinRepair}", "{SBMaxRepair}" };
-					d = new Object[] { player.getName(),
-							Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money"),
-							item.get("MinRepair"), item.get("MaxRepair"), Success, item.get("SBMinRepair"),
-							item.get("SBMaxRepair") };
+					d = new Object[] { player.getName(), ItemMoney, item.get("MinRepair"), item.get("MaxRepair"),
+							Success, item.get("SBMinRepair"), item.get("SBMaxRepair") };
 					Icon = (String) kick.config.get("物品修复项目图标");
 					form.addButton(msg.getSun("按钮", "物品修复", "随机增加", k, d), true, Icon);
 					break;
 				case "soarto":
 					k = new String[] { "{Player}", "{Count}", "{Money}" };
-					d = new Object[] { player.getName(), item.get("Repair"),
-							Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money") };
+					d = new Object[] { player.getName(), item.get("Repair"), ItemMoney };
 					Icon = (String) kick.config.get("物品修复项目图标");
 					form.addButton(msg.getSun("按钮", "物品修复", "总量增加", k, d), true, Icon);
 					break;
 				case "some":
 					k = new String[] { "{Player}", "{Count}", "{Money}" };
-					d = new Object[] { player.getName(), item.get("Repair"),
-							Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money") };
+					d = new Object[] { player.getName(), item.get("Repair"), ItemMoney };
 					Icon = (String) kick.config.get("物品修复项目图标");
 					form.addButton(msg.getSun("按钮", "物品修复", "定量增加", k, d), true, Icon);
 					break;

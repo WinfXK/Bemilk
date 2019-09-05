@@ -8,9 +8,14 @@ import xiaokai.bemilk.form.manage.addShop;
 import xiaokai.bemilk.form.manage.delShop;
 import xiaokai.bemilk.form.manage.setShop;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.set.CustomEffect;
+import xiaokai.bemilk.set.CustomItem;
+import xiaokai.bemilk.set.SetConfig;
 import xiaokai.bemilk.shop.delShopItem;
 import xiaokai.bemilk.shop.add.addShopItem;
 import xiaokai.bemilk.shop.open.OpenShop;
+import xiaokai.tool.data.Effectrec;
+import xiaokai.tool.data.EnchantName;
 import xiaokai.tool.data.ItemID;
 import xiaokai.tool.form.SimpleForm;
 
@@ -19,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
@@ -57,11 +63,7 @@ public class Dispose {
 				: (HashMap<String, Object>) object;
 		for (String ike : Shops.keySet()) {
 			Map<String, Object> map = (Map<String, Object>) Shops.get(ike);
-			String string2 = map.toString();
-			String string3 = ItemID.UnknownToID(string);
-			String string4 = ItemID.UnknownToName(string);
-			if (string2.contains(string) || (string3 != null && string2.contains(string3))
-					|| (string4 != null && string2.contains(string4))) {
+			if (isOK(map, string)) {
 				form = OpenShop.getForm(player, form, map);
 				SeekData adata = new SeekData();
 				adata.file = myPlayer.file;
@@ -75,19 +77,6 @@ public class Dispose {
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
-	}
-
-	/**
-	 * 处理主页的搜索结果
-	 * 
-	 * @param player
-	 * @param data
-	 * @return
-	 */
-	public static boolean ddisSeek(Player player, FormResponseSimple data) {
-		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		SeekData data2 = myPlayer.SeekData.get(data.getClickedButtonId());
-		return OpenShop.Open(player, data2.file, data2.Key);
 	}
 
 	/**
@@ -114,11 +103,7 @@ public class Dispose {
 					: (HashMap<String, Object>) object;
 			for (String ike : Shops.keySet()) {
 				Map<String, Object> map = (Map<String, Object>) Shops.get(ike);
-				String string2 = map.toString();
-				String string3 = ItemID.UnknownToID(string);
-				String string4 = ItemID.UnknownToName(string);
-				if (string2.contains(string) || (string3 != null && string2.contains(string3))
-						|| (string4 != null && string2.contains(string4))) {
+				if (isOK(map, string)) {
 					form = OpenShop.getForm(player, form, map);
 					SeekData adata = new SeekData();
 					adata.file = file;
@@ -134,6 +119,98 @@ public class Dispose {
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
+	}
+
+	/**
+	 * 判断是否存在！
+	 * 
+	 * @param map
+	 * @param data
+	 * @return
+	 */
+	public static boolean isOK(Map<String, Object> map, String g) {
+		Set<String> keys = map.keySet();
+		for (String Key : keys) {
+			Object obj = map.get(Key);
+			if (Key.equals(g) || Key.contains(g))
+				return true;
+			if ((obj instanceof List))
+				if (isOK((List<Object>) obj, g))
+					return true;
+			if ((obj instanceof Map))
+				if (isOK((Map<String, Object>) obj, g))
+					return true;
+			String string = String.valueOf(obj);
+			if (string.equals(g) || string.contains(g))
+				return true;
+			String[] objs = { ItemID.UnknownToName(g, null), Effectrec.UnknownToName(g, null),
+					EnchantName.UnknownToName(g, null) };
+			for (String string1 : objs) {
+				if (string1 == null || string1.isEmpty())
+					continue;
+				if (string.equals(string1) || string.contains(string1))
+					return true;
+			}
+			objs = new String[] { ItemID.UnknownToName(string, null), Effectrec.UnknownToName(string, null),
+					EnchantName.UnknownToName(string, null) };
+			for (String string1 : objs) {
+				if (string1 == null || string1.isEmpty())
+					continue;
+				if (g.equals(string1) || g.contains(string1) || string1.equals(g) || string1.contains(g))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 判断是否存在！
+	 * 
+	 * @param list
+	 * @param data
+	 * @return
+	 */
+	public static boolean isOK(List<Object> list, String g) {
+		for (Object obj : list) {
+			if ((obj instanceof List))
+				if (isOK((List<Object>) obj, g))
+					return true;
+			if ((obj instanceof Map))
+				if (isOK((Map<String, Object>) obj, g))
+					return true;
+			String string = String.valueOf(obj);
+			if (string.equals(g) || string.contains(g))
+				return true;
+			String[] objs = { ItemID.UnknownToName(g, null), Effectrec.UnknownToName(g), EnchantName.UnknownToName(g) };
+			for (String string1 : objs) {
+				if (string1 == null || string1.isEmpty())
+					continue;
+				if (string.equals(string1) || string.contains(string1))
+					return true;
+			}
+			objs = new String[] { ItemID.UnknownToName(string, null), Effectrec.UnknownToName(string, null),
+					EnchantName.UnknownToName(string, null) };
+			for (String string1 : objs) {
+				if (string1 == null || string1.isEmpty())
+					continue;
+				if (g.equals(string1) || g.contains(string1) || string1.equals(g) || string1.contains(g))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * 处理主页的搜索结果
+	 * 
+	 * @param player
+	 * @param data
+	 * @return
+	 */
+	public static boolean ddisSeek(Player player, FormResponseSimple data) {
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		SeekData data2 = myPlayer.SeekData.get(data.getClickedButtonId());
+		return OpenShop.Open(player, data2.file, data2.Key);
 	}
 
 	/**
@@ -250,5 +327,31 @@ public class Dispose {
 		player.sendMessage(kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Error}" },
 				new Object[] { player.getName(), "您的权限不足或要打开的界面不存在！" }));
 		return false;
+	}
+
+	/**
+	 * 构建设置的处理对象
+	 * 
+	 * @param player
+	 * @param data
+	 * @return
+	 */
+	public static boolean SettingSwitch(Player player, FormResponseSimple data) {
+		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
+		switch (myPlayer.ExtraKeys.get(data.getClickedButtonId())) {
+		case "set":
+			myPlayer.baseset = new SetConfig(player);
+			break;
+		case "item":
+			myPlayer.baseset = new CustomItem(player);
+			break;
+		case "effect":
+			myPlayer.baseset = new CustomEffect(player);
+			break;
+		default:
+			return MakeForm.Tip(player, "§4无法获取项目类型！");
+		}
+		kick.PlayerDataMap.put(player.getName(), myPlayer);
+		return myPlayer.baseset.makeMain();
 	}
 }
