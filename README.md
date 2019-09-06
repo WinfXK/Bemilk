@@ -6,6 +6,7 @@
 一个[NukkitX](https://github.com/NukkitX/Nukkit)多功能自定义GUi商店插件
 
 ## Knickers 有哪些功能？
+> - 完全的交互界面！无复杂操作！
 > - 拥有高度自由的可配置文件
 > - 多种交易方式
 > 	- 个人商店
