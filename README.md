@@ -44,15 +44,15 @@ Bemilk 该如何使用？
 > - 本插件当前需要[EconomyAPI](https://nukkitx.com/resources/economyapi.14/)的支持才能正常使用所有功能
 ## 问题反馈
 
-####部分截图
+#### 部分截图
 
-<img src="http://image.epicfx.cn/nukkit/Bemilk/1.png" width="100%" align="left" style="overflow:hidden"/>
-<img src="http://image.epicfx.cn/nukkit/Bemilk/2.png" width="100%" align="left" style="overflow:hidden"/>
-<img src="http://image.epicfx.cn/nukkit/Bemilk/3.png" width="100%" align="left" style="overflow:hidden"/>
-<img src="http://image.epicfx.cn/nukkit/Bemilk/4.png" width="100%" align="left" style="overflow:hidden"/>
-<img src="http://image.epicfx.cn/nukkit/Bemilk/5.png" width="100%" align="left" style="overflow:hidden"/>
-<img src="http://image.epicfx.cn/nukkit/Bemilk/6.png" width="100%" align="left" style="overflow:hidden"/>
-<img src="http://image.epicfx.cn/nukkit/Bemilk/7.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/1.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/2.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/3.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/4.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/5.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/6.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
+<img src="https://github.com/WinfXK/Bemilk/blob/master/Image/7.png?raw=true" width="100%" align="left" style="overflow:hidden"/>
 #### 全局玩家可视文字皆可自定义！
 <img src="http://image.epicfx.cn/nukkit/Bemilk/8.png" width="100%" align="left" style="overflow:hidden"/>
 
