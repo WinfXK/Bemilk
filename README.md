@@ -5,8 +5,7 @@
 
 一个[NukkitX](https://github.com/NukkitX/Nukkit)多功能自定义GUi商店插件
 
-## Bemilk 有哪些功能？
-> - 完全的交互界面！无复杂操作！
+## Knickers 有哪些功能？
 > - 拥有高度自由的可配置文件
 > - 多种交易方式
 > 	- 个人商店
@@ -30,7 +29,7 @@
 > - 傻瓜式的使用方式
 > - 傻瓜式的配置方式
 > - 往下看！您将会收获更多！
-## Bemilk 该如何使用？
+## Knickers 该如何使用？
 
 #### 命令介绍
 Bemilk 该如何使用？
@@ -44,6 +43,18 @@ Bemilk 该如何使用？
 #### 依赖：
 > - 本插件当前需要[EconomyAPI](https://nukkitx.com/resources/economyapi.14/)的支持才能正常使用所有功能
 ## 问题反馈
+
+####部分截图
+
+<img src="http://image.epicfx.cn/nukkit/Bemilk/1.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="http://image.epicfx.cn/nukkit/Bemilk/2.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="http://image.epicfx.cn/nukkit/Bemilk/3.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="http://image.epicfx.cn/nukkit/Bemilk/4.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="http://image.epicfx.cn/nukkit/Bemilk/5.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="http://image.epicfx.cn/nukkit/Bemilk/6.png" width="100%" align="left" style="overflow:hidden"/>
+<img src="http://image.epicfx.cn/nukkit/Bemilk/7.png" width="100%" align="left" style="overflow:hidden"/>
+#### 全局玩家可视文字皆可自定义！
+<img src="http://image.epicfx.cn/nukkit/Bemilk/8.png" width="100%" align="left" style="overflow:hidden"/>
 
 #### 在使用中有任何问题，欢迎反馈给我，可以用以下联系方式跟我交流
 
