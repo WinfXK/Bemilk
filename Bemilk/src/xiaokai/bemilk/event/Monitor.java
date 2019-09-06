@@ -130,6 +130,8 @@ public class Monitor implements Listener {
 				Dispose.SettingSwitch(player, (FormResponseSimple) data);
 			else if (f.getID(34) == ID && myPlayer != null && myPlayer.baseset != null)
 				myPlayer.baseset.disMain(data);
+			else if (f.getID(35) == ID && myPlayer != null && myPlayer.basesetForm != null)
+				myPlayer.basesetForm.disMain(data);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 			kick.mis.getLogger().error("ID为" + ID + "的表单数据发生错误！");

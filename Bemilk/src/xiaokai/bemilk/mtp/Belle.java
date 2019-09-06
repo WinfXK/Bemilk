@@ -1,14 +1,13 @@
 package xiaokai.bemilk.mtp;
 
+import xiaokai.tool.Tool;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 import cn.nukkit.Player;
 import cn.nukkit.inventory.Inventory;
@@ -18,7 +17,9 @@ import cn.nukkit.nbt.tag.CompoundTag;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
 import cn.nukkit.utils.Utils;
-import xiaokai.tool.Tool;
+
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author Winfxk
@@ -90,6 +91,31 @@ public class Belle {
 				} catch (Exception e) {
 					kick.mis.getLogger().error("§4已发现§6" + fns.getName() + "§4存在错误！请检查！" + e.getMessage());
 				}
+		}
+		file = new File(kick.mis.getDataFolder(), Kick.PlayerConfigPath);
+		for (String Fn : file.list()) {
+			File fns = new File(file, Fn);
+			if (fns.isFile())
+				try {
+					content = Utils.readFile(fns);
+					map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
+				} catch (Exception e) {
+					kick.mis.getLogger().error("§4已发现§6" + fns.getName() + "§4存在错误！请检查！" + e.getMessage());
+				}
+		}
+		file = new File(kick.mis.getDataFolder(), kick.ItemIDConfigName);
+		try {
+			content = Utils.readFile(file);
+			map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
+		} catch (Exception e) {
+			kick.mis.getLogger().error("§4已发现§6" + file.getName() + "§4存在错误！请检查！" + e.getMessage());
+		}
+		file = new File(kick.mis.getDataFolder(), Kick.EffectrowConfigName);
+		try {
+			content = Utils.readFile(file);
+			map = new ConfigSection(yaml.loadAs(content, LinkedHashMap.class));
+		} catch (Exception e) {
+			kick.mis.getLogger().error("§4已发现§6" + file.getName() + "§4存在错误！请检查！" + e.getMessage());
 		}
 	}
 

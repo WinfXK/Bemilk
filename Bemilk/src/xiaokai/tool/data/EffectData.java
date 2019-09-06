@@ -3,13 +3,10 @@ package xiaokai.tool.data;
 *@author Winfxk
 */
 
-import cn.nukkit.potion.Effect;
-
 public class EffectData {
 	public int ID;
 	public String name;
 	public String Path;
-	public Effect effect;
 
 	/**
 	 * 药水效果数据
@@ -22,6 +19,5 @@ public class EffectData {
 		this.ID = ID;
 		this.name = name;
 		this.Path = Path;
-		effect = Effect.getEffect(ID);
 	}
 }

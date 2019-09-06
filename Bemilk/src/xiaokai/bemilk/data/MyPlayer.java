@@ -4,6 +4,7 @@ package xiaokai.bemilk.data;
  */
 
 import xiaokai.bemilk.set.Baseset;
+import xiaokai.bemilk.set.BasesetForm;
 import xiaokai.bemilk.shop.add.effect.makeBaseEffect;
 import xiaokai.bemilk.shop.open.BaseDis;
 
@@ -103,6 +104,10 @@ public class MyPlayer {
 	 * 服务器配置构建类
 	 */
 	public Baseset baseset;
+	/**
+	 * 基本界面类
+	 */
+	public BasesetForm basesetForm;
 
 	public MyPlayer(Player player) {
 		this.player = player;

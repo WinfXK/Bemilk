@@ -37,15 +37,21 @@ public class Effectrec {
 			list.put(row.getID(), new EffectData(row.getID(), row.getName(), row.getPath()));
 		Map<String, Object> map = config.getAll();
 		for (String ike : map.keySet()) {
-			Object obj = map.get(ike);
-			Map<String, Object> item = (obj == null || !(obj instanceof Map)) ? new HashMap<>()
-					: (Map<String, Object>) obj;
-			if (item.size() < 1) {
-				kick.mis.getLogger().error("§4自定义效果配置错误！请检查！错误Key：" + ike);
-				continue;
+			try {
+				Object obj = map.get(ike);
+				Map<String, Object> item = (obj == null || !(obj instanceof Map)) ? new HashMap<>()
+						: (Map<String, Object>) obj;
+				if (item.size() < 1) {
+					kick.mis.getLogger().error("§4自定义效果配置错误！请检查！错误Key：" + ike);
+					continue;
+				}
+				int ID = Tool.ObjectToInt(item.get("ID"));
+				list.put(ID,
+						new EffectData(ID, Tool.objToString(item.get("Name")), Tool.objToString(item.get("Path"))));
+			} catch (Exception e) {
+				e.printStackTrace();
+				kick.mis.getLogger().error("§4无法加载Key：§6" + ike + "§4的数据！请检查合法性！" + e.getMessage());
 			}
-			int ID = Tool.ObjectToInt(item.get("ID"));
-			list.put(ID, new EffectData(ID, (String) item.get("Name"), (String) item.get("Path")));
 		}
 		Items = list.size();
 		return Items;

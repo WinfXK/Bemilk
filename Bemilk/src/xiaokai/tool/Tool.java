@@ -51,6 +51,29 @@ public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
 
 	/**
+	 * Object对象转换为String
+	 * 
+	 * @param obj
+	 * @return
+	 */
+	public static String objToString(Object obj) {
+		return objToString(obj, null);
+	}
+
+	/**
+	 * Object对象转换为String
+	 * 
+	 * @param obj
+	 * @param string
+	 * @return
+	 */
+	public static String objToString(Object obj, String string) {
+		if (obj == null)
+			return string;
+		return String.valueOf(obj);
+	}
+
+	/**
 	 * 获取从一个时间点到现在的时间差
 	 * 
 	 * @param time 时间点
