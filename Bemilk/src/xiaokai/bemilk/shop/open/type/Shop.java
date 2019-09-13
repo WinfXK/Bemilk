@@ -2,7 +2,8 @@ package xiaokai.bemilk.shop.open.type;
 
 import xiaokai.bemilk.shop.open.BaseDis;
 import xiaokai.bemilk.shop.open.ShopData;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
+
 import java.util.Map;
 import java.util.Set;
 

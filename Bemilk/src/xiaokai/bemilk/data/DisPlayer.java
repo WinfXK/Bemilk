@@ -15,7 +15,7 @@ import me.onebone.economyapi.EconomyAPI;
 
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 /**
  * @author Winfxk

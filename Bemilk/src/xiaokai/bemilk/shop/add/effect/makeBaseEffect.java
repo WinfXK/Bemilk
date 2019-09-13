@@ -3,7 +3,7 @@ package xiaokai.bemilk.shop.add.effect;
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.form.CustomForm;
+import xiaokai.bemilk.tool.form.CustomForm;
 
 import java.io.File;
 

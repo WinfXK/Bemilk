@@ -1,7 +1,7 @@
-package xiaokai.tool.data;
+package xiaokai.bemilk.tool.data;
 
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;
 import java.util.ArrayList;

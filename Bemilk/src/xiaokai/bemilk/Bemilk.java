@@ -4,7 +4,7 @@ import xiaokai.bemilk.cmd.ShopCommand;
 import xiaokai.bemilk.event.Monitor;
 import xiaokai.bemilk.event.PlayerEvent;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 import java.time.Duration;
 import java.time.Instant;

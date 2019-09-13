@@ -5,10 +5,10 @@ import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.shop.addItem;
-import xiaokai.tool.Tool;
-import xiaokai.tool.data.EnchantName;
-import xiaokai.tool.form.CustomForm;
-import xiaokai.tool.form.SimpleForm;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.data.EnchantName;
+import xiaokai.bemilk.tool.form.CustomForm;
+import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.io.File;
 import java.util.HashMap;
@@ -120,7 +120,7 @@ public class ItemEnchant {
 			int SBEnchantID = data.getDropdownResponse(3).getElementID();
 			SBEnchantID = (SBEnchantID > (EnchantName.getNameList().size() - 1)) ? -1 : SBEnchantID;
 			int SBEnchantLevel = data.getDropdownResponse(4).getElementID();
-			boolean isTool = data.getToggleResponse(5);
+			boolean isTool = data.getToggleResponse(6);
 			boolean isOK;
 			player.sendMessage("§6您"
 					+ ((isOK = new addItem(player, myPlayer.file).addEnchantLevelRand(EnchantID, EnchantLevel,

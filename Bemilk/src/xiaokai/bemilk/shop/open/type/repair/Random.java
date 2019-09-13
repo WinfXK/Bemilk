@@ -2,8 +2,8 @@ package xiaokai.bemilk.shop.open.type.repair;
 
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.type.Repair;
-import xiaokai.tool.Tool;
-import xiaokai.tool.data.ItemID;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.data.ItemID;
 
 import java.util.ArrayList;
 import java.util.List;

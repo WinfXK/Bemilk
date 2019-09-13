@@ -7,7 +7,7 @@ import java.util.Map;
 import cn.nukkit.utils.Config;
 import xiaokai.bemilk.Bemilk;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 /**
  * @author Winfxk

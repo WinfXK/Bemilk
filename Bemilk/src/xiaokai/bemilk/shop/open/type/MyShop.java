@@ -4,7 +4,7 @@ import xiaokai.bemilk.data.DisPlayer;
 import xiaokai.bemilk.shop.open.BaseDis;
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.ShopData;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 import cn.nukkit.form.response.FormResponseCustom;
 

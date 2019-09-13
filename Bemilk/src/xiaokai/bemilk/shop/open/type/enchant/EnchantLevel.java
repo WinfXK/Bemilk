@@ -2,9 +2,9 @@ package xiaokai.bemilk.shop.open.type.enchant;
 
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.type.Enchant;
-import xiaokai.tool.Tool;
-import xiaokai.tool.data.EnchantName;
-import xiaokai.tool.data.ItemID;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.data.EnchantName;
+import xiaokai.bemilk.tool.data.ItemID;
 
 import java.util.ArrayList;
 import java.util.List;

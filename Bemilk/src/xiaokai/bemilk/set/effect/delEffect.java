@@ -2,9 +2,9 @@ package xiaokai.bemilk.set.effect;
 
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.set.BasesetForm;
-import xiaokai.tool.Tool;
-import xiaokai.tool.data.Effectrec;
-import xiaokai.tool.form.SimpleForm;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.data.Effectrec;
+import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

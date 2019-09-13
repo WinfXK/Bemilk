@@ -1,6 +1,6 @@
 package xiaokai.bemilk.mtp;
 
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;
 import java.io.IOException;

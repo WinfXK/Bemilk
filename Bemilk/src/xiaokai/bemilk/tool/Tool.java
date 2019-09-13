@@ -1,4 +1,4 @@
-package xiaokai.tool;
+package xiaokai.bemilk.tool;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

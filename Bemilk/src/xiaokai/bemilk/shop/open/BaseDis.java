@@ -4,9 +4,9 @@ import xiaokai.bemilk.data.DisPlayer;
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
-import xiaokai.tool.data.ItemID;
-import xiaokai.tool.form.CustomForm;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.data.ItemID;
+import xiaokai.bemilk.tool.form.CustomForm;
 
 import java.util.Map;
 import java.util.Set;

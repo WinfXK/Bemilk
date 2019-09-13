@@ -4,10 +4,10 @@ import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.shop.Shop;
-import xiaokai.tool.Tool;
-import xiaokai.tool.form.CustomForm;
-import xiaokai.tool.form.ModalForm;
-import xiaokai.tool.form.SimpleForm;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.form.CustomForm;
+import xiaokai.bemilk.tool.form.ModalForm;
+import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.io.File;
 import java.io.FilenameFilter;

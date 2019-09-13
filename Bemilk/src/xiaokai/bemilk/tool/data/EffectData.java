@@ -1,4 +1,4 @@
-package xiaokai.tool.data;
+package xiaokai.bemilk.tool.data;
 /**
 *@author Winfxk
 */

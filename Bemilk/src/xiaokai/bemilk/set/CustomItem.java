@@ -5,9 +5,9 @@ import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.set.item.addItem;
 import xiaokai.bemilk.set.item.delItem;
-import xiaokai.tool.Tool;
-import xiaokai.tool.data.ItemID;
-import xiaokai.tool.form.SimpleForm;
+import xiaokai.bemilk.tool.Tool;
+import xiaokai.bemilk.tool.data.ItemID;
+import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.util.ArrayList;
 import java.util.List;

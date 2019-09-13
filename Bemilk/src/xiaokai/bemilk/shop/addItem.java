@@ -3,7 +3,7 @@ package xiaokai.bemilk.shop;
 import xiaokai.bemilk.data.DisPlayer;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.tool.Tool;
+import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;
 import java.util.HashMap;

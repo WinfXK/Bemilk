@@ -2,8 +2,8 @@ package xiaokai.bemilk.set.item;
 
 import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.set.BasesetForm;
-import xiaokai.tool.data.ItemID;
-import xiaokai.tool.form.CustomForm;
+import xiaokai.bemilk.tool.data.ItemID;
+import xiaokai.bemilk.tool.form.CustomForm;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
