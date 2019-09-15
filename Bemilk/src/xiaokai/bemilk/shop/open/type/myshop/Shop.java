@@ -53,6 +53,9 @@ public class Shop extends BaseSecondary {
 		int Count = (int) data.getSliderResponse(1);
 		if (this.data.MyMoney() < (Count * Money))
 			return this.data.Tip(msg.getSun("个人商店", "出售项目", "回收项目", this.data.k, this.data.d));
+		if (ByPlayer == null)
+			return this.data.Tip(msg.getSon("个人商店", "数据错误", new String[] { "{Player}", "{Money}","{Error}" },
+					new Object[] { player.getName(), this.data.MyMoney() ,"ByPlayer： Null"}));
 		double reduceMoney = this.data.reduceMoney(Count * Money);
 		item.setCount(Count);
 		Inventory.addItem(item);

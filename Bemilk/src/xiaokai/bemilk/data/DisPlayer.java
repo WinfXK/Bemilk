@@ -1,5 +1,9 @@
 package xiaokai.bemilk.data;
 
+import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.tool.Tool;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,10 +16,6 @@ import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 
 import me.onebone.economyapi.EconomyAPI;
-
-import xiaokai.bemilk.form.MakeForm;
-import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.Tool;
 
 /**
  * @author Winfxk
@@ -156,6 +156,8 @@ public class DisPlayer {
 	 */
 	public static boolean delItem(String player, String file, String Key) {
 		Config config = getConfig(player);
+		if (config == null)
+			return false;
 		Object obj = config.get("未售罄商店");
 		Map<String, Object> map = (obj == null || !(obj instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) obj;
@@ -393,6 +395,8 @@ public class DisPlayer {
 	 */
 	public static Config getConfig(String player) {
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player);
+		if (myPlayer == null)
+			return null;
 		if (myPlayer.config == null) {
 			myPlayer.config = new Config(getFile(player), Config.YAML);
 			Kick.kick.PlayerDataMap.put(player, myPlayer);

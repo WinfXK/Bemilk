@@ -2,10 +2,12 @@ package xiaokai.bemilk.tool;
 
 import java.io.File;
 import java.util.LinkedHashMap;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
+
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 
@@ -16,7 +18,7 @@ public class Update {
 	private PluginBase mis;
 	protected static final String Url = "http://pluginsupdate.epicfx.cn";
 	//protected static final String Url = "http://192.168.0.102";
-	protected static final int V = 0;
+	protected static final int V = 1;
 	protected static final String ConfigName = "/Update.yml";
 
 	public Update(PluginBase mis) {

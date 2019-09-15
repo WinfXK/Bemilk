@@ -11,6 +11,7 @@ import java.util.Map;
 
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.nbt.tag.CompoundTag;
+
 import me.onebone.economyapi.EconomyAPI;
 
 /**
@@ -51,6 +52,9 @@ public class Sell extends BaseSecondary {
 
 	@Override
 	public boolean disSecondary(FormResponseCustom data) {
+		if (ByPlayer == null)
+			return this.data.Tip(msg.getSon("个人商店", "数据错误", new String[] { "{Player}", "{Money}", "{Error}" },
+					new Object[] { player.getName(), this.data.MyMoney(), "ByPlayer： Null" }));
 		int Count = (int) data.getSliderResponse(1);
 		Map<Integer, cn.nukkit.item.Item> Contents = Inventory.getContents();
 		List<Integer> is = new ArrayList<>(Contents.keySet());

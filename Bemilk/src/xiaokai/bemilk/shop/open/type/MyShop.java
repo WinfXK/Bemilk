@@ -95,6 +95,8 @@ public class MyShop extends BaseDis {
 	 * @return
 	 */
 	public boolean delItem(String player, ShopData data) {
+		if (player == null)
+			return false;
 		data.Shops.remove(data.Key);
 		data.config.set("Items", data.Shops);
 		return data.config.save() && DisPlayer.delItem(player, data.file, data.Key);
