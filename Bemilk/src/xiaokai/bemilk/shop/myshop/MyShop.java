@@ -2,6 +2,7 @@ package xiaokai.bemilk.shop.myshop;
 
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
+import xiaokai.bemilk.mtp.Belle;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.tool.data.ItemID;
 import xiaokai.bemilk.tool.form.CustomForm;
@@ -70,6 +71,8 @@ public class MyShop {
 		List<Integer> integers = new ArrayList<>();
 		for (Integer i : Contents.keySet()) {
 			Item item = Contents.get(i);
+			if (Belle.isMaterials(item))
+				continue;
 			integers.add(i);
 			Items.add(item);
 			strings.add(msg.getSun("个人商店", "从背包获取物品", "物品列表格式", k2,

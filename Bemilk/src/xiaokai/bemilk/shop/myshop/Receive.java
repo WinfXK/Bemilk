@@ -4,6 +4,7 @@ import xiaokai.bemilk.data.DisPlayer;
 import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.mtp.Belle;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.shop.addItem;
 import xiaokai.bemilk.tool.Tool;
@@ -12,6 +13,7 @@ import xiaokai.bemilk.tool.data.ItemID;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
@@ -119,7 +121,7 @@ public class Receive {
 			int sbByItemCount = 0;
 			for (Integer i : C.keySet()) {
 				Item item1 = C.get(i);
-				if (ItemID.getID(item).equals(ItemID.getID(item1)))
+				if (!Belle.isMaterials(item1) && ItemID.getID(item).equals(ItemID.getID(item1)))
 					sbByItemCount++;
 			}
 			if (!Kick.isAdmin(player) && sbByItemCount < ItemCount)
@@ -130,7 +132,7 @@ public class Receive {
 				for (int is = 0; is < Keys.size(); is++) {
 					Integer i = Keys.get(is);
 					Item item1 = C.get(i);
-					if (ItemID.getID(item).equals(ItemID.getID(item1)))
+					if (!Belle.isMaterials(item1) && ItemID.getID(item).equals(ItemID.getID(item1)))
 						if (item1.getCount() < (ItemCount - SBPlayer)) {
 							SBPlayer += item1.getCount();
 							C.remove(i);

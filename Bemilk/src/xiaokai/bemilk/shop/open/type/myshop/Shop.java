@@ -54,8 +54,8 @@ public class Shop extends BaseSecondary {
 		if (this.data.MyMoney() < (Count * Money))
 			return this.data.Tip(msg.getSun("个人商店", "出售项目", "回收项目", this.data.k, this.data.d));
 		if (ByPlayer == null)
-			return this.data.Tip(msg.getSon("个人商店", "数据错误", new String[] { "{Player}", "{Money}","{Error}" },
-					new Object[] { player.getName(), this.data.MyMoney() ,"ByPlayer： Null"}));
+			return this.data.Tip(msg.getSon("个人商店", "数据错误", new String[] { "{Player}", "{Money}", "{Error}" },
+					new Object[] { player.getName(), this.data.MyMoney(), "ByPlayer： Null" }));
 		double reduceMoney = this.data.reduceMoney(Count * Money);
 		item.setCount(Count);
 		Inventory.addItem(item);
@@ -65,6 +65,9 @@ public class Shop extends BaseSecondary {
 				reduceMoney, Count * Money };
 		EconomyAPI.getInstance().addMoney(ByPlayer, Count * Money);
 		this.data.data.Item.put("ItemCount", Tool.ObjectToInt(this.data.data.Item.get("ItemCount")) - Count);
+		this.data.data.Shops.put(this.data.data.Key, this.data.data.Item);
+		this.data.data.config.set("Items", this.data.data.Shops);
+		this.data.data.config.save();
 		if (this.data.isFull(this.data.data)) {
 			this.data.delItem(ByPlayer, this.data.data);
 			this.data.addMsg(ByPlayer, msg.getSon("个人商店", "售罄删除", this.data.k, this.data.d));

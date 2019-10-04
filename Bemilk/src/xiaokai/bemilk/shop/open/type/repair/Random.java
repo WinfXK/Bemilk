@@ -31,12 +31,11 @@ public class Random extends BaseSecondary {
 
 	@Override
 	public boolean MakeSecondary() {
-		// §e欢迎尊敬的§4{Player}§e使用修复商店！{n}§7您当前有§2{MyMoney}§7{MoneyName}{n}§5修复物品耐久：§9{MinCount}§f-§e{MaxCount}{n}§7{isTool}非工具使用{n}§6成功概率：§8{Prob}
 		isTool = Tool.ObjToBool(Item.get("isTool"));
 		MinRepair = Tool.ObjectToInt(Item.get("MinRepair"));
 		MaxRepair = Tool.ObjectToInt(Item.get("MaxRepair"));
 		Prob = Tool.ObjectToInt(Item.get("RepairCount"));
-		String ProbString = ((double) ((double) 1 / (Prob <= 0 ? 1 : Prob)) * 100) + "%";
+		String ProbString = ((double) 1 / (Prob <= 0 ? 1 : Prob) * 100) + "%";
 		String[] myKey = { "{Player}", "{Items}", "{Money}", "{MyMoney}", "{isTool}", "{MinCount}", "{MaxCount}",
 				"{Prob}" };
 		Object[] myData = { player.getName(), Money, data.MyMoney(), isTool ? "允许" : "不允许", MinRepair, MaxRepair,
@@ -77,10 +76,10 @@ public class Random extends BaseSecondary {
 		int isAll = item.getDamage();
 		if (isOK = (Tool.getRand(0, Prob) == 1)) {
 			Repair = Tool.getRand(MinRepair, MaxRepair);
-			item.setDamage(item.getDamage() + Repair);
+			item.setDamage(item.getDamage() - Repair);
 		} else {
 			Repair = Tool.getRand(MinRepair, MaxRepair);
-			isAll = item.getDamage() - Repair;
+			isAll = item.getDamage() + Repair;
 			isAll = isAll <= 0 ? 1 : isAll;
 			item.setDamage(isAll);
 		}

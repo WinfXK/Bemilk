@@ -66,7 +66,7 @@ public class Some extends BaseSecondary {
 		int i = PlayerItemsIntegers.get(data.getDropdownResponse(1).getElementID());
 		Map<Integer, cn.nukkit.item.Item> Contents = Inventory.getContents();
 		cn.nukkit.item.Item item = Contents.get(i);
-		item.setDamage(item.getDamage() + Repair);
+		item.setDamage(item.getDamage() - Repair);
 		Contents.put(i, item);
 		Inventory.setContents(Contents);
 		return this.data.send(

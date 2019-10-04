@@ -1,5 +1,6 @@
 package xiaokai.bemilk.shop.open.type.myshop;
 
+import xiaokai.bemilk.mtp.Belle;
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.type.MyShop;
 import xiaokai.bemilk.tool.Tool;
@@ -65,7 +66,8 @@ public class Sell extends BaseSecondary {
 			CompoundTag nbt2 = item2.getNamedTag();
 			nbt1 = nbt1 == null ? new CompoundTag() : nbt1;
 			nbt2 = nbt2 == null ? new CompoundTag() : nbt2;
-			if ((nbt1 == nbt2 || nbt1.equals(nbt2)) && ItemID.getID(item).equals(ItemID.getID(item2)))
+			if (!Belle.isMaterials(item2) && (nbt1 == nbt2 || nbt1.equals(nbt2))
+					&& ItemID.getID(item).equals(ItemID.getID(item2)))
 				MyCount += item2.getCount();
 
 		}
@@ -81,7 +83,8 @@ public class Sell extends BaseSecondary {
 			CompoundTag nbt2 = item2.getNamedTag();
 			nbt1 = nbt1 == null ? new CompoundTag() : nbt1;
 			nbt2 = nbt2 == null ? new CompoundTag() : nbt2;
-			if ((nbt1 == nbt2 || nbt1.equals(nbt2)) && ItemID.getID(item).equals(ItemID.getID(item2)))
+			if (!Belle.isMaterials(item2) && (nbt1 == nbt2 || nbt1.equals(nbt2))
+					&& ItemID.getID(item).equals(ItemID.getID(item2)))
 				if (item2.getCount() < MyCount) {
 					Contents.remove(i);
 					MyCount -= item2.getCount();
@@ -104,6 +107,9 @@ public class Sell extends BaseSecondary {
 						new Object[] { player.getName(), Money * Count, EconomyAPI.getInstance().myMoney(ByPlayer),
 								ItemID.getName(item), ItemID.getID(item), Count, ByPlayer, }));
 		this.data.data.Item.put("ItemCount", Tool.ObjectToInt(this.data.data.Item.get("ItemCount")) - Count);
+		this.data.data.Shops.put(this.data.data.Key, this.data.data.Item);
+		this.data.data.config.set("Items", this.data.data.Shops);
+		this.data.data.config.save();
 		if (this.data.isFull(this.data.data)) {
 			this.data.delItem(ByPlayer, this.data.data);
 			this.data.addMsg(ByPlayer, msg.getSon("个人商店", "售罄删除", this.data.k, this.data.d));

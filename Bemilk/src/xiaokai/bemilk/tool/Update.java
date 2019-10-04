@@ -18,7 +18,7 @@ public class Update {
 	private PluginBase mis;
 	protected static final String Url = "http://pluginsupdate.epicfx.cn";
 	//protected static final String Url = "http://192.168.0.102";
-	protected static final int V = 1;
+	protected static final int V = 2;
 	protected static final String ConfigName = "/Update.yml";
 
 	public Update(PluginBase mis) {
