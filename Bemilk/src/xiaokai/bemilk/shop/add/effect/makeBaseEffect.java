@@ -1,9 +1,9 @@
 package xiaokai.bemilk.shop.add.effect;
 
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.form.CustomForm;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.tool.CustomForm;
 
 import java.io.File;
 

@@ -1,4 +1,4 @@
-package xiaokai.bemilk.data;
+package xiaokai.bemilk.mtp;
 /**
 *@author Winfxk
 */

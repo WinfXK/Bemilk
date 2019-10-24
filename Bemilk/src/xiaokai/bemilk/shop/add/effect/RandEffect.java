@@ -1,8 +1,8 @@
 package xiaokai.bemilk.shop.add.effect;
 
 import xiaokai.bemilk.shop.addItem;
+import xiaokai.bemilk.tool.Effectrec;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.Effectrec;
 
 import java.io.File;
 import java.util.ArrayList;

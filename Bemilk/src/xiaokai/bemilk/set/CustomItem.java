@@ -1,13 +1,11 @@
 package xiaokai.bemilk.set;
 
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.set.item.addItem;
-import xiaokai.bemilk.set.item.delItem;
+import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,10 @@
-package xiaokai.bemilk.event;
+package xiaokai.bemilk;
+
+import xiaokai.bemilk.mtp.Belle;
+import xiaokai.bemilk.mtp.DisPlayer;
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.tool.ItemIDSunName;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
@@ -6,18 +12,11 @@ import cn.nukkit.event.Listener;
 import cn.nukkit.event.block.BlockBreakEvent;
 import cn.nukkit.event.player.PlayerDropItemEvent;
 import cn.nukkit.event.player.PlayerInteractEvent;
-import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerInteractEvent.Action;
-import cn.nukkit.item.Item;
+import cn.nukkit.event.player.PlayerJoinEvent;
 import cn.nukkit.event.player.PlayerQuitEvent;
 import cn.nukkit.event.player.PlayerRespawnEvent;
-
-import xiaokai.bemilk.data.DisPlayer;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.form.MakeForm;
-import xiaokai.bemilk.mtp.Belle;
-import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.data.ItemIDSunName;
+import cn.nukkit.item.Item;
 
 /**
  * @author Winfxk
@@ -29,6 +28,11 @@ public class PlayerEvent implements Listener {
 		this.kick = kick;
 	}
 
+	/**
+	 * 玩家吃多了没事干想丢东西
+	 * 
+	 * @param e
+	 */
 	@EventHandler
 	public void onSB(PlayerDropItemEvent e) {
 		Item item = e.getItem();

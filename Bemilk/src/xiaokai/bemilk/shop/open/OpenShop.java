@@ -1,9 +1,9 @@
 package xiaokai.bemilk.shop.open;
 
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.shop.Shop;
 import xiaokai.bemilk.shop.open.type.Effect;
 import xiaokai.bemilk.shop.open.type.Enchant;
@@ -11,11 +11,11 @@ import xiaokai.bemilk.shop.open.type.ItemTradeItem;
 import xiaokai.bemilk.shop.open.type.MyShop;
 import xiaokai.bemilk.shop.open.type.Repair;
 import xiaokai.bemilk.shop.open.type.Sell;
+import xiaokai.bemilk.tool.Effectrec;
+import xiaokai.bemilk.tool.EnchantName;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.Effectrec;
-import xiaokai.bemilk.tool.data.EnchantName;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -154,7 +154,7 @@ public class OpenShop {
 			Map<String, Object> ItemAerS = (ob == null || !(ob instanceof Map)) ? new HashMap<>()
 					: (HashMap<String, Object>) ob;
 			ItemAerS.put("Key", ike);
-			form = getForm(player, form, ItemAerS);
+			form = getForm(player, form, ItemAerS, kick.config.getBoolean("显示错误按钮"));
 		}
 		List<String> AdminList = new ArrayList<>();
 		if (Shops.size() > 0) {
@@ -184,11 +184,25 @@ public class OpenShop {
 	/**
 	 * 将数据写入表单
 	 * 
-	 * @param form 表单对象
-	 * @param item 要写入的数据对象
+	 * @param player 打开商店的玩家对象
+	 * @param form   表单对象
+	 * @param item   要写入的数据对象
 	 * @return
 	 */
 	public static SimpleForm getForm(Player player, SimpleForm form, Map<String, Object> item) {
+		return getForm(player, form, item, false);
+	}
+
+	/**
+	 * 将数据写入表单
+	 * 
+	 * @param player 打开商店的玩家对象
+	 * @param form   表单对象
+	 * @param item   要写入的数据对象
+	 * @param isBS   是否显示错误按钮
+	 * @return
+	 */
+	public static SimpleForm getForm(Player player, SimpleForm form, Map<String, Object> item, boolean isBS) {
 		String type = (String) item.get("Type");
 		if (type == null || type.isEmpty())
 			return form;
@@ -241,6 +255,10 @@ public class OpenShop {
 					form.addButton(ike, true, Effectrec.getPath(ID));
 					break;
 				default:
+					if (isBS) {
+						form.Keys.add((String) item.get("Key"));
+						form.addButton(msg.getSon("界面", "错误按钮文本"));
+					}
 					return form;
 				}
 				break;
@@ -323,6 +341,10 @@ public class OpenShop {
 					form.addButton(msg.getSun("按钮", "物品附魔", "自定义附魔", k, d), true, Icon);
 					break;
 				default:
+					if (isBS) {
+						form.Keys.add((String) item.get("Key"));
+						form.addButton(msg.getSon("界面", "错误按钮文本"));
+					}
 					return form;
 				}
 				break;
@@ -354,10 +376,15 @@ public class OpenShop {
 					form.addButton(msg.getSun("按钮", "物品修复", "定量增加", k, d), true, Icon);
 					break;
 				default:
-					return form;
+					form.Keys.add((String) item.get("Key"));
+					return isBS ? form.addButton(msg.getSon("界面", "错误按钮文本")) : form;
 				}
 				break;
 			default:
+				if (isBS) {
+					form.Keys.add((String) item.get("Key"));
+					form.addButton(msg.getSon("界面", "错误按钮文本"));
+				}
 				return form;
 			}
 		} catch (Exception e) {
@@ -367,6 +394,10 @@ public class OpenShop {
 			kick.mis.getLogger()
 					.error("§4出现错误！一个项目可能没有正常显示！请检查您的数据！\n错误数据：" + e.getMessage() + "\n项目数据：" + item.toString());
 			player.sendMessage(msg.getSon("界面", "项目错误", k, d));
+			if (isBS) {
+				form.Keys.add((String) item.get("Key"));
+				form.addButton(msg.getSon("界面", "错误按钮文本"));
+			}
 			return form;
 		}
 		form.Keys.add((String) item.get("Key"));

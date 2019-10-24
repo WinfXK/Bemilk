@@ -1,12 +1,12 @@
 package xiaokai.bemilk.shop.open;
 
-import xiaokai.bemilk.data.DisPlayer;
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.ItemID;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.CustomForm;
 
 import java.util.Map;
 import java.util.Set;

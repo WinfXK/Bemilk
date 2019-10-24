@@ -9,7 +9,7 @@ import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
 import me.onebone.economyapi.EconomyAPI;
 
-import xiaokai.bemilk.cmd.ShopCommand;
+import xiaokai.bemilk.ShopCommand;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.tool.Tool;
 

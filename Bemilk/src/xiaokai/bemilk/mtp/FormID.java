@@ -1,9 +1,8 @@
-package xiaokai.bemilk.data;
+package xiaokai.bemilk.mtp;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.tool.Tool;
 
 /**

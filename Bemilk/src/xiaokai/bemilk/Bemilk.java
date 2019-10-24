@@ -1,17 +1,16 @@
 package xiaokai.bemilk;
 
-import xiaokai.bemilk.cmd.ShopCommand;
-import xiaokai.bemilk.event.Monitor;
-import xiaokai.bemilk.event.PlayerEvent;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.tool.Tool;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
-import cn.nukkit.command.Command;
-import cn.nukkit.command.CommandSender;
+import cn.nukkit.Player;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
@@ -38,6 +37,12 @@ public class Bemilk extends PluginBase {
 		float entime = ((Duration.between(loadTime, Instant.now()).toMillis()));
 		String onEnableString = (entime > 1000 ? ((entime / 1000) + "§6s!(碉堡了) ") : entime + "§6ms");
 		this.getServer().getCommandMap().register(getName(), new ShopCommand(kick));
+		Map<UUID, Player> OnlinePlayers = getServer().getOnlinePlayers();
+		for (UUID id : OnlinePlayers.keySet()) {
+			Player player = OnlinePlayers.get(id);
+			if (player.isOnline() && !kick.PlayerDataMap.containsKey(player.getName()))
+				kick.PlayerDataMap.put(player.getName(), new MyPlayer(player));
+		}
 		this.getServer().getLogger().info(Tool.getColorFont(this.getName() + "启动！") + "§6总耗时:§9" + onEnableString
 				+ " 启动耗时:§9" + ((float) (Duration.between(EnableTime, Instant.now()).toMillis())) + "§6ms");
 		if (Tool.getRand(1, 5) == 1)
@@ -87,12 +92,5 @@ public class Bemilk extends PluginBase {
 	 */
 	public static Bemilk getPY() {
 		return kick.mis;
-	}
-
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (!sender.isPlayer())
-			return true;
-		return true;
 	}
 }

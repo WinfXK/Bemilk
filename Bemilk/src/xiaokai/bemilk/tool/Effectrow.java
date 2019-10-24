@@ -1,4 +1,4 @@
-package xiaokai.bemilk.tool.data;
+package xiaokai.bemilk.tool;
 
 import java.util.ArrayList;
 import java.util.HashMap;

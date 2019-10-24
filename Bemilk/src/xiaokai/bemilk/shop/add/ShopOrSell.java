@@ -1,14 +1,14 @@
 package xiaokai.bemilk.shop.add;
 
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.shop.addItem;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.CustomForm;
-import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,17 +61,26 @@ public class ShopOrSell {
 		Map<String, Map<String, Object>> Items = new HashMap<>();
 		String[] iStrings = iString.split(";");
 		for (String string2 : iStrings) {
-			if (string2 == null || string2.isEmpty())
+			if (string2 == null || string2.isEmpty()) {
+				player.sendMessage(msg.getSon("界面", "物品未添加", new String[] { "{Player}", "{Error}", "{Item}" },
+						new Object[] { player.getName(), "其中一个物品名称或ID为空", "null" }));
 				continue;
+			}
 			String[] countStrings = string2.split(">");
 			Item item = ItemID.UnknownToItem(countStrings[0], null);
-			if (item == null)
+			if (item == null) {
+				player.sendMessage(msg.getSon("界面", "物品未添加", new String[] { "{Player}", "{Error}", "{Item}" },
+						new Object[] { player.getName(), "无法获取物品对象", countStrings[0] }));
 				continue;
+			}
 			if (countStrings.length > 1)
 				item.setCount(Tool.ObjectToInt(countStrings[1], 1));
 			item.setCustomName(ItemID.getName(item));
 			Items.put(ItemID.getID(item), Tool.saveItem(item));
 		}
+		if (Items.size() < 1)
+			return MakeForm.Tip(player,
+					msg.getSon("界面", "物品商店添加失败", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		int MinCount = Tool.ObjectToInt(data.getInputResponse(2), 1);
 		int MaxCount = Tool.ObjectToInt(data.getInputResponse(3), 64);
 		boolean isok;
@@ -135,11 +144,12 @@ public class ShopOrSell {
 		for (Item item : myPlayer.addIsItem)
 			Items.put(ItemID.getID(item), Tool.saveItem(item));
 		boolean isok;
-		if (myPlayer.isShopOrSell)
-			isok = new addItem(player, myPlayer.file).addShop(Money, Items, MinCount, MaxCount);
-		else
-			isok = new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount,
-					data.getToggleResponse(3));
+		if (Items.size() < 1)
+			return MakeForm.Tip(player,
+					msg.getSon("界面", "物品商店添加失败", new String[] { "{Player}" }, new Object[] { player.getName() }));
+		isok = myPlayer.isShopOrSell ? new addItem(player, myPlayer.file).addShop(Money, Items, MinCount, MaxCount)
+				: new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount,
+						data.getToggleResponse(3));
 		player.sendMessage(
 				"§6您" + (isok ? "§9成功" : "§4失败") + "§6了一个" + (myPlayer.isShopOrSell ? "§a出售" : "§c回收") + "§6类型的商店");
 		return isok;

@@ -1,4 +1,4 @@
-package xiaokai.bemilk.data;
+package xiaokai.bemilk.mtp;
 
 import java.io.File;
 import java.util.HashMap;
@@ -6,7 +6,6 @@ import java.util.Map;
 
 import cn.nukkit.utils.Config;
 import xiaokai.bemilk.Bemilk;
-import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.tool.Tool;
 
 /**

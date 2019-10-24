@@ -1,11 +1,8 @@
 package xiaokai.bemilk.mtp;
 
 import xiaokai.bemilk.Bemilk;
-import xiaokai.bemilk.data.FormID;
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.tool.data.Effectrec;
-import xiaokai.bemilk.tool.data.ItemID;
+import xiaokai.bemilk.tool.Effectrec;
+import xiaokai.bemilk.tool.ItemID;
 
 import java.io.File;
 import java.util.LinkedHashMap;

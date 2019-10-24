@@ -2,8 +2,8 @@ package xiaokai.bemilk.shop.open.type.effect;
 
 import xiaokai.bemilk.shop.open.BaseDis;
 import xiaokai.bemilk.shop.open.BaseSecondary;
+import xiaokai.bemilk.tool.Effectrec;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.Effectrec;
 
 import java.util.ArrayList;
 import java.util.List;

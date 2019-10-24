@@ -1,7 +1,6 @@
-package xiaokai.bemilk.data;
+package xiaokai.bemilk.mtp;
 
-import xiaokai.bemilk.form.MakeForm;
-import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;

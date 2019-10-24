@@ -1,10 +1,9 @@
-package xiaokai.bemilk.set.item;
+package xiaokai.bemilk.set;
 
-import xiaokai.bemilk.form.MakeForm;
-import xiaokai.bemilk.set.BasesetForm;
+import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;

@@ -1,7 +1,6 @@
-package xiaokai.bemilk.tool.data;
+package xiaokai.bemilk.tool;
 
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -328,9 +327,22 @@ public class ItemID {
 	 */
 	public static String getPathByID(String ID, String Default) {
 		ID = ID.contains(":") ? ID : ID + ":0";
+		String[] strings = ID.split(":");
+		int intID = Tool.ObjectToInt(strings[0]);
+		int intDD = Tool.ObjectToInt(strings[1]);
 		Map<String, String> map = iDList.get(ID);
 		if (map == null)
-			return Default;
+			if (Kick.kick.config.getBoolean("近似ID") && intDD != 0) {
+				if (iDList.get(intID + ":" + intDD) == null) {
+					if (intDD > 0)
+						for (int i = intDD; i > 0; i--)
+							if (iDList.get(intID + ":" + intDD) != null)
+								return iDList.get(intID + ":" + intDD).get("Path");
+					return Default;
+				} else
+					map = iDList.get(intID + ":" + intDD);
+			} else
+				return Default;
 		return map.get("Path");
 	}
 
@@ -397,9 +409,22 @@ public class ItemID {
 	 */
 	public static String getNameByID(String ID, String Default) {
 		ID = ID.contains(":") ? ID : ID + ":0";
+		String[] strings = ID.split(":");
+		int intID = Tool.ObjectToInt(strings[0]);
+		int intDD = Tool.ObjectToInt(strings[1]);
 		Map<String, String> map = iDList.get(ID);
 		if (map == null)
-			return Default;
+			if (Kick.kick.config.getBoolean("近似ID") && intDD != 0) {
+				if (iDList.get(intID + ":" + intDD) == null) {
+					if (intDD > 0)
+						for (int i = intDD; i > 0; i--)
+							if (iDList.get(intID + ":" + intDD) != null)
+								return iDList.get(intID + ":" + intDD).get("Name");
+					return Default;
+				} else
+					map = iDList.get(intID + ":" + intDD);
+			} else
+				return Default;
 		return map.get("Name");
 	}
 

@@ -2,8 +2,8 @@ package xiaokai.bemilk.shop.open.type.myshop;
 
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.type.MyShop;
+import xiaokai.bemilk.tool.ItemID;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
 
 import java.util.Map;
 

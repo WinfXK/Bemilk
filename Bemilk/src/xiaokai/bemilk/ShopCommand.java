@@ -1,8 +1,7 @@
-package xiaokai.bemilk.cmd;
+package xiaokai.bemilk;
 
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.form.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.shop.open.OpenShop;
 
 import java.io.File;

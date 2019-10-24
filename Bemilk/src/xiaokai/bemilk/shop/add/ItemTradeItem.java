@@ -1,15 +1,15 @@
 package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.Bemilk;
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.shop.addItem;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.CustomForm;
-import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,12 +76,18 @@ public class ItemTradeItem {
 		String[] sjStrings = sjString.split(";");
 		Map<String, Map<String, Object>> sjItems = new HashMap<>();
 		for (String dgsj : sjStrings) {
-			if (dgsj == null || dgsj.isEmpty())
+			if (dgsj == null || dgsj.isEmpty()) {
+				player.sendMessage(msg.getSon("界面", "物品未添加", new String[] { "{Player}", "{Error}", "{Item}" },
+						new Object[] { player.getName(), "可兑换物品的其中一个名称或ID为空！", "null" }));
 				continue;
+			}
 			String[] ItemData = dgsj.split(">");
 			Item item = ItemID.UnknownToItem(ItemData[0], null);
-			if (item == null)
+			if (item == null) {
+				player.sendMessage(msg.getSon("界面", "物品未添加", new String[] { "{Player}", "{Error}", "{Item}" },
+						new Object[] { player.getName(), "可兑换物品的其中一个无法获取物品对象！！", ItemData[0] }));
 				continue;
+			}
 			if (ItemData.length > 1)
 				item.setCount(Tool.ObjectToInt(ItemData[1], 1));
 			item.setCustomName(ItemID.getName(item));
@@ -90,12 +96,18 @@ public class ItemTradeItem {
 		Map<String, Map<String, Object>> sxItems = new HashMap<>();
 		String[] sxStrings = sxString.split(";");
 		for (String dgsj : sxStrings) {
-			if (dgsj == null || dgsj.isEmpty())
+			if (dgsj == null || dgsj.isEmpty()) {
+				player.sendMessage(msg.getSon("界面", "物品未添加", new String[] { "{Player}", "{Error}", "{Item}" },
+						new Object[] { player.getName(), "兑换所需物品的其中一个名称或ID为空！", "null" }));
 				continue;
+			}
 			String[] ItemData = dgsj.split(">");
 			Item item = ItemID.UnknownToItem(ItemData[0], null);
-			if (item == null)
+			if (item == null) {
+				player.sendMessage(msg.getSon("界面", "物品未添加", new String[] { "{Player}", "{Error}", "{Item}" },
+						new Object[] { player.getName(), "兑换所需物品的其中一个无法获取物品对象！！", ItemData[0] }));
 				continue;
+			}
 			if (ItemData.length > 1)
 				item.setCount(Tool.ObjectToInt(ItemData[1], 1));
 			item.setCustomName(ItemID.getName(item));
@@ -117,11 +129,12 @@ public class ItemTradeItem {
 		int ItemMoney = (Tool.isInteger(intCache) && Float.valueOf(intCache).intValue() > 0)
 				? Float.valueOf(intCache).intValue()
 				: 0;
-		boolean isOK;
-		player.sendMessage("§6您"
-				+ ((isOK = new addItem(player, kick.PlayerDataMap.get(player.getName()).file).addItemTradeItem(sjItems,
-						sxItems, MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(6))) ? "§e成功" : "§4未成功")
-				+ "§6创建一个物品兑换商店");
+		if (sxItems.size() < 1 || sjItems.size() < 1)
+			return MakeForm.Tip(player, msg.getSon("界面", "物品兑换商店添加失败", new String[] { "{Player}", "{Error}" },
+					new Object[] { player.getName(), sxItems.size() < 1 ? "可兑换物品为空！" : "兑换所需的物品为空" }));
+		boolean isOK = new addItem(player, kick.PlayerDataMap.get(player.getName()).file).addItemTradeItem(sjItems,
+				sxItems, MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(6));
+		player.sendMessage("§6您" + (isOK ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
 		return isOK;
 	}
 
@@ -189,9 +202,12 @@ public class ItemTradeItem {
 				continue;
 			sxItems.put(ItemID.getID(item), Tool.saveItem(item));
 		}
-		boolean isOK;
-		player.sendMessage("§6您" + ((isOK = new addItem(player, myPlayer.file).addItemTradeItem(sjItems, sxItems,
-				MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(4))) ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
+		if (sxItems.size() < 1 || sjItems.size() < 1)
+			return MakeForm.Tip(player, msg.getSon("界面", "物品兑换商店添加失败", new String[] { "{Player}", "{Error}" },
+					new Object[] { player.getName(), sxItems.size() < 1 ? "可兑换物品为空！" : "兑换所需的物品为空" }));
+		boolean isOK = new addItem(player, myPlayer.file).addItemTradeItem(sjItems, sxItems, MinCount, MaxCount, Money,
+				ItemMoney, data.getToggleResponse(4));
+		player.sendMessage("§6您" + (isOK ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
 		return isOK;
 	}
 

@@ -1,6 +1,6 @@
 package xiaokai.bemilk.shop.open.type;
 
-import xiaokai.bemilk.data.DisPlayer;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.shop.open.BaseDis;
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.ShopData;

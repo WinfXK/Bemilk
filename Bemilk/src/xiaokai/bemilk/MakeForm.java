@@ -1,13 +1,13 @@
-package xiaokai.bemilk.form;
+package xiaokai.bemilk;
 
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.shop.Shop;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.ModalForm;
+import xiaokai.bemilk.tool.SimpleForm;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.form.CustomForm;
-import xiaokai.bemilk.tool.form.ModalForm;
-import xiaokai.bemilk.tool.form.SimpleForm;
 
 import java.io.File;
 import java.io.FilenameFilter;

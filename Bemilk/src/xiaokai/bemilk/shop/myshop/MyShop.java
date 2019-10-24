@@ -1,12 +1,12 @@
 package xiaokai.bemilk.shop.myshop;
 
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
 import xiaokai.bemilk.mtp.Belle;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.CustomForm;
-import xiaokai.bemilk.tool.form.SimpleForm;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class MyShop {
 		Object[] d = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
 		Config config = new Config(file, Config.YAML);
 		if (!config.getBoolean("isMakeMyShop") && !Kick.isAdmin(player))
-			return xiaokai.bemilk.form.MakeForm.Tip(player, msg.getSun("界面", "个人商店", "拒绝创建个人商店", k, d));
+			return xiaokai.bemilk.MakeForm.Tip(player, msg.getSun("界面", "个人商店", "拒绝创建个人商店", k, d));
 		SimpleForm form = new SimpleForm(kick.formID.getID(24), msg.getSun("个人商店", "选择添加物品方式", "标题",
 				new String[] { "{Title}" }, new Object[] { kick.Message.getText(config.get("Title"), k, d) }));
 		form.addButtons(msg.getSun("个人商店", "选择添加物品方式", "手动输入物品数据", k, d));

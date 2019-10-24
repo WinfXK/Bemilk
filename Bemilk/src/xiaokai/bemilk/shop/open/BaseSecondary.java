@@ -1,8 +1,8 @@
 package xiaokai.bemilk.shop.open;
 
-import xiaokai.bemilk.data.Message;
 import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.form.CustomForm;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.tool.CustomForm;
 
 import java.util.Map;
 

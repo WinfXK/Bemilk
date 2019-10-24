@@ -1,4 +1,4 @@
-package xiaokai.bemilk.tool.form;
+package xiaokai.bemilk.tool;
 
 import java.util.ArrayList;
 import java.util.List;

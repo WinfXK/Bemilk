@@ -1,10 +1,9 @@
-package xiaokai.bemilk.set.effect;
+package xiaokai.bemilk.set;
 
-import xiaokai.bemilk.form.MakeForm;
-import xiaokai.bemilk.set.BasesetForm;
+import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.Effectrec;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.Effectrec;
-import xiaokai.bemilk.tool.form.CustomForm;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;

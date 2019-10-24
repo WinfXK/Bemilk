@@ -1,23 +1,23 @@
-package xiaokai.bemilk.form;
+package xiaokai.bemilk;
 
-import xiaokai.bemilk.data.DisPlayer;
-import xiaokai.bemilk.data.Message;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.data.SeekData;
-import xiaokai.bemilk.form.manage.addShop;
-import xiaokai.bemilk.form.manage.delShop;
-import xiaokai.bemilk.form.manage.setShop;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.Message;
+import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.mtp.SeekData;
 import xiaokai.bemilk.set.CustomEffect;
 import xiaokai.bemilk.set.CustomItem;
 import xiaokai.bemilk.set.SetConfig;
+import xiaokai.bemilk.shop.addShop;
+import xiaokai.bemilk.shop.delShop;
 import xiaokai.bemilk.shop.delShopItem;
+import xiaokai.bemilk.shop.setShop;
 import xiaokai.bemilk.shop.add.addShopItem;
 import xiaokai.bemilk.shop.open.OpenShop;
-import xiaokai.bemilk.tool.data.Effectrec;
-import xiaokai.bemilk.tool.data.EnchantName;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.SimpleForm;
+import xiaokai.bemilk.tool.Effectrec;
+import xiaokai.bemilk.tool.EnchantName;
+import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.SimpleForm;
 
 import java.io.File;
 import java.util.ArrayList;

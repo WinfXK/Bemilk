@@ -1,8 +1,8 @@
 package xiaokai.bemilk.shop;
 
-import xiaokai.bemilk.data.DisPlayer;
-import xiaokai.bemilk.data.MyPlayer;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;

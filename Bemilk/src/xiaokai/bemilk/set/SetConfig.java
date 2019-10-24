@@ -1,9 +1,9 @@
 package xiaokai.bemilk.set;
 
-import xiaokai.bemilk.form.MakeForm;
+import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.tool.CustomForm;
+import xiaokai.bemilk.tool.ItemID;
 import xiaokai.bemilk.tool.Tool;
-import xiaokai.bemilk.tool.data.ItemID;
-import xiaokai.bemilk.tool.form.CustomForm;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +58,8 @@ public class SetConfig extends Baseset {
 		form.addToggle("§6限制创造模式使用商店", config.getBoolean("限制创造模式使用商店"));
 		form.addToggle("§6重生进服等事件检测玩家快捷工具持有", config.getBoolean("重生进服等事件检测玩家快捷工具持有"));
 		form.addInput("§6数据刷新间隔(s)", config.getInt("数据刷新间隔"));
+		form.addToggle("近似ID", config.getBoolean("近似ID"));
+		form.addToggle("显示错误按钮", config.getBoolean("显示错误按钮"));
 		form.sendPlayer(player);
 		return true;
 	}
@@ -89,6 +91,8 @@ public class SetConfig extends Baseset {
 		config.set("限制创造模式使用商店", data.getToggleResponse(21));
 		config.set("重生进服等事件检测玩家快捷工具持有", data.getToggleResponse(22));
 		config.set("数据刷新间隔", Tool.ObjectToInt(data.getInputResponse(23), 600));
+		config.set("近似ID", data.getToggleResponse(24));
+		config.set("显示错误按钮", data.getToggleResponse(25));
 		kick.config = config;
 		boolean isok = config.save();
 		return MakeForm.Tip(player, "§6设置保存" + (isok ? "§e成功！" : "§4失败！"), isok);

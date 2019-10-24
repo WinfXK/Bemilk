@@ -1,14 +1,12 @@
-package xiaokai.bemilk.event;
+package xiaokai.bemilk;
 
-import xiaokai.bemilk.data.FormID;
-import xiaokai.bemilk.data.MyPlayer;
-import xiaokai.bemilk.form.Dispose;
-import xiaokai.bemilk.form.MakeForm;
-import xiaokai.bemilk.form.manage.addShop;
-import xiaokai.bemilk.form.manage.delShop;
-import xiaokai.bemilk.form.manage.setShop;
+import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.shop.addShop;
+import xiaokai.bemilk.shop.delShop;
 import xiaokai.bemilk.shop.delShopItem;
+import xiaokai.bemilk.shop.setShop;
 import xiaokai.bemilk.shop.add.ItemEnchant;
 import xiaokai.bemilk.shop.add.ItemRepair;
 import xiaokai.bemilk.shop.add.ItemTradeItem;
