@@ -125,12 +125,13 @@ public class addItem {
 	 * @param ShopType  商店类型
 	 * @return
 	 */
-	public boolean addMyShop(Item item, int ItemCount, double Money, boolean isInt, String ShopType) {
+	public boolean addMyShop(Item item, int ItemCount, double Money, boolean isInt, String ShopType, String Mydata) {
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player.getName());
 		ShopType = ShopType.toLowerCase().equals("sell") ? "Sell" : "Shop";
 		item.setCount(ItemCount);
 		map.put("ItemCount", ItemCount);
 		map.put("Money", Money);
+		map.put("Mydata", Mydata);
 		map.put("isInt", isInt);
 		map.put("Item", Tool.saveItem(item));
 		map.put("Type", "MyShop");

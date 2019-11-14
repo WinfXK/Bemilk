@@ -2,7 +2,7 @@ name: Bemilk
 main: xiaokai.bemilk.Bemilk
 api:
 - 1.0.0
-version: 1.2.0
+version: 1.2.1
 load: POSTWORLD
 website: http://EpicFX.cn
 author: Winfxk

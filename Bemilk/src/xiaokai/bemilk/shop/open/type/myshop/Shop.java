@@ -38,9 +38,9 @@ public class Shop extends BaseSecondary {
 		int CC = (int) (data.MyMoney() / Money);
 		CC = CC > ItemCount ? ItemCount : CC;
 		String[] k = { "{Player}", "{ByPlayer}", "{ItemName}", "{ItemID}", "{Count}", "{MyMoney}", "{isInt}", "{Money}",
-				"{MoneyItemCount}" };
+				"{MoneyItemCount}", "{Mydata}" };
 		Object[] d = { player.getName(), ByPlayer, ItemID.getName(item), ItemID.getID(item), ItemCount, data.MyMoney(),
-				isInt ? "该项目可以只购买部分" : "该项目只能一次性购买", Money, CC };
+				isInt ? "该项目可以只购买部分" : "该项目只能一次性购买", Money, CC, Item.get("Mydata") };
 		String Contxt = msg.getSun("个人商店", "出售项目", "内容", k, d);
 		form.addLabel(Contxt);
 		form.addSlider(msg.getSun("个人商店", "出售项目", "购买数量", data.k, data.d), isInt ? 1 : ItemCount, ItemCount, 1, CC);

@@ -39,10 +39,10 @@ public class Sell extends BaseSecondary {
 	public boolean MakeSecondary() {
 		if (Inventory.getContents().size() < 1)
 			return data.Tip(msg.getSun("个人商店", "回收项目", "背包为空", data.k, data.d));
-		String[] k = { "{Player}", "{ByPlayer}", "{ItemName}", "{ItemID}", "{Count}", "{MyMoney}", "{isInt}",
-				"{Money}" };
+		String[] k = { "{Player}", "{ByPlayer}", "{ItemName}", "{ItemID}", "{Count}", "{MyMoney}", "{isInt}", "{Money}",
+				"{Mydata}" };
 		Object[] d = { player.getName(), ByPlayer, ItemID.getName(item), ItemID.getID(item), ItemCount, data.MyMoney(),
-				isInt ? "该项目可以只购买部分" : "该项目只能一次性购买", Money };
+				isInt ? "该项目可以只购买部分" : "该项目只能一次性购买", Money, Item.get("Mydata") };
 		String Contxt = msg.getSun("个人商店", "回收项目", "内容", k, d);
 		form.addLabel(Contxt);
 		form.addSlider(msg.getSun("个人商店", "出售项目", "回收数量", data.k, data.d), isInt ? 1 : ItemCount, ItemCount, 1,

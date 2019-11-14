@@ -7,6 +7,7 @@ import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.mtp.SeekData;
 import xiaokai.bemilk.set.CustomEffect;
 import xiaokai.bemilk.set.CustomItem;
+import xiaokai.bemilk.set.MyshopBl;
 import xiaokai.bemilk.set.SetConfig;
 import xiaokai.bemilk.shop.addShop;
 import xiaokai.bemilk.shop.delShop;
@@ -233,7 +234,7 @@ public class Dispose {
 					return MakeForm.Tip(player, kick.Message.getSon("个人商店", "限制OP使用个人商店", DsK, DsO));
 				if (!Kick.isAdmin(player) && kick.config.getBoolean("限制创造模式使用个人商店") && player.getGamemode() == 1)
 					return MakeForm.Tip(player, kick.Message.getSon("个人商店", "限制创造模式使用个人商店", DsK, DsO));
-				return xiaokai.bemilk.shop.myshop.MyShop.MakeMain(player, myPlayer.file);
+				return xiaokai.bemilk.shop.add.MyShop.MakeMain(player, myPlayer.file);
 			case "seek":
 				return MakeForm.OpenShopFoSeek(player, myPlayer.file);
 			case "add":
@@ -347,6 +348,9 @@ public class Dispose {
 			break;
 		case "effect":
 			myPlayer.baseset = new CustomEffect(player);
+			break;
+		case "msbl":
+			myPlayer.baseset = new MyshopBl(player);
 			break;
 		default:
 			return MakeForm.Tip(player, "§4无法获取项目类型！");

@@ -19,6 +19,10 @@ import cn.nukkit.utils.TextFormat;
  * @author Winfxk
  */
 public class Bemilk extends PluginBase {
+	public static void main(String[] args) {
+		System.out.println("\n尊敬的 先生/女士 您好！\n    首先感谢您使用本“程序”，但是很遗憾的告诉您，本程序需要依赖一款名为“Nukkit”的Java程序才能运行！详情请搜索引擎搜索了解！");
+	}
+
 	private Instant loadTime = Instant.now();
 	/**
 	 * 插件缓存数据集合

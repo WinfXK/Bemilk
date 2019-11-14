@@ -1,5 +1,6 @@
-package xiaokai.bemilk.shop.myshop;
+package xiaokai.bemilk.shop.add;
 
+import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Belle;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
@@ -14,7 +15,9 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
+import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
 
 import me.onebone.economyapi.EconomyAPI;
@@ -36,10 +39,10 @@ public class MyShop {
 	 * @return
 	 */
 	public static boolean MakeMain(Player player, File file) {
-		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
-		myPlayer.file = file;
 		String[] k = { "{Player}", "{Money}" };
 		Object[] d = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
+		myPlayer.file = file;
 		Config config = new Config(file, Config.YAML);
 		if (!config.getBoolean("isMakeMyShop") && !Kick.isAdmin(player))
 			return xiaokai.bemilk.MakeForm.Tip(player, msg.getSun("界面", "个人商店", "拒绝创建个人商店", k, d));
@@ -63,21 +66,28 @@ public class MyShop {
 		String[] k = { "{Player}", "{Money}" };
 		double Money = EconomyAPI.getInstance().myMoney(player);
 		Object[] d = { player.getName(), Money };
+		if (player.getInventory().getContents().size() < 1)
+			return MakeForm.Tip(player, msg.getSon("个人商店", "背包无物品", k, d));
 		Config config = new Config(myPlayer.file, Config.YAML);
 		List<Item> Items = new ArrayList<>();
 		List<String> strings = new ArrayList<>();
 		Map<Integer, Item> Contents = player.getInventory().getContents();
 		String[] k2 = { "{Player}", "{Money}", "{ItemName}", "{ItemID}", "{ItemCount}" };
 		List<Integer> integers = new ArrayList<>();
+		Plugin kis = Server.getInstance().getPluginManager().getPlugin("Knickers");
 		for (Integer i : Contents.keySet()) {
 			Item item = Contents.get(i);
-			if (Belle.isMaterials(item))
+			if (Belle.isMaterials(item) || Kick.isBL(item))
+				continue;
+			if (kis != null && kis.isEnabled() && xiaokai.knickers.mtp.Belle.isMaterials(item))
 				continue;
 			integers.add(i);
 			Items.add(item);
 			strings.add(msg.getSun("个人商店", "从背包获取物品", "物品列表格式", k2,
 					new Object[] { player.getName(), Money, ItemID.getName(item), item.getId(), item.getCount() }));
 		}
+		if (strings.size() < 1)
+			return MakeForm.Tip(player, msg.getSon("个人商店", "背包无物品", k, d));
 		CustomForm form = new CustomForm(kick.formID.getID(26), msg.getSun("个人商店", "从背包获取物品", "标题",
 				new String[] { "{Title}" }, new Object[] { kick.Message.getText(config.get("Title"), k, d) }));
 		form.addInput(msg.getSun("个人商店", "从背包获取物品", "想要出售或者回收的数量", k, d));
@@ -85,6 +95,7 @@ public class MyShop {
 		form.addToggle(msg.getSun("个人商店", "从背包获取物品", "允许分批出售或收购", k, d), true);
 		form.addDropdown(msg.getSun("个人商店", "从背包获取物品", "选择个人商店上架方式", k, d), Kick.addMyShopType, 0);
 		form.addDropdown(msg.getSun("个人商店", "从背包获取物品", "选择要上架的物品", k, d), strings, 0);
+		form.addInput(msg.getSon("个人商店", "个人简介", k, d));
 		myPlayer.addIsItemList = Items;
 		myPlayer.integers = integers;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
@@ -110,6 +121,7 @@ public class MyShop {
 		form.addInput(msg.getSun("个人商店", "手动输入物品数据", "想要出售或者回收的数量", k, d));
 		form.addInput(msg.getSun("个人商店", "手动输入物品数据", "输入物品的价格", k, d));
 		form.addToggle(msg.getSun("个人商店", "手动输入物品数据", "允许分批出售或收购", k, d), true);
+		form.addInput(msg.getSon("个人商店", "个人简介", k, d));
 		form.sendPlayer(player);
 		return true;
 	}

@@ -3,6 +3,7 @@ package xiaokai.bemilk;
 import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.MyPlayer;
+import xiaokai.bemilk.set.delMyshopBlItem;
 import xiaokai.bemilk.shop.addShop;
 import xiaokai.bemilk.shop.delShop;
 import xiaokai.bemilk.shop.delShopItem;
@@ -10,10 +11,10 @@ import xiaokai.bemilk.shop.setShop;
 import xiaokai.bemilk.shop.add.ItemEnchant;
 import xiaokai.bemilk.shop.add.ItemRepair;
 import xiaokai.bemilk.shop.add.ItemTradeItem;
+import xiaokai.bemilk.shop.add.MyShopReceive;
 import xiaokai.bemilk.shop.add.ShopOrSell;
 import xiaokai.bemilk.shop.add.addShopItem;
 import xiaokai.bemilk.shop.add.effect.addEffect;
-import xiaokai.bemilk.shop.myshop.Receive;
 
 import cn.nukkit.Player;
 import cn.nukkit.event.EventHandler;
@@ -107,11 +108,11 @@ public class Monitor implements Listener {
 			else if (f.getID(23) == ID)
 				delShopItem.disOK(player, (FormResponseSimple) data);
 			else if (f.getID(24) == ID)
-				Receive.MakeMain(player, (FormResponseSimple) data);
+				MyShopReceive.MakeMain(player, (FormResponseSimple) data);
 			else if (f.getID(25) == ID)
-				Receive.InputItem(player, (FormResponseCustom) data);
+				MyShopReceive.InputItem(player, (FormResponseCustom) data);
 			else if (f.getID(26) == ID)
-				Receive.InventoryGetItem(player, (FormResponseCustom) data);
+				MyShopReceive.InventoryGetItem(player, (FormResponseCustom) data);
 			else if (f.getID(27) == ID && myPlayer != null && myPlayer.OpenShopDis != null)
 				myPlayer.OpenShopDis.disMain((FormResponseCustom) data);
 			else if (f.getID(28) == ID)
@@ -130,6 +131,8 @@ public class Monitor implements Listener {
 				myPlayer.baseset.disMain(data);
 			else if (f.getID(35) == ID && myPlayer != null && myPlayer.basesetForm != null)
 				myPlayer.basesetForm.disMain(data);
+			else if (f.getID(36) == ID)
+				delMyshopBlItem.Del(player, (FormResponseSimple) data);
 		} catch (Exception e2) {
 			e2.printStackTrace();
 			kick.mis.getLogger().error("ID为" + ID + "的表单数据发生错误！");

@@ -50,6 +50,8 @@ public class MakeForm implements FilenameFilter {
 		AdminList.add("item");
 		form.addButton(Tool.getRandColor() + "自定义效果");
 		AdminList.add("effect");
+		form.addButton(Tool.getRandColor() + "个人商店物品黑名单");
+		AdminList.add("msbl");
 		myPlayer.ExtraKeys = AdminList;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);

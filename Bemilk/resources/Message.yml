@@ -55,14 +55,17 @@
    售罄删除: §6您的个人商店已售罄删除！
    无效删除: §4您的个人商店已失效删除！
    数据错误: §4数据错误！购买失败！{Error}
+   个人简介: §6请输入您商店的简介
+   背包无物品: §4您的背包没有任何一个物品可供出售或回收的选择
+   想要添加的物品在黑名单: §4物品添加失败！您当前想要添加的物品§f(§4{ItemName}§f)已经在服务器个人商店上架黑名单！
    出售项目:
-      内容: §e欢迎尊敬的§4{Player}§e使用§5{ByPlayer}§e的个人商店！{n}§6商店收购项目：§5{ItemName}§f(§4{ItemID}§f){n}§6价格：{Money}{n}§6数量：§9{Count}{n}§7您当前有§2{MyMoney}§7{MoneyName}{n}§3约能购§5{MoneyItemCount}§3个§2{ItemName}{n}{isInt}{n}§e购买前请检查背包空间，否则购买后货物可能无法正常到账
+      内容: '{Mydata}{n}§e欢迎尊敬的§4{Player}§e使用§5{ByPlayer}§e的个人商店！{n}§6商店收购项目：§5{ItemName}§f(§4{ItemID}§f){n}§6价格：{Money}{n}§6数量：§9{Count}{n}§7您当前有§2{MyMoney}§7{MoneyName}{n}§3约能购§5{MoneyItemCount}§3个§2{ItemName}{n}{isInt}{n}§e购买前请检查背包空间，否则购买后货物可能无法正常到账'
       钱不够: §4滚你妹的！钱不够还来消遣我！滚去多挖点矿吧ヽ(‘⌒´メ)ノ
       背包已满: §4您的背包已满！
       购买数量: §6回收数量
       购买成功: §6购买成功！花费§5{Money}§6获得§2{Count}§6个§5{ItemName}§f(§4{ItemID}§f)
    回收项目:
-      内容: §e欢迎尊敬的§4{Player}§e使用§5{ByPlayer}§e的个人商店！{n}§6商店收购项目：§5{ItemName}§f(§4{ItemID}§f){n}§6数量：§9{Count}{n}§7您当前有§2{MyMoney}§7{MoneyName}{n}{isInt}
+      内容: '{Mydata}{n}§e欢迎尊敬的§4{Player}§e使用§5{ByPlayer}§e的个人商店！{n}§6商店收购项目：§5{ItemName}§f(§4{ItemID}§f){n}§6数量：§9{Count}{n}§7您当前有§2{MyMoney}§7{MoneyName}{n}{isInt}'
       回收数量: §6回收数量
       背包为空: §4您的背包为空！
       物品到账: §6{Player}§e卖给你§5{ItemCount}§e个§5{ItemName}§f(§4{ItemID}§f)

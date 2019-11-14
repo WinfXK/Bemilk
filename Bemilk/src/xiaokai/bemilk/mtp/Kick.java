@@ -3,17 +3,22 @@ package xiaokai.bemilk.mtp;
 import xiaokai.bemilk.Bemilk;
 import xiaokai.bemilk.tool.Effectrec;
 import xiaokai.bemilk.tool.ItemID;
+import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 
 /**
  * @author Winfxk
  */
+@SuppressWarnings("unchecked")
 public class Kick {
 	public static Kick kick;
 	/**
@@ -25,7 +30,7 @@ public class Kick {
 	 * 表单ID配置文件 <b>formIdConfig</b> </br>
 	 * 商店配置文件 <b>ShopConfig</b>
 	 */
-	public Config config, formIdConfig, ShopConfig;
+	public Config config, formIdConfig, ShopConfig, MyShopBlacklist;
 	/**
 	 * 系统配置文件的文件名
 	 */
@@ -58,7 +63,7 @@ public class Kick {
 			/* 21 */"物品兑换上架从背包选择物品的物品列表备用页面", /* 22 */"商店删除项目页面显示列表", /* 23 */"商店删除项目确认界面",
 			/* 24 */"创建个人商店让选择添加物品方式的页面", /* 25 */"创建个人商店并且是以手动输入数据的页面", /* 26 */"创建个人商店并且是以从背包获取物品数据的页面",
 			/* 27 */"商店项目数据交互界面", /* 28 */"处理搜索结果", /* 29 */"主页搜索", /* 30 */"子页搜索页", /* 31 */"添加药水项目主页",
-			/* 32 */"输入药水信息页", /* 33 */"服务器设置主页", /* 34 */"服务器设置子页", /* 35 */"服务器设置子页中的子页" };
+			/* 32 */"输入药水信息页", /* 33 */"服务器设置主页", /* 34 */"服务器设置子页", /* 35 */"服务器设置子页中的子页", /* 36 */"个人商店黑名单删除确认页面" };
 	/**
 	 * 表单ID存储位置
 	 */
@@ -141,6 +146,7 @@ public class Kick {
 		(new Belle(this)).start();
 		config = new Config(new File(bemilk.getDataFolder(), ConfigName), Config.YAML);
 		ShopConfig = new Config(new File(mis.getDataFolder(), ShopConfigName), Config.YAML);
+		MyShopBlacklist = new Config(new File(mis.getDataFolder(), "MyShopBlacklist.yml"), Config.YAML);
 		formID = new FormID(this);
 		formID.setConfig(formIdConfig.getAll());
 		Message = new Message(this);
@@ -176,5 +182,31 @@ public class Kick {
 			return kick.config.getList("管理员").contains(player.getName());
 		} else
 			return player.isOp();
+	}
+
+	/**
+	 * 判断一个物品是否是个人商店黑名单
+	 * 
+	 * @param item
+	 * @return
+	 */
+	public static boolean isBL(Item item) {
+		Map<String, Object> all = kick.MyShopBlacklist.getAll();
+		Map<String, Object> map;
+		for (Object obj : all.values()) {
+			map = (obj == null || !(obj instanceof Map)) ? new HashMap<>() : (HashMap<String, Object>) obj;
+			Object obj2 = map.get("Item");
+			if (map.size() < 1 || obj2 == null || !(obj2 instanceof Map))
+				continue;
+			Item item2 = Tool.loadItem((Map<String, Object>) obj2);
+			if (item2.equals(item))
+				return true;
+			if (Tool.isMateID(item.getId() + ":" + item.getDamage(), item2.getId() + ":" + item2.getDamage())) {
+				if (Tool.ObjToBool(map.get("Skip")))
+					return true;
+				return item.getNamedTag().equals(item2.getNamedTag());
+			}
+		}
+		return false;
 	}
 }

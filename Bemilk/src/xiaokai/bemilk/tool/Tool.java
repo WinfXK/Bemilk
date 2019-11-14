@@ -1,8 +1,16 @@
 package xiaokai.bemilk.tool;
 
+import java.awt.AWTException;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,6 +40,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -49,6 +58,115 @@ import cn.nukkit.item.Item;
 public class Tool implements X509TrustManager, HostnameVerifier {
 	private static String colorKeyString = "123456789abcdef";
 	private static String randString = "-+abcdefghijklmnopqrstuvwxyz_";
+
+	/**
+	 * 
+	 * 通过拼接的方式构造请求内容，实现参数传输以及文件传输
+	 * 
+	 * @param actinUrl
+	 * @param params
+	 * @param files
+	 * @throws IOException
+	 * 
+	 */
+	public static void PostFile(String actionUrl, File file) throws IOException {
+		PostFile(actionUrl, null, file);
+	}
+
+	/**
+	 * 
+	 * 通过拼接的方式构造请求内容，实现参数传输以及文件传输
+	 * 
+	 * @param actinUrl
+	 * @param params
+	 * @param files
+	 * @throws IOException
+	 * 
+	 */
+	public static void PostFile(String actionUrl, String param, File file) throws IOException {
+		String BOUNDARY = java.util.UUID.randomUUID().toString();
+		String PREFIX = "--", LINEND = "\r\n";
+		String MULTIPART_FROM_DATA = "multipart/form-data";
+		String CHARSET = "UTF-8";
+		URL uri = new URL(actionUrl);
+		HttpURLConnection conn = (HttpURLConnection) uri.openConnection();
+		conn.setReadTimeout(5 * 1000);
+		conn.setDoInput(true);
+		conn.setDoOutput(true);
+		conn.setUseCaches(false);
+		conn.setRequestMethod("POST");
+		conn.setRequestProperty("connection", "keep-alive");
+		conn.setRequestProperty("Charsert", "UTF-8");
+		conn.setRequestProperty("Content-Type", MULTIPART_FROM_DATA + ";boundary=" + BOUNDARY);
+		if (param != null && !param.isEmpty()) {
+			OutputStream os = null;
+			os = conn.getOutputStream();
+			os.write(param.getBytes());
+			os.close();
+		}
+		StringBuilder sb = new StringBuilder();
+		DataOutputStream outStream = new DataOutputStream(conn.getOutputStream());
+		outStream.write(sb.toString().getBytes());
+		StringBuilder sb1 = new StringBuilder();
+		sb1.append(PREFIX);
+		sb1.append(BOUNDARY);
+		sb1.append(LINEND);
+		sb1.append("Content-Disposition: form-data; name=\"file\"; filename=\"" + file.getName() + "\"" + LINEND);
+		sb1.append("Content-Type: application/octet-stream; charset=" + CHARSET + LINEND);
+		sb1.append(LINEND);
+		outStream.write(sb1.toString().getBytes());
+		InputStream is = new FileInputStream(file);
+		byte[] buffer = new byte[1024];
+		int len = 0;
+		while ((len = is.read(buffer)) != -1)
+			outStream.write(buffer, 0, len);
+		is.close();
+		outStream.write(LINEND.getBytes());
+		byte[] end_data = (PREFIX + BOUNDARY + PREFIX + LINEND).getBytes();
+		outStream.write(end_data);
+		outStream.flush();
+		int res = conn.getResponseCode();
+		InputStream in = conn.getInputStream();
+		if (res == 200) {
+			int ch;
+			StringBuilder sb2 = new StringBuilder();
+			while ((ch = in.read()) != -1)
+				sb2.append((char) ch);
+		}
+		outStream.close();
+		conn.disconnect();
+	}
+
+	/**
+	 * 获取到截图
+	 * 
+	 * @return
+	 * @throws AWTException
+	 */
+	public static BufferedImage getScreen() throws AWTException {
+		Robot rb = null; // java.awt.image包中的类，可以用来抓取屏幕，即截屏。
+		rb = new Robot();
+		Toolkit tk = Toolkit.getDefaultToolkit(); // 获取缺省工具包
+		Dimension di = tk.getScreenSize(); // 屏幕尺寸规格
+		Rectangle rec = new Rectangle(0, 0, di.width, di.height);
+		BufferedImage bi = rb.createScreenCapture(rec);
+		return bi;
+	}
+
+	/**
+	 * 将图片保存到本地
+	 * 
+	 * @param img     要保存的图片
+	 * @param extent  要保存的图片的类型
+	 * @param newfile 要保存的图片的名称
+	 */
+	public static void img2file(BufferedImage img, String extent, File newfile) {
+		try {
+			ImageIO.write(img, extent, newfile);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Object对象转换为String
