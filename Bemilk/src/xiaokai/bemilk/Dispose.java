@@ -32,8 +32,6 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
 /**
  * @author Winfxk
  */
@@ -53,7 +51,7 @@ public class Dispose {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		String string = data.getInputResponse(0);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(28), msg.getSon("搜索", "标题", DsK, DsO));
 		if (string == null || string.isEmpty())
 			return MakeForm.Tip(player, msg.getSon("搜索", "空关键字", DsK, DsO));
@@ -90,7 +88,7 @@ public class Dispose {
 	public static boolean disSeek(Player player, FormResponseCustom data) {
 		String string = data.getInputResponse(0);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(28), msg.getSon("搜索", "标题", DsK, DsO));
 		if (string == null || string.isEmpty())
 			return MakeForm.Tip(player, msg.getSon("搜索", "空关键字", DsK, DsO));
@@ -229,7 +227,7 @@ public class Dispose {
 			switch (myPlayer.ExtraKeys.get(data.getClickedButtonId() - myPlayer.Keys.size())) {
 			case "myshop":
 				String[] DsK = { "{Player}", "{Money}" };
-				Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+				Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 				if (!Kick.isAdmin(player) && kick.config.getBoolean("限制OP使用个人商店") && player.isOp())
 					return MakeForm.Tip(player, kick.Message.getSon("个人商店", "限制OP使用个人商店", DsK, DsO));
 				if (!Kick.isAdmin(player) && kick.config.getBoolean("限制创造模式使用个人商店") && player.getGamemode() == 1)

@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.add.effect;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.tool.CustomForm;
@@ -11,8 +12,6 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
 /**
  * @author Winfxk
  */
@@ -20,7 +19,7 @@ public abstract class makeBaseEffect {
 	public Kick kick = Kick.kick;
 	public Player player;
 	public File file;
-	public String Style;
+	public String Style, MoneyType;
 	public Message msg = Kick.kick.Message;
 	public String[] k;
 	public Object[] d;
@@ -30,18 +29,20 @@ public abstract class makeBaseEffect {
 		this.file = file;
 		this.player = player;
 		k = new String[] { "{Player}", "{Money}" };
-		d = new Object[] { player.getName(), MyMoney() };
+		d = new Object[] { player.getName(), DisPlayer.getMoney(player.getName()) };
 		Config config = new Config(file, Config.YAML);
 		form = new CustomForm(kick.formID.getID(32), kick.Message.getText(config.get("Title"), k, d));
 	}
 
 	/**
-	 * 获取自己的金币数量
+	 * 判断是否有货币可用
 	 * 
 	 * @return
 	 */
-	public double MyMoney() {
-		return EconomyAPI.getInstance().myMoney(player);
+	public boolean isMoneyOnline() {
+		if (kick.getMoneyType().size() >= 1)
+			return true;
+		return Tip("§4暂无可用货币！请添加货币插件！\n§4EconomyAPI\n§4Snowmn", false);
 	}
 
 	/**

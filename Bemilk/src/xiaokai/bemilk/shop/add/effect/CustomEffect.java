@@ -31,6 +31,7 @@ public class CustomEffect extends makeBaseEffect {
 				"§6请输入想要添加的效果ID，多个使用；分割\n§6列：\n§8生命恢复§f>§7等级§f>§5持续时间§f;§8瞬间伤害§f>§7等级§f>§5持续时间\n§81§f>§7等级§f>§5持续时间§f;§82§f>§7等级§f>§5持续时间\n"
 						+ Effectrec.getEffectString());
 		form.addInput("请输入购买该效果需要的价格");
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 		form.sendPlayer(player);
 		return true;
 	}
@@ -65,7 +66,8 @@ public class CustomEffect extends makeBaseEffect {
 		int Money = 0;
 		if (!Tool.isInteger(string) || (Money = Tool.ObjectToInt(string)) < 1)
 			return Tip("§4购买价格只能为大于零的纯整数！");
-		boolean isOK = new addItem(player, file).addEffectByCustomEffect(map, Money);
+		boolean isOK = new addItem(player, file, data.getDropdownResponse(2).getElementContent())
+				.addEffectByCustomEffect(map, Money);
 		return Tip(isOK ? "您成功创建了一个随机数据的效果商店！" : "§4创建貌似出现了一点问题！", isOK);
 	}
 

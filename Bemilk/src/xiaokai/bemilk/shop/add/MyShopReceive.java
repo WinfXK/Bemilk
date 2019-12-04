@@ -21,8 +21,6 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.item.Item;
 import cn.nukkit.plugin.Plugin;
 
-import me.onebone.economyapi.EconomyAPI;
-
 /**
  * 接收处理个人商店界面发回的数据
  * 
@@ -55,7 +53,7 @@ public class MyShopReceive {
 	public static boolean InventoryGetItem(Player player, FormResponseCustom data) {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		String[] k = { "{Player}", "{Money}" };
-		Object[] d = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] d = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		int ItemCount = Tool.ObjectToInt(data.getInputResponse(0), 0);
 		if (ItemCount <= 0)
 			return MakeForm.Tip(player, msg.getSun("个人商店", "从背包获取物品", "物品数量不能小于零", k, d));
@@ -71,7 +69,7 @@ public class MyShopReceive {
 		if (Kick.isBL(item))
 			return MakeForm.Tip(player, msg.getSon("个人商店", "想要添加的物品在黑名单",
 					new String[] { "{Player}", "{Money}", "{ItemName}" },
-					new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), ItemID.getName(item) }));
+					new Object[] { player.getName(), DisPlayer.getMoney(player.getName()), ItemID.getName(item) }));
 		if (ShopType.equals("Shop")) {
 			Item sitem = new Item(0);
 			if (item.getCount() > ItemCount) {
@@ -87,15 +85,16 @@ public class MyShopReceive {
 				player.getInventory().setContents(C);
 			}
 		} else if (!Kick.isAdmin(player)) {
-			double MyMoney = EconomyAPI.getInstance().myMoney(player);
+			double MyMoney = DisPlayer.getMoney(player.getName());
 			if (MyMoney < Money)
 				return MakeForm.Tip(player, msg.getSun("个人商店", "从背包获取物品", "金币不足", k, d));
 			DisPlayer.delMoney(player, Money);
 		}
 		String Mydata = data.getInputResponse(5);
-		boolean isok = new addItem(player, myPlayer.file).addMyShop(item, ItemCount, Money, isInt, ShopType, Mydata);
+		boolean isok = new addItem(player, myPlayer.file, Kick.kick.config.getString("默认货币类型")).addMyShop(item,
+				ItemCount, Money, isInt, ShopType, Mydata);
 		player.sendMessage(msg.getSun("个人商店", "从背包获取物品", "物品上架结果", new String[] { "{Player}", "{Money}", "{Result}" },
-				new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), isok ? "§e成功！" : "§4失败！" }));
+				new Object[] { player.getName(), DisPlayer.getMoney(player.getName()), isok ? "§e成功！" : "§4失败！" }));
 		DisPlayer.addSB(player.getName());
 		return isok;
 	}
@@ -110,7 +109,7 @@ public class MyShopReceive {
 	public static boolean InputItem(Player player, FormResponseCustom data) {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		String[] k = { "{Player}", "{Money}" };
-		Object[] d = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] d = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		String ShopType = data.getDropdownResponse(0).getElementID() == 0 ? "Shop" : "Sell";
 		Item item = ItemID.UnknownToItem(data.getInputResponse(1), null);
 		if (item == null)
@@ -137,10 +136,9 @@ public class MyShopReceive {
 			if (!Kick.isAdmin(player) && sbByItemCount < ItemCount)
 				return MakeForm.Tip(player, msg.getSun("个人商店", "手动输入物品数据", "物品不足", k, d));
 			if (Kick.isBL(item))
-				return MakeForm.Tip(player,
-						msg.getSon("个人商店", "想要添加的物品在黑名单", new String[] { "{Player}", "{Money}", "{ItemName}" },
-								new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
-										ItemID.getName(item) }));
+				return MakeForm.Tip(player, msg.getSon("个人商店", "想要添加的物品在黑名单",
+						new String[] { "{Player}", "{Money}", "{ItemName}" },
+						new Object[] { player.getName(), DisPlayer.getMoney(player.getName()), ItemID.getName(item) }));
 			if (!Kick.isAdmin(player)) {
 				int SBPlayer = 0;
 				List<Integer> Keys = new ArrayList<>(C.keySet());
@@ -166,15 +164,16 @@ public class MyShopReceive {
 				player.getInventory().setContents(C);
 			}
 		} else if (!Kick.isAdmin(player)) {
-			double MyMoney = EconomyAPI.getInstance().myMoney(player);
+			double MyMoney = DisPlayer.getMoney(player.getName());
 			if (MyMoney < Money)
 				return MakeForm.Tip(player, msg.getSun("个人商店", "手动输入物品数据", "金币不足", k, d));
 			DisPlayer.delMoney(player, Money);
 		}
 		String Mydata = data.getInputResponse(5);
-		boolean isok = new addItem(player, myPlayer.file).addMyShop(item, ItemCount, Money, isInt, ShopType, Mydata);
+		boolean isok = new addItem(player, myPlayer.file, Kick.kick.config.getString("默认货币类型")).addMyShop(item,
+				ItemCount, Money, isInt, ShopType, Mydata);
 		player.sendMessage(msg.getSun("个人商店", "手动输入物品数据", "物品上架结果", new String[] { "{Player}", "{Money}", "{Result}" },
-				new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player), isok ? "§e成功！" : "§4失败！" }));
+				new Object[] { player.getName(), DisPlayer.getMoney(player.getName()), isok ? "§e成功！" : "§4失败！" }));
 		DisPlayer.addSB(player.getName());
 		return isok;
 	}

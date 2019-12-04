@@ -1,5 +1,6 @@
 package xiaokai.bemilk;
 
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.FormID;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -24,8 +25,6 @@ import cn.nukkit.form.response.FormResponse;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseModal;
 import cn.nukkit.form.response.FormResponseSimple;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -138,7 +137,7 @@ public class Monitor implements Listener {
 			kick.mis.getLogger().error("ID为" + ID + "的表单数据发生错误！");
 			MakeForm.Tip(player,
 					kick.Message.getSon("界面", "界面显示失败", new String[] { "{Player}", "{Money}", "{Error}" },
-							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
+							new Object[] { player.getName(), DisPlayer.getMoney(player.getName()),
 									"ID为" + ID + "的表单数据发生错误！\n" + e2.getMessage() }));
 		}
 	}

@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -18,11 +19,6 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
-/**
-*@author Winfxk
-*/
 /**
  * 商店删除
  * 
@@ -86,7 +82,7 @@ public class delShopItem {
 		}
 		myPlayer.CacheKey = Key;
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		Map<String, Object> item = (Map<String, Object>) Shops.get(Key);
 		SimpleForm form = new SimpleForm(kick.formID.getID(23), kick.Message.getText(config.get("Title"), DsK, DsO),
 				MapTosString(item, "", Tool.getRandColor()) + "\n\n§4是否删除该项目？");
@@ -156,14 +152,14 @@ public class delShopItem {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		if (!Shop.isOk(player, file))
 			return MakeForm.Tip(player, kick.Message.getSun("界面", "商店分页", "被过滤提示", DsK, DsO));
 		if (!Shop.isOkMoney(player, file))
 			return MakeForm.Tip(player,
 					kick.Message.getSun("界面", "商店分页", "被过滤提示",
 							new String[] { "{Player}", "{Money}", "{MoneyFloor}", "{MoneyLimit}" },
-							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
+							new Object[] { player.getName(), DisPlayer.getMoney(player.getName()),
 									config.getDouble("MoneyFloor"), config.getDouble("MoneyLimit") }));
 		Object object = config.get("Items");
 		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()

@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -18,11 +19,6 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
-/**
-*@author Winfxk
-*/
 /**
  * 设置商店分页
  * 
@@ -85,17 +81,15 @@ public class setShop {
 		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) object;
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
-		SimpleForm form = new SimpleForm(kick.formID.getID(4),
-				kick.Message.getText(config.get("Title"), DsK, DsO),
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
+		SimpleForm form = new SimpleForm(kick.formID.getID(4), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
 		List<String> Keys = new ArrayList<>();
 		if (Shops.size() < 1)
 			return MakeForm.Tip(player, "§4当前还没有任何一个商店分页");
 		for (String ike : Shops.keySet()) {
 			Map<String, Object> map = (Map<String, Object>) Shops.get(ike);
-			File file = new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath),
-					(String) map.get("Config"));
+			File file = new File(new File(kick.mis.getDataFolder(), Kick.ShopConfigPath), (String) map.get("Config"));
 			Config config2 = new Config(file, Config.YAML);
 			String Button = msg.getText(map.get("Text"), DsK, DsO);
 			String ShopTitle = msg.getText(config2.get("Title"), DsK, DsO);

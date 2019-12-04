@@ -1,5 +1,6 @@
 package xiaokai.bemilk.shop.open.type.myshop;
 
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.shop.open.BaseSecondary;
 import xiaokai.bemilk.shop.open.type.MyShop;
 import xiaokai.bemilk.tool.ItemID;
@@ -8,8 +9,6 @@ import xiaokai.bemilk.tool.Tool;
 import java.util.Map;
 
 import cn.nukkit.form.response.FormResponseCustom;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -63,7 +62,7 @@ public class Shop extends BaseSecondary {
 				"{Money}" };
 		Object[] d = { player.getName(), ByPlayer, ItemID.getName(item), ItemID.getID(item), Count, this.data.MyMoney(),
 				reduceMoney, Count * Money };
-		EconomyAPI.getInstance().addMoney(ByPlayer, Count * Money);
+		DisPlayer.addMoney(ByPlayer, Count * Money);
 		this.data.data.Item.put("ItemCount", Tool.ObjectToInt(this.data.data.Item.get("ItemCount")) - Count);
 		this.data.data.Shops.put(this.data.data.Key, this.data.data.Item);
 		this.data.data.config.set("Items", this.data.data.Shops);

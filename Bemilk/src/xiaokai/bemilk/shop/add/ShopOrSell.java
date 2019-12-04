@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -23,11 +24,6 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
-/**
-*@author Winfxk
-*/
 /**
  * 当添加的商店类型为出售或者回收时的处理类
  * 
@@ -84,11 +80,12 @@ public class ShopOrSell {
 		int MinCount = Tool.ObjectToInt(data.getInputResponse(2), 1);
 		int MaxCount = Tool.ObjectToInt(data.getInputResponse(3), 64);
 		boolean isok;
+		String string2 = data.getDropdownResponse(4).getElementContent();
 		if (myPlayer.isShopOrSell)
-			isok = new addItem(player, myPlayer.file).addShop(Money, Items, MinCount, MaxCount);
+			isok = new addItem(player, myPlayer.file, string2).addShop(Money, Items, MinCount, MaxCount);
 		else
-			isok = new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount,
-					data.getToggleResponse(4));
+			isok = new addItem(player, myPlayer.file, string2).addSell(Money, Items, MinCount, MaxCount,
+					data.getToggleResponse(5));
 		player.sendMessage(
 				"§6您" + (isok ? "§9成功" : "§4失败") + "§6了一个" + (myPlayer.isShopOrSell ? "§a出售" : "§c回收") + "§6类型的商店");
 		return isok;
@@ -107,13 +104,14 @@ public class ShopOrSell {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(11), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput(Tool.getRandColor() + "§6请输入每份商品的单价");
 		form.addInput(Tool.getRandColor()
 				+ "请输入您想要上架的物品ID/名称\n多个使用；分割\n\n可用格式：\n\n物品ID;物品ID;物品ID\n物品ID>物品数量;物品ID>物品数量\n物品名称;物品名称;物品名称\n物品名称>物品数量;物品名称>物品数量");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最少数\n小于等于零时不启用该功能", "1");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 		if (!myPlayer.isShopOrSell)
 			form.addToggle("严格检查NBt", false);
 		form.sendPlayer(player);
@@ -147,9 +145,11 @@ public class ShopOrSell {
 		if (Items.size() < 1)
 			return MakeForm.Tip(player,
 					msg.getSon("界面", "物品商店添加失败", new String[] { "{Player}" }, new Object[] { player.getName() }));
-		isok = myPlayer.isShopOrSell ? new addItem(player, myPlayer.file).addShop(Money, Items, MinCount, MaxCount)
-				: new addItem(player, myPlayer.file).addSell(Money, Items, MinCount, MaxCount,
-						data.getToggleResponse(3));
+		String string2 = data.getDropdownResponse(3).getElementContent();
+		isok = myPlayer.isShopOrSell
+				? new addItem(player, myPlayer.file, string2).addShop(Money, Items, MinCount, MaxCount)
+				: new addItem(player, myPlayer.file, string2).addSell(Money, Items, MinCount, MaxCount,
+						data.getToggleResponse(4));
 		player.sendMessage(
 				"§6您" + (isok ? "§9成功" : "§4失败") + "§6了一个" + (myPlayer.isShopOrSell ? "§a出售" : "§c回收") + "§6类型的商店");
 		return isok;
@@ -168,12 +168,13 @@ public class ShopOrSell {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(10), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput(Tool.getRandColor() + "请输入玩家购买这个项目所需的" + kick.mis.getName()
 				+ "数量\n§4请输入一个正确的数值(大于零的纯整数)！\n§4否则之前的数据将会失效！");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最少数\n小于等于零时不启用该功能", "1");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 		if (!myPlayer.isShopOrSell)
 			form.addToggle("严格检查NBt", false);
 		form.sendPlayer(player);
@@ -227,7 +228,7 @@ public class ShopOrSell {
 		myPlayer.CacheItem = item;
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(9), kick.Message.getText(config.get("Title"), DsK, DsO));
 		String Color = Tool.getRandColor();
 		form.addInput(Color + "请输入您想要上架的的" + Tool.getRandColor() + ItemID.getName(item) + Color + "的数量！",
@@ -250,7 +251,7 @@ public class ShopOrSell {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(8), kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont((myPlayer.isInventoryGetItem2 ? "添加成功！\n\n" : "") + "请选择您"
 						+ (myPlayer.isInventoryGetItem2 ? "还" : "") + "想要上架的物品"));
@@ -290,7 +291,7 @@ public class ShopOrSell {
 					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(7), kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont("请输入想要添加的方式"));
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());

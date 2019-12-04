@@ -13,8 +13,6 @@ import java.util.Map;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.nbt.tag.CompoundTag;
 
-import me.onebone.economyapi.EconomyAPI;
-
 /**
  * @author Winfxk
  */
@@ -104,8 +102,8 @@ public class Sell extends BaseSecondary {
 				msg.getSun("个人商店", "回收项目", "物品到账",
 						new String[] { "{Player}", "{Money}", "{MyMoney}", "{ItemName}", "{ItemID}", "{ItemCount}",
 								"{ByPlayer}" },
-						new Object[] { player.getName(), Money * Count, EconomyAPI.getInstance().myMoney(ByPlayer),
-								ItemID.getName(item), ItemID.getID(item), Count, ByPlayer, }));
+						new Object[] { player.getName(), Money * Count, this.data.MyMoney(), ItemID.getName(item),
+								ItemID.getID(item), Count, ByPlayer, }));
 		this.data.data.Item.put("ItemCount", Tool.ObjectToInt(this.data.data.Item.get("ItemCount")) - Count);
 		this.data.data.Shops.put(this.data.data.Key, this.data.data.Item);
 		this.data.data.config.set("Items", this.data.data.Shops);

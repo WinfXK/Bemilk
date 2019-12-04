@@ -1,5 +1,6 @@
 package xiaokai.bemilk;
 
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.shop.open.OpenShop;
@@ -16,8 +17,6 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -56,7 +55,7 @@ public class ShopCommand extends Command {
 	@Override
 	public boolean execute(CommandSender player, String commandLabel, String[] args) {
 		String[] k = new String[] { "{Player}", "{Money}" };
-		Object[] d = new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player.getName()) };
+		Object[] d = new Object[] { player.getName(), DisPlayer.getMoney(player.getName()) };
 		if (!kick.mis.isEnabled()) {
 			player.sendMessage(msg.getMessage("插件已关闭", k, d));
 			return false;

@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.add.effect;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.tool.CustomForm;
@@ -10,8 +11,6 @@ import java.io.File;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -34,7 +33,7 @@ public class addEffect {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(31), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addDropdown("§6请选择您想要添加的药水购买方式", Style);
 		myPlayer.file = file;

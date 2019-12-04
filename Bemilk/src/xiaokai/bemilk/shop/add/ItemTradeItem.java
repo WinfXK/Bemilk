@@ -2,6 +2,7 @@ package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.Bemilk;
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -24,11 +25,6 @@ import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
-/**
-*@author Winfxk
-*/
 /**
  * 以物换物处理类
  * 
@@ -51,7 +47,7 @@ public class ItemTradeItem {
 					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(7), kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont("请输入想要添加的方式"));
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
@@ -132,8 +128,9 @@ public class ItemTradeItem {
 		if (sxItems.size() < 1 || sjItems.size() < 1)
 			return MakeForm.Tip(player, msg.getSon("界面", "物品兑换商店添加失败", new String[] { "{Player}", "{Error}" },
 					new Object[] { player.getName(), sxItems.size() < 1 ? "可兑换物品为空！" : "兑换所需的物品为空" }));
-		boolean isOK = new addItem(player, kick.PlayerDataMap.get(player.getName()).file).addItemTradeItem(sjItems,
-				sxItems, MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(6));
+		boolean isOK = new addItem(player, kick.PlayerDataMap.get(player.getName()).file,
+				data.getDropdownResponse(7).getElementContent()).addItemTradeItem(sjItems, sxItems, MinCount, MaxCount,
+						Money, ItemMoney, data.getToggleResponse(6));
 		player.sendMessage("§6您" + (isOK ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
 		return isOK;
 	}
@@ -151,7 +148,7 @@ public class ItemTradeItem {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(12), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput(Tool.getRandColor()
 				+ "请输入您想要上架的物品ID/名称\n多个使用；分割\n\n可用格式：\n\n物品ID;物品ID;物品ID\n物品ID>物品数量;物品ID>物品数量\n物品名称;物品名称;物品名称\n物品名称>物品数量;物品名称>物品数量");
@@ -161,6 +158,7 @@ public class ItemTradeItem {
 		form.addInput(Tool.getRandColor() + "请输入每次兑换需要扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是每次兑换扣除的金币数量");
 		form.addInput(Tool.getRandColor() + "请输入兑换每个项目所扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是按照兑换的数量来扣除金币");
 		form.addToggle("严格检查NBt", false);
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 		form.sendPlayer(player);
 		return true;
 	}
@@ -205,8 +203,8 @@ public class ItemTradeItem {
 		if (sxItems.size() < 1 || sjItems.size() < 1)
 			return MakeForm.Tip(player, msg.getSon("界面", "物品兑换商店添加失败", new String[] { "{Player}", "{Error}" },
 					new Object[] { player.getName(), sxItems.size() < 1 ? "可兑换物品为空！" : "兑换所需的物品为空" }));
-		boolean isOK = new addItem(player, myPlayer.file).addItemTradeItem(sjItems, sxItems, MinCount, MaxCount, Money,
-				ItemMoney, data.getToggleResponse(4));
+		boolean isOK = new addItem(player, myPlayer.file, data.getDropdownResponse(5).getElementContent())
+				.addItemTradeItem(sjItems, sxItems, MinCount, MaxCount, Money, ItemMoney, data.getToggleResponse(4));
 		player.sendMessage("§6您" + (isOK ? "§e成功" : "§4未成功") + "§6创建一个物品兑换商店");
 		return isOK;
 	}
@@ -227,13 +225,14 @@ public class ItemTradeItem {
 		}
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(15), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput(Tool.getRandColor() + "请输入每次兑换需要扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是每次兑换扣除的金币数量");
 		form.addInput(Tool.getRandColor() + "请输入兑换每个项目所扣除的" + Bemilk.getMoneyName() + "数量", 0, "这个是按照兑换的数量来扣除金币");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最少数\n小于等于零时不启用该功能", "1");
 		form.addInput(Tool.getRandColor() + "请设定玩家单次购买的最大数\n小于等于零时不启用该功能", "64");
 		form.addToggle("严格检查NBt", false);
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 		form.sendPlayer(player);
 		return true;
 	}
@@ -269,7 +268,7 @@ public class ItemTradeItem {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(14), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput("§6请设置§4" + ItemID.getName(item) + "§6的数量", item.getCount(), item.getCount());
 		myPlayer.CacheItem = item;
@@ -309,7 +308,7 @@ public class ItemTradeItem {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID((myPlayer.CacheInt = myPlayer.CacheInt != 13 ? 13 : 21)),
 				kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont((myPlayer.isInventoryGetItem2 ? "添加成功！\n\n" : "") + "请选择您"

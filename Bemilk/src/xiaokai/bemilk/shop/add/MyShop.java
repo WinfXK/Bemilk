@@ -2,6 +2,7 @@ package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.MakeForm;
 import xiaokai.bemilk.mtp.Belle;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -19,8 +20,6 @@ import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * 创建个人商店相关的界面
@@ -40,7 +39,7 @@ public class MyShop {
 	 */
 	public static boolean MakeMain(Player player, File file) {
 		String[] k = { "{Player}", "{Money}" };
-		Object[] d = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] d = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		myPlayer.file = file;
 		Config config = new Config(file, Config.YAML);
@@ -64,7 +63,7 @@ public class MyShop {
 	public static boolean InventoryGetItem(Player player) {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		String[] k = { "{Player}", "{Money}" };
-		double Money = EconomyAPI.getInstance().myMoney(player);
+		double Money = DisPlayer.getMoney(player.getName());
 		Object[] d = { player.getName(), Money };
 		if (player.getInventory().getContents().size() < 1)
 			return MakeForm.Tip(player, msg.getSon("个人商店", "背包无物品", k, d));
@@ -112,7 +111,7 @@ public class MyShop {
 	public static boolean InputItem(Player player) {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		String[] k = { "{Player}", "{Money}" };
-		Object[] d = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] d = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		Config config = new Config(myPlayer.file, Config.YAML);
 		CustomForm form = new CustomForm(kick.formID.getID(25), msg.getSun("个人商店", "手动输入物品数据", "标题",
 				new String[] { "{Title}" }, new Object[] { kick.Message.getText(config.get("Title"), k, d) }));

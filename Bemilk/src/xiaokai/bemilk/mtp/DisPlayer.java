@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.item.Item;
+import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -59,7 +59,7 @@ public class DisPlayer {
 	public static boolean inspect(String player) {
 		Player isPlayer = Kick.kick.PlayerDataMap.get(player).player;
 		String[] k = { "{Player}", "{Money}" };
-		Object[] d = { player, EconomyAPI.getInstance().myMoney(player) };
+		Object[] d = { player, getMoney(player) };
 		Config config = getConfig(player);
 		Message msg = Kick.kick.Message;
 		Object obj = config.get("未售罄商店");
@@ -256,12 +256,69 @@ public class DisPlayer {
 	 * @return
 	 */
 	public static double addMoney(String player, double Money) {
+		return addMoney(player, Money, "EconomyApi");
+	}
+
+	/**
+	 * 系统使用的货币类型
+	 * 
+	 * @param player
+	 * @param Money
+	 * @param MoneyType
+	 * @return
+	 */
+	public static double addMoney(String player, double Money, String MoneyType) {
 		Config config = getConfig(player);
 		double M = config.getDouble("收入") + Money;
 		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Money).intValue()));
 		config.set("收入", M);
+		Plugin plugin;
 		config.set("总交易额", config.getDouble("总交易额") + Money);
-		EconomyAPI.getInstance().addMoney(player, Money);
+		if (MoneyType == null || !MoneyType.toLowerCase().equals("snowmn")) {
+			plugin = Server.getInstance().getPluginManager().getPlugin("EconomyAPI");
+			if (!plugin.isEnabled()) {
+				throw new RuntimeException("该货币插件未加载！" + MoneyType);
+			} else
+				me.onebone.economyapi.EconomyAPI.getInstance().addMoney(player, Money);
+		} else {
+			plugin = Server.getInstance().getPluginManager().getPlugin("Snowmn");
+			if (!plugin.isEnabled()) {
+				throw new RuntimeException("该货币插件未加载！" + MoneyType);
+			} else
+				cn.epicfx.winfxk.money.sn.Money.addMoney(player, Money);
+		}
+		setConfig(player, config);
+		return M;
+	}
+
+	/**
+	 * 系统使用的货币类型
+	 * 
+	 * @param player
+	 * @param Money
+	 * @param MoneyType
+	 * @return
+	 */
+	public static double delMoney(String player, double Money, String MoneyType) {
+		Config config = getConfig(player);
+		double M = config.getDouble("支出") + Money;
+		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Money).intValue()));
+		config.set("支出", M);
+		config.set("总交易额", config.getDouble("总交易额") + Money);
+		Plugin plugin;
+		if (MoneyType == null || !MoneyType.toLowerCase().equals("snowmn")) {
+			plugin = Server.getInstance().getPluginManager().getPlugin("EconomyAPI");
+			if (!plugin.isEnabled()) {
+				throw new RuntimeException("该货币插件未加载！" + MoneyType);
+			} else
+				me.onebone.economyapi.EconomyAPI.getInstance().reduceMoney(player, Money);
+		} else {
+			plugin = Server.getInstance().getPluginManager().getPlugin("Snowmn");
+			if (!plugin.isEnabled()) {
+				throw new RuntimeException("该货币插件未加载！" + MoneyType);
+			} else
+				cn.epicfx.winfxk.money.sn.Money.addMoney(player, Money);
+		}
 		setConfig(player, config);
 		return M;
 	}
@@ -274,7 +331,7 @@ public class DisPlayer {
 	 * @return
 	 */
 	public static double delMoney(Player player, double Moeny) {
-		return delMoney(player.getName(), Moeny);
+		return delMoney(player.getName(), Moeny, "EconomyApi");
 	}
 
 	/**
@@ -285,14 +342,7 @@ public class DisPlayer {
 	 * @return
 	 */
 	public static double delMoney(String player, double Money) {
-		Config config = getConfig(player);
-		double M = config.getDouble("支出") + Money;
-		config.set("人品", config.getDouble("人品") + Tool.getRand(1, Double.valueOf(Money).intValue()));
-		config.set("支出", M);
-		config.set("总交易额", config.getDouble("总交易额") + Money);
-		EconomyAPI.getInstance().reduceMoney(player, Money);
-		setConfig(player, config);
-		return M;
+		return delMoney(player, Money, "EconomyAPI");
 	}
 
 	/**
@@ -521,5 +571,39 @@ public class DisPlayer {
 	 */
 	public static File getFile(String player) {
 		return new File(new File(Kick.kick.mis.getDataFolder(), Kick.PlayerConfigPath), player + ".yml");
+	}
+
+	/**
+	 * 获取玩家货币数量
+	 * 
+	 * @param player
+	 * @return
+	 */
+	public static double getMoney(String player) {
+		return getMoney(player, Kick.kick.config.getString("默认货币类型"));
+	}
+
+	/**
+	 * 获取玩家货币数量
+	 * 
+	 * @param player
+	 * @param MoneyType
+	 * @return
+	 */
+	public static double getMoney(String player, String MoneyType) {
+		Plugin plugin;
+		if (MoneyType == null || !MoneyType.toLowerCase().equals("snowmn")) {
+			plugin = Server.getInstance().getPluginManager().getPlugin("EconomyAPI");
+			if (plugin.isEnabled())
+				return me.onebone.economyapi.EconomyAPI.getInstance().myMoney(player);
+			else
+				return 0;
+		} else {
+			plugin = Server.getInstance().getPluginManager().getPlugin("Snowmn");
+			if (plugin.isEnabled())
+				return cn.epicfx.winfxk.money.sn.Money.getMoney(player);
+			else
+				return 0;
+		}
 	}
 }

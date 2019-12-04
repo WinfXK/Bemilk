@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.open;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -27,8 +28,6 @@ import java.util.Set;
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -72,15 +71,15 @@ public class OpenShop {
 			default:
 				return MakeForm.Tip(myPlayer.player,
 						msg.getSun("界面", "商店分页", "无法获取项目类型", new String[] { "{Player}", "{Money}" },
-								new Object[] { data.player.getName(), EconomyAPI.getInstance().myMoney(data.player) }));
+								new Object[] { data.player.getName(), DisPlayer.getMoney(data.player.getName()) }));
 			}
 			kick.PlayerDataMap.put(data.player.getName(), myPlayer);
 			return myPlayer.OpenShopDis.MakeMain();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return MakeForm.Tip(data.player,
-					msg.getSon("界面", "商店项目打开失败", new String[] { "{Player}", "{Money}", "{Error}" }, new Object[] {
-							data.player.getName(), EconomyAPI.getInstance().myMoney(data.player), e.getMessage() }));
+			return MakeForm.Tip(data.player, msg.getSon("界面", "商店项目打开失败",
+					new String[] { "{Player}", "{Money}", "{Error}" },
+					new Object[] { data.player.getName(), DisPlayer.getMoney(data.player.getName()), e.getMessage() }));
 		}
 	}
 
@@ -94,7 +93,7 @@ public class OpenShop {
 	 */
 	public static boolean Open(Player player, File file, String Key) {
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		if (!Kick.isAdmin(player) && kick.config.getBoolean("限制创造模式使用商店") && player.getGamemode() == 1)
 			return MakeForm.Tip(player, msg.getSon("界面", "限制创造模式使用商店", DsK, DsO));
 		Config config = new Config(file, Config.YAML);
@@ -134,14 +133,14 @@ public class OpenShop {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		if (!Shop.isOk(player, file))
 			return MakeForm.Tip(player, msg.getSun("界面", "商店分页", "被过滤提示", DsK, DsO));
 		if (!Shop.isOkMoney(player, file))
 			return MakeForm.Tip(player,
 					kick.Message.getSun("界面", "商店分页", "被过滤提示",
 							new String[] { "{Player}", "{Money}", "{MoneyFloor}", "{MoneyLimit}" },
-							new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player),
+							new Object[] { player.getName(), DisPlayer.getMoney(player.getName()),
 									config.getDouble("MoneyFloor"), config.getDouble("MoneyLimit") }));
 		Object object = config.get("Items");
 		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
@@ -389,7 +388,7 @@ public class OpenShop {
 			}
 		} catch (Exception e) {
 			k = new String[] { "{Player}", "{Money}" };
-			d = new Object[] { player.getName(), EconomyAPI.getInstance().myMoney(player.getName()) };
+			d = new Object[] { player.getName(), DisPlayer.getMoney(player.getName()) };
 			e.printStackTrace();
 			kick.mis.getLogger()
 					.error("§4出现错误！一个项目可能没有正常显示！请检查您的数据！\n错误数据：" + e.getMessage() + "\n项目数据：" + item.toString());

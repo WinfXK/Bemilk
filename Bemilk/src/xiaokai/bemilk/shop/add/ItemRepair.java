@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -16,11 +17,6 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
-/**
-*@author Winfxk
-*/
 /**
  * 物品修复处理类
  * 
@@ -79,10 +75,11 @@ public class ItemRepair {
 			return MakeForm.Tip(player, "§4每次使用的价格只能为大于零的纯整数！");
 		boolean isTool = data.getToggleResponse(2);
 		boolean isOK;
-		player.sendMessage("§6您"
-				+ ((isOK = new addItem(player, myPlayer.file).addItemRepairSome(Repair, Money, isTool)) ? "§e成功"
-						: "§4未成功")
-				+ "§6创建一个耐久商店");
+		String string2 = data.getDropdownResponse(3).getElementContent();
+		player.sendMessage(
+				"§6您" + ((isOK = new addItem(player, myPlayer.file, string2).addItemRepairSome(Repair, Money, isTool))
+						? "§e成功"
+						: "§4未成功") + "§6创建一个耐久商店");
 		return isOK;
 	}
 
@@ -106,10 +103,11 @@ public class ItemRepair {
 			return MakeForm.Tip(player, "§4每次使用的价格只能为大于零的纯整数！");
 		boolean isTool = data.getToggleResponse(2);
 		boolean isOK;
-		player.sendMessage("§6您"
-				+ ((isOK = new addItem(player, myPlayer.file).addItemRepairSoarTo(Repair, Money, isTool)) ? "§e成功"
-						: "§4未成功")
-				+ "§6创建一个耐久商店");
+		String string2 = data.getDropdownResponse(3).getElementContent();
+		player.sendMessage(
+				"§6您" + ((isOK = new addItem(player, myPlayer.file, string2).addItemRepairSoarTo(Repair, Money, isTool))
+						? "§e成功"
+						: "§4未成功") + "§6创建一个耐久商店");
 		return isOK;
 	}
 
@@ -157,7 +155,8 @@ public class ItemRepair {
 			return MakeForm.Tip(player, "§4每次使用的价格只能为大于零的纯整数！");
 		boolean isTool = data.getToggleResponse(6);
 		boolean isOK;
-		player.sendMessage("§6您" + ((isOK = new addItem(player, myPlayer.file).addItemRepairRandom(MinRepair,
+		String string2 = data.getDropdownResponse(7).getElementContent();
+		player.sendMessage("§6您" + ((isOK = new addItem(player, myPlayer.file, string2).addItemRepairRandom(MinRepair,
 				MaxRepair, RepairCount, SBMinRepair, SBMaxRepair, Money, isTool)) ? "§e成功" : "§4未成功") + "§6创建一个耐久商店");
 		return isOK;
 	}
@@ -175,6 +174,7 @@ public class ItemRepair {
 		form.addInput("失败后将会减少的耐久度最大值（小于等于零时不启用)", 0);
 		form.addInput("请输入每次使用的价格");
 		form.addToggle("允许非工具使用", false);
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 	}
 
 	/**
@@ -186,6 +186,7 @@ public class ItemRepair {
 		form.addInput("请输入将要设置的物品特殊值");
 		form.addInput("请输入每次使用的价格");
 		form.addToggle("允许非工具使用", false);
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 	}
 
 	/**
@@ -197,6 +198,7 @@ public class ItemRepair {
 		form.addInput("请输入将要增加的耐久");
 		form.addInput("请输入每次使用的价格");
 		form.addToggle("允许非工具使用", false);
+		form.addDropdown("请选择想要使用的货币种类", kick.getMoneyType());
 	}
 
 	/**
@@ -212,7 +214,7 @@ public class ItemRepair {
 		myPlayer.string = Kick.addItemRepairType[data.getClickedButtonId()];
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName())  };
 		form = new CustomForm(kick.formID.getID(19), kick.Message.getText(config.get("Title"), DsK, DsO));
 		switch (myPlayer.string) {
 		case "随机增加":
@@ -246,7 +248,7 @@ public class ItemRepair {
 		myPlayer.file = file;
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(18), kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont("请输入想要添加的商店类型"));
 		kick.PlayerDataMap.put(player.getName(), myPlayer);

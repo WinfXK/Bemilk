@@ -34,9 +34,12 @@ public class addItem {
 	 * @param player 要添加项目的玩家对象
 	 * @param file   要添加项目的商店文件对象
 	 */
-	public addItem(Player player, File file) {
+	public addItem(Player player, File file, String MoneyType) {
 		config = new Config(file, Config.YAML);
 		this.player = player;
+		MoneyType = (MoneyType == null || MoneyType.isEmpty()) ? Kick.kick.config.getString("默认货币类型")
+				: (MoneyType.toLowerCase().equals("snowmn") ? "Snowmn" : "EconomyAPI");
+		map.put("MoneyType", MoneyType);
 		map.put("Player", player.getName());
 		map.put("Time", Tool.getDate() + " " + Tool.getTime());
 		map.put("Key", getKey(1, file));

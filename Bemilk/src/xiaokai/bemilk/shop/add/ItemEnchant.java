@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -19,8 +20,6 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
 *@author Winfxk
@@ -45,6 +44,17 @@ public class ItemEnchant {
 		private MyPlayer myPlayer;
 
 		/**
+		 * 判断是否有货币可用
+		 * 
+		 * @return
+		 */
+		public boolean isMoneyOnline() {
+			if (kick.getMoneyType().size() >= 1)
+				return true;
+			return MakeForm.Tip(player, "§4暂无可用货币！请添加货币插件！\n§4EconomyAPI\n§4Snowmn", false);
+		}
+
+		/**
 		 * 处理附魔项目设置界面回调的数据
 		 * 
 		 * @param player
@@ -64,6 +74,8 @@ public class ItemEnchant {
 		 * @return
 		 */
 		public boolean disMakeForm() {
+			if (!isMoneyOnline())
+				return false;
 			switch (myPlayer.string) {
 			case "MakeFormLevelRand":
 				return MakeFormLevelRand();
@@ -91,7 +103,8 @@ public class ItemEnchant {
 			int EnchantLevel = data.getDropdownResponse(1).getElementID();
 			boolean isTool = data.getToggleResponse(3);
 			boolean isOK;
-			player.sendMessage("§6您" + ((isOK = new addItem(player, myPlayer.file).addEnchantLevel(EnchantID,
+			string = data.getDropdownResponse(4).getElementContent();
+			player.sendMessage("§6您" + ((isOK = new addItem(player, myPlayer.file, string).addEnchantLevel(EnchantID,
 					EnchantLevel, Money, isTool)) ? "§e成功" : "§4未成功") + "§6创建一个附魔商店");
 			return isOK;
 		}
@@ -122,8 +135,9 @@ public class ItemEnchant {
 			int SBEnchantLevel = data.getDropdownResponse(4).getElementID();
 			boolean isTool = data.getToggleResponse(6);
 			boolean isOK;
+			string = data.getDropdownResponse(7).getElementContent();
 			player.sendMessage("§6您"
-					+ ((isOK = new addItem(player, myPlayer.file).addEnchantLevelRand(EnchantID, EnchantLevel,
+					+ ((isOK = new addItem(player, myPlayer.file, string).addEnchantLevelRand(EnchantID, EnchantLevel,
 							EnchantRand, SBEnchantID, SBEnchantLevel, isTool, Money)) ? "§e成功" : "§4未成功")
 					+ "§6创建一个附魔商店");
 			return isOK;
@@ -166,8 +180,10 @@ public class ItemEnchant {
 				map.put((String) item.get("Key"), item);
 			}
 			boolean isOK;
+			string = data.getDropdownResponse(3).getElementContent();
 			player.sendMessage(
-					"§6您" + ((isOK = new addItem(player, myPlayer.file).addEnchantByCustom(map, Money, isTool)) ? "§e成功"
+					"§6您" + ((isOK = new addItem(player, myPlayer.file, string).addEnchantByCustom(map, Money, isTool))
+							? "§e成功"
 							: "§4未成功") + "§6创建一个附魔商店");
 			return isOK;
 		}
@@ -200,12 +216,13 @@ public class ItemEnchant {
 		myPlayer.string = "MakeFormLevel";
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(17), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addDropdown("请选择要添加的附魔", EnchantName.getNameList());
 		form.addDropdown("请选择附魔等级", new String[] { "I", "II", "III", "IV", "V" });
 		form.addInput("请输入附魔的价格");
 		form.addToggle("允许非工具附魔", true);
+		form.addDropdown("请选择货币种类", kick.getMoneyType());
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
@@ -222,7 +239,7 @@ public class ItemEnchant {
 		myPlayer.string = "MakeFormLevelRand";
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(17), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addDropdown("请选择要添加的附魔", EnchantName.getNameList());
 		form.addDropdown("请选择附魔等级", new String[] { "I", "II", "III", "IV", "V" });
@@ -233,6 +250,7 @@ public class ItemEnchant {
 		form.addDropdown("请选择失败后的附魔等级", new String[] { "I", "II", "III", "IV", "V" });
 		form.addInput("请输入附魔的价格");
 		form.addToggle("允许非工具附魔", true);
+		form.addDropdown("请选择货币种类", kick.getMoneyType());
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
@@ -249,12 +267,13 @@ public class ItemEnchant {
 		myPlayer.string = "MakeFormByCustom";
 		Config config = new Config(myPlayer.file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(17), kick.Message.getText(config.get("Title"), DsK, DsO));
 		form.addInput("§6请输入附魔数据，多个使用;分割\n§6例(附魔名称、附魔ID均可): \n§6附魔ID§f>§4附魔等级§f>§6概率占比§e;§6附魔ID§f>§4附魔等级§f>§6概率占比§e\n\n"
 				+ getEnchantString());
 		form.addToggle("允许附魔非工具物品", true);
 		form.addInput("请输入附魔的价格");
+		form.addDropdown("请选择货币种类", kick.getMoneyType());
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		form.sendPlayer(player);
 		return true;
@@ -291,7 +310,7 @@ public class ItemEnchant {
 					msg.getMessage("权限不足", new String[] { "{Player}" }, new Object[] { player.getName() }));
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(16), kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont("请输入想要添加的方式"));
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());

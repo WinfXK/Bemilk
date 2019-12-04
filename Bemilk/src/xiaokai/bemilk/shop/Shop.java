@@ -1,5 +1,10 @@
 package xiaokai.bemilk.shop;
 
+import xiaokai.bemilk.ShopCommand;
+import xiaokai.bemilk.mtp.DisPlayer;
+import xiaokai.bemilk.mtp.Kick;
+import xiaokai.bemilk.tool.Tool;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -7,11 +12,6 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
-import me.onebone.economyapi.EconomyAPI;
-
-import xiaokai.bemilk.ShopCommand;
-import xiaokai.bemilk.mtp.Kick;
-import xiaokai.bemilk.tool.Tool;
 
 /**
  * @author Winfxk
@@ -119,7 +119,7 @@ public class Shop {
 		double MoneyLimit = config.getDouble("MoneyLimit");
 		if ((MoneyFloor == 0 && MoneyLimit == 0) || (MoneyFloor < 0 && MoneyLimit < 0) || (MoneyLimit < MoneyFloor))
 			return true;
-		double Money = EconomyAPI.getInstance().myMoney(player);
+		double Money = DisPlayer.getMoney(player.getName());
 		if (Money > MoneyFloor && Money < MoneyLimit)
 			return true;
 		return false;

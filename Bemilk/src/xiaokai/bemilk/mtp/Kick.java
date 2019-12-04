@@ -6,13 +6,17 @@ import xiaokai.bemilk.tool.ItemID;
 import xiaokai.bemilk.tool.Tool;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.item.Item;
+import cn.nukkit.plugin.Plugin;
 import cn.nukkit.utils.Config;
 
 /**
@@ -99,7 +103,7 @@ public class Kick {
 	/**
 	 * 能创建的商店按钮的类型
 	 */
-	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔", "工具修复", "药水效果" };
+	public static final String[] ButtonTypeList = { "物品出售", "物品回收", "物品兑换", "物品附魔", "工具修复", "药水效果", "命令商店" };
 	/**
 	 * 添加的商店的配置文件存储位置
 	 */
@@ -208,5 +212,22 @@ public class Kick {
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * 获取可用的货币列表
+	 * 
+	 * @return
+	 */
+	public List<String> getMoneyType() {
+		String[] Moneys = { "EconomyAPI", "Snowmn" };
+		List<String> list = new ArrayList<>();
+		Plugin plugin;
+		for (String s : Moneys) {
+			plugin = Server.getInstance().getPluginManager().getPlugin(s);
+			if (plugin != null && plugin.isEnabled())
+				list.add(s);
+		}
+		return list;
 	}
 }

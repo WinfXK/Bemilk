@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -19,11 +20,6 @@ import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
-/**
-*@author Winfxk
-*/
 /**
  * 删除商店分页
  * 
@@ -74,7 +70,7 @@ public class delShop {
 		myPlayer.file = file;
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(6), kick.Message.getText(config.get("Title"), DsK, DsO));
 		Map<String, Object> Items = (config.get("Items") == null || !(config.get("Items") instanceof Map))
 				? new HashMap<>()
@@ -135,7 +131,7 @@ public class delShop {
 		if (Shops.size() < 1)
 			return MakeForm.Tip(player, "§4当前还没有任何一个商店分页");
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(5), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
 		List<String> Keys = new ArrayList<>();

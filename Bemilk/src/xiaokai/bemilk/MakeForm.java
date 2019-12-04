@@ -1,5 +1,6 @@
 package xiaokai.bemilk;
 
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -20,8 +21,6 @@ import java.util.Map;
 
 import cn.nukkit.Player;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
  * @author Winfxk
@@ -70,7 +69,7 @@ public class MakeForm implements FilenameFilter {
 		myPlayer.file = file;
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(30), msg.getSon("搜索", "标题", DsK, DsO));
 		form.addInput(msg.getSon("搜索", "关键字", DsK, DsO));
 		form.sendPlayer(player);
@@ -85,7 +84,7 @@ public class MakeForm implements FilenameFilter {
 	 */
 	public static boolean Seek(Player player) {
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		CustomForm form = new CustomForm(kick.formID.getID(29), msg.getSon("搜索", "标题", DsK, DsO));
 		form.addInput(msg.getSon("搜索", "关键字", DsK, DsO));
 		form.sendPlayer(player);
@@ -108,7 +107,7 @@ public class MakeForm implements FilenameFilter {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		Config config = kick.ShopConfig;
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(1), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
 		Object object = config.get("Shops");
@@ -156,7 +155,7 @@ public class MakeForm implements FilenameFilter {
 		Map<String, Object> Shops = (object == null || !(object instanceof Map)) ? new HashMap<>()
 				: (HashMap<String, Object>) object;
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(0), kick.Message.getText(config.get("Title"), DsK, DsO),
 				kick.Message.getText(config.get("Content"), DsK, DsO));
 		List<String> Keys = new ArrayList<>();

@@ -16,8 +16,6 @@ import cn.nukkit.form.response.FormResponseCustom;
 import cn.nukkit.inventory.PlayerInventory;
 import cn.nukkit.utils.Config;
 
-import me.onebone.economyapi.EconomyAPI;
-
 /**
  * @author Winfxk
  */
@@ -68,12 +66,13 @@ public abstract class BaseDis {
 	 * 界面
 	 */
 	public CustomForm form;
-
 	/**
 	 * 开始处理点击的商店项目的数据
 	 * 
 	 * @param data
 	 */
+	public String MoneyStype;
+
 	public BaseDis(ShopData data) {
 		this.data = data;
 		player = data.player;
@@ -90,6 +89,9 @@ public abstract class BaseDis {
 				Tool.getColorFont(data.Type.toUpperCase() + ((Style == null || Style.isEmpty()) ? "" : "-" + Style)) });
 		Money = Double.valueOf(String.valueOf(Item.get("Money")));
 		Inventory = player.getInventory();
+		Object MoneyStypeobj = Item.get("MoneyStype");
+		MoneyStype = String.valueOf(MoneyStypeobj);
+		MoneyStype = (MoneyStypeobj == null || MoneyStype == null || MoneyStype.isEmpty()) ? "EconomyAPI" : "Snowmn";
 		form = new CustomForm(kick.formID.getID(MainFormID), Title);
 	}
 
@@ -139,7 +141,7 @@ public abstract class BaseDis {
 	 * @return
 	 */
 	public double MyMoney() {
-		return EconomyAPI.getInstance().myMoney(player);
+		return DisPlayer.getMoney(player.getName(), MoneyStype);
 	}
 
 	/**
@@ -169,7 +171,7 @@ public abstract class BaseDis {
 	 * @return
 	 */
 	public double reduceMoney(double Money) {
-		return DisPlayer.delMoney(player, Money);
+		return DisPlayer.delMoney(player.getName(), Money, MoneyStype);
 	}
 
 	/**
@@ -179,7 +181,7 @@ public abstract class BaseDis {
 	 * @return
 	 */
 	public double addMoney(double Money) {
-		return DisPlayer.addMoney(player, Money);
+		return DisPlayer.addMoney(player.getName(), Money, MoneyStype);
 	}
 
 	/**

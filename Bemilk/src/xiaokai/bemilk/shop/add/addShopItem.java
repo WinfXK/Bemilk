@@ -1,6 +1,7 @@
 package xiaokai.bemilk.shop.add;
 
 import xiaokai.bemilk.MakeForm;
+import xiaokai.bemilk.mtp.DisPlayer;
 import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
@@ -14,8 +15,6 @@ import java.util.ArrayList;
 import cn.nukkit.Player;
 import cn.nukkit.form.response.FormResponseSimple;
 import cn.nukkit.utils.Config;
-
-import me.onebone.economyapi.EconomyAPI;
 
 /**
 *@author Winfxk
@@ -39,6 +38,8 @@ public class addShopItem {
 	public static boolean disMakeForm(Player player, FormResponseSimple data) {
 		MyPlayer myPlayer = kick.PlayerDataMap.get(player.getName());
 		switch (Kick.ButtonTypeList[data.getClickedButtonId()]) {
+		case "命令商店":
+			return Command.makeform(player, myPlayer.file);
 		case "药水效果":
 			return addEffect.makeMain(player, myPlayer.file);
 		case "工具修复":
@@ -78,7 +79,7 @@ public class addShopItem {
 		myPlayer.file = file;
 		Config config = new Config(file, Config.YAML);
 		String[] DsK = { "{Player}", "{Money}" };
-		Object[] DsO = { player.getName(), EconomyAPI.getInstance().myMoney(player) };
+		Object[] DsO = { player.getName(), DisPlayer.getMoney(player.getName()) };
 		SimpleForm form = new SimpleForm(kick.formID.getID(20), kick.Message.getText(config.get("Title"), DsK, DsO),
 				Tool.getColorFont("请输入想要添加的商店类型"));
 		kick.PlayerDataMap.put(player.getName(), myPlayer);
