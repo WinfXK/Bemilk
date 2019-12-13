@@ -327,11 +327,11 @@ public class DisPlayer {
 	 * 增加玩家支出
 	 * 
 	 * @param player 要增加的玩家对象
-	 * @param Moeny
+	 * @param Money
 	 * @return
 	 */
-	public static double delMoney(Player player, double Moeny) {
-		return delMoney(player.getName(), Moeny, "EconomyApi");
+	public static double delMoney(Player player, double Money) {
+		return delMoney(player.getName(), Money, "EconomyApi");
 	}
 
 	/**
@@ -487,6 +487,7 @@ public class DisPlayer {
 	public static Config setConfig(String player, Config config) {
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(player);
 		myPlayer.config = config;
+		myPlayer.config.save();
 		Kick.kick.PlayerDataMap.put(player, myPlayer);
 		return config;
 	}

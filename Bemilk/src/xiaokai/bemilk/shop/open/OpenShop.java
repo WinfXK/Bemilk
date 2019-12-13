@@ -6,6 +6,7 @@ import xiaokai.bemilk.mtp.Kick;
 import xiaokai.bemilk.mtp.Message;
 import xiaokai.bemilk.mtp.MyPlayer;
 import xiaokai.bemilk.shop.Shop;
+import xiaokai.bemilk.shop.open.type.Command;
 import xiaokai.bemilk.shop.open.type.Effect;
 import xiaokai.bemilk.shop.open.type.Enchant;
 import xiaokai.bemilk.shop.open.type.ItemTradeItem;
@@ -26,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import cn.nukkit.Player;
+import cn.nukkit.Server;
 import cn.nukkit.item.Item;
 import cn.nukkit.utils.Config;
 
@@ -47,6 +49,9 @@ public class OpenShop {
 		MyPlayer myPlayer = Kick.kick.PlayerDataMap.get(data.player.getName());
 		try {
 			switch (data.Type) {
+			case "command":
+				myPlayer.OpenShopDis = new Command(data);
+				break;
 			case "effect":
 				myPlayer.OpenShopDis = new Effect(data);
 				break;
@@ -213,6 +218,31 @@ public class OpenShop {
 			String Style, Icon, ike;
 			Object ItemMoney = Float.valueOf(String.valueOf(item.get("Money"))) <= 0 ? "不需要" : item.get("Money");
 			switch (type.toLowerCase()) {
+			case "command":
+				Object obj = item.get("ButtonContent");
+				String Content = Tool.objToString(obj, "");
+				if (obj == null || Content.isEmpty())
+					Content = kick.config.getString("命令商店显示内容");
+				obj = item.get("Command");
+				String Command = Tool.objToString(obj, "");
+				if (obj == null || Command.isEmpty())
+					kick.mis.getLogger().warning("无法获取命令项数据！" + item);
+				int CommandSender = Tool.ObjectToInt(item.get("CommandSender"), 0);
+				Icon = kick.config.getString("命令商店按钮图标");
+				strings = new ArrayList<>();
+				for (Player player2 : Server.getInstance().getOnlinePlayers().values())
+					if (player2.isOnline())
+						strings.add(player2.getName());
+				k = new String[] { "{Player}", "{Money}", "{Players}" };
+				d = new Object[] { player.getName(), ItemMoney,
+						strings.get(Tool.getRand(0, strings.size() - 1)) + "等" + strings.size() + "个玩家" };
+				Command = msg.getText(Command, k, d);
+				k = new String[] { "{Player}", "{Money}", "{Permission}", "{Command}" };
+				d = new Object[] { player.getName(), ItemMoney,
+						xiaokai.bemilk.shop.add.Command.getPermission(CommandSender), Command };
+				ike = msg.getText(Content, k, d);
+				form.addButton(ike, true, Icon);
+				break;
 			case "effect":
 				Style = (String) item.get("Style");
 				if (Style == null || Style.isEmpty())

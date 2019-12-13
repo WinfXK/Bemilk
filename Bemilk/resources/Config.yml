@@ -20,6 +20,7 @@
 物品附魔项目图标: textures/items/textures/ui/haste_effect.png
 搜索按钮图标: textures/gui/newgui/magnifyingGlass.png
 个人商店创建按钮图标: textures/gui/newgui/Friends.png
+命令商店按钮图标: textures/blocks/bed_feet_side.png
 限制OP使用个人商店: false
 限制创造模式使用个人商店: true
 玩家重生时重置玩家缓存数据: false
@@ -29,3 +30,4 @@
 近似ID: true
 显示错误按钮: false
 默认货币类型: EconomyAPI
+命令商店显示内容: §6命令商店§f|§5{Money}§f|§8{Permission}

@@ -12,7 +12,6 @@ import java.util.UUID;
 
 import cn.nukkit.Player;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.plugin.PluginManager;
 import cn.nukkit.utils.TextFormat;
 
 /**
@@ -35,9 +34,7 @@ public class Bemilk extends PluginBase {
 	@Override
 	public void onEnable() {
 		Instant EnableTime = Instant.now();
-		PluginManager pm = getServer().getPluginManager();
-		pm.registerEvents(new PlayerEvent(getKick()), this);
-		pm.registerEvents(new Monitor(getKick()), this);
+		getServer().getPluginManager().registerEvents(new PlayerEvent(getKick()), this);
 		float entime = ((Duration.between(loadTime, Instant.now()).toMillis()));
 		String onEnableString = (entime > 1000 ? ((entime / 1000) + "§6s!(碉堡了) ") : entime + "§6ms");
 		this.getServer().getCommandMap().register(getName(), new ShopCommand(kick));

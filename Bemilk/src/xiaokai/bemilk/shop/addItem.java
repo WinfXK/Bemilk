@@ -46,6 +46,22 @@ public class addItem {
 	}
 
 	/**
+	 * 添加命令类型的商店
+	 * 
+	 * @param Command
+	 * @param CommandSender
+	 * @return
+	 */
+	public boolean addCommand(String Command, int CommandSender, Double Money, String ButtonContent) {
+		map.put("Money", Money);
+		map.put("Type", "Command");
+		map.put("Command", Command);
+		map.put("CommandSender", CommandSender);
+		map.put("ButtonContent", ButtonContent);
+		return save();
+	}
+
+	/**
 	 * 添加一种定级定效的效果项目
 	 * 
 	 * @param Effects 效果的ID的信息
