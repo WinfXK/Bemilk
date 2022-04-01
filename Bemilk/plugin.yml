@@ -1,13 +1,11 @@
 name: Bemilk
-main: xiaokai.bemilk.Bemilk
+main: cn.winfxk.nukkit.bemilk.Bemilk
 api:
 - 1.0.0
-version: 1.2.1
+version: 2.0
 load: POSTWORLD
 website: http://EpicFX.cn
 author: Winfxk
-depend:
-- EconomyAPI
 permissions:
    Bemilk.Command.Shop:
       description: 商店命令

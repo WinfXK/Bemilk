@@ -1,0 +1,8 @@
+Economy: EconomyAPI
+BlacklistEconomy: [ ]
+FormID:
+  - 1008611
+  - 1001011
+EasyEconomy:
+  Name: 狗屎
+  ID: EasyEconomy
