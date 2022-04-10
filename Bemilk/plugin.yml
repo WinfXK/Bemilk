@@ -1,15 +1,19 @@
 name: Bemilk
 main: cn.winfxk.nukkit.bemilk.Bemilk
 api:
-- 1.0.0
+  - 1.0.0
 version: 2.0
 load: POSTWORLD
-website: http://EpicFX.cn
+depend:
+  - WinfxkLib
+loadbefore:
+  - WinfxkLib
+website: http://Winfxk.cn
 author: Winfxk
 permissions:
-   Bemilk.Command.Shop:
-      description: 商店命令
-      default: true
-   Bemilk.Command.Admin:
-      description: 管理命令
-      default: true
+  Bemilk.Command.Shop:
+    description: 商店命令
+    default: true
+  Bemilk.Command.Admin:
+    description: 管理命令
+    default: true

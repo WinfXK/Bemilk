@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="src">
+    <CLASSES>
+      <root url="jar://D:/数据内容/Java/Nukkit/1.11.0.23/plugins/WinfxkLib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../Winfxklib/src" />
+    </SOURCES>
+  </library>
+</component>

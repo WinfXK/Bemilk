@@ -1,8 +1,9 @@
-Economy: EconomyAPI
-BlacklistEconomy: [ ]
-FormID:
-  - 1008611
-  - 1001011
-EasyEconomy:
-  Name: 狗屎
-  ID: EasyEconomy
+#如果这个值为真，那么使用快捷工具打开的是一个商店而不是商店主页
+ToolMainShop: false
+#主商店的配置文件名称
+MainShop: null
+快捷工具: 指南针
+快捷工具附魔:
+  - 精准采集
+  - 耐久
+  - 经验修补

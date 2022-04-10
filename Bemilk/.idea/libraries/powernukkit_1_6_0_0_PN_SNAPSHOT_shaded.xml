@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="powernukkit-1.6.0.0-PN-SNAPSHOT-shaded">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Bin/powernukkit-1.6.0.0-PN-SNAPSHOT-shaded.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../Bin/PowerNukkit-master.zip!/PowerNukkit-master/src/main/java" />
+    </SOURCES>
+  </library>
+</component>
